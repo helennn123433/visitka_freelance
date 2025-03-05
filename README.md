@@ -1,4 +1,4 @@
-# visitka_freelace
+# vue-test
 
 ## Project setup
 ```

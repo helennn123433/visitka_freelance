@@ -1,4 +1,4 @@
-module.exports = {
+/*module.exports = {
   root: true,
   env: {
     node: true,
@@ -16,4 +16,22 @@ module.exports = {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
   },
+};*/
+
+module.exports = {
+  extends: [
+    'plugin:vue/vue3-recommended',
+    '@vue/typescript/recommended',
+    'eslint:recommended',
+  ],
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: 'module',
+  },
+  plugins: ['vue'],
+  rules: {
+    'vue/script-setup-uses-vars': 'error',
+    'no-undef': 'off', // Отключаем проверку на несуществующие переменные в script setup
+  },
 };
+

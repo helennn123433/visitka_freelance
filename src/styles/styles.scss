@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+$blue: #0652FF;
+$green: #25FF08;
+$grey: #898989;
+$black: #000000;
+$light-grey: #EFF0F2;
+$white: #FFFFFF;
+// _variables.scss
+$font-inter: 'Inter', sans-serif;
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0; 
+  box-sizing: border-box;
+}
+
+#app{
+    font-family: $font-inter;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+}
+
+body{
+  background-color: $light-grey;
+  padding: 20px;
+}
+  
+  nav {
+    padding: 30px;
+  }
+  
+  nav a {
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  nav a.router-link-exact-active {
+    color: $blue;
+  }

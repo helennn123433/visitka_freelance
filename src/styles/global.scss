@@ -27,16 +27,3 @@ body{
   background-color: $light-grey;
   padding: 20px;
 }
-  
-  nav {
-    padding: 30px;
-  }
-  
-  nav a {
-    font-weight: bold;
-    color: #2c3e50;
-  }
-  
-  nav a.router-link-exact-active {
-    color: $blue;
-  }

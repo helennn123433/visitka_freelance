@@ -1,13 +1,10 @@
 <template>
-  <nav>
-    <router-link to="/">
-      Home
-    </router-link>
-  </nav>
-  <div>
-    <router-view />
-  </div>
+  <HomeView />
 </template>
+
+<script setup lang="ts">
+  import HomeView from '@/components/services/HomeView.vue';
+</script>
 
 <style lang="scss">
 //@import "./styles/styles.scss";

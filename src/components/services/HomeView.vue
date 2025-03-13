@@ -20,8 +20,8 @@
 
 <script setup lang="ts">
   import { ref } from "vue";
-  import CardComp from "@/components/CardComp.vue";
-  import SearchComp from "@/components/SearchComp.vue";
+  import CardComp from "@/components/services/CardComp.vue";
+  import SearchComp from "@/components/services/SearchComp.vue";
 
   interface Image {
     src: string;

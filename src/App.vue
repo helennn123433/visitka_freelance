@@ -1,10 +1,10 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <AboutUs />
 </template>
+
+<script setup lang="ts">
+import AboutUs from "./components/AboutUs.vue";
+</script>
 
 <style>
 #app {

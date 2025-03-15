@@ -37,6 +37,9 @@
     overflow: hidden;
     border-radius: 32px;
     cursor: pointer;
+    img{
+      transition: opacity 0.3s ease;
+    }
     .price {
       position: absolute;
       display: flex;
@@ -48,26 +51,25 @@
       color: $white;
       border-radius: 19px;
       font-weight: bold;
-      width: 30%;
-      height: 20%;
+      font-size: 27px;
+      padding: 20px;
       z-index: 10;
-    }
-    .gradient{
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 30%;
-      background: linear-gradient(to top, $blue, transparent);
-      z-index: 5;
+      transition: background-color 0.3s ease;
     }
     .title{
       position: absolute;
-      bottom: 5%;
-      left: 5%;
+      bottom: 10%;
+      left: 10%;
       z-index: 10;
       color: $white;
       font-weight: bold;
+      text-transform: uppercase;
+      font-weight: 800;
+      //font-size: 10%;
+      font-size: 32px;
+    }
+    .price, .title {
+      transition: transform 0.3s ease, font-size 0.3s ease;
     }
     @media (max-width: 1400px) {
       .title {
@@ -149,6 +151,30 @@
         border-radius: 10px;
       }
     }
+  }
+  .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: $blue; 
+    opacity: 0;
+    transition: opacity 0.3s ease;  //анимация для заливки при наведении
+  }
+
+  .card:hover::after {  //анимация при наведении
+    opacity: 0.5; 
+    .price{
+      background-color: none;
+    }
+  }
+
+  .card:hover .price {
+    background-color: transparent; /* Убираем фон при наведении */
+    transform: translateX(20px) scale(1.2); /* Двигаем вправо */
+  }
+
+  .card:hover .title {
+    transform: translateX(-20px) scale(1.2); /* Двигаем влево */
   }
 
 </style>

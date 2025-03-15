@@ -80,6 +80,10 @@
   .header-buttons{
     display: flex;
     gap: 20px;
+    margin-right: 20px;
+    img:hover{
+      filter: brightness(0.1) invert(0.3);
+    }
   }
   .icon{
     cursor: pointer;
@@ -108,6 +112,9 @@
     .header{
       flex-direction: column;
       gap: 16px;
+    }
+    .header-buttons{
+      margin-right:0;
     }
   }
   

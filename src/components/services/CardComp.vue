@@ -30,7 +30,7 @@
   }
 
   .card {
-    flex: 0 0 48%;
+    flex: 0 0 49%;
     position: relative;
     color: $white;
     width: auto;
@@ -70,6 +70,15 @@
     }
     .price, .title {
       transition: transform 0.3s ease, font-size 0.3s ease;
+    }
+    @media (min-width: 1405px) {
+      .title {
+        font-size: 3vw;
+      }
+      .price {
+        font-size: 2vw;
+        padding: 2vw;
+      }
     }
     @media (max-width: 1400px) {
       .title {

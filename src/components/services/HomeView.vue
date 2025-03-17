@@ -75,7 +75,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 1.5vw;
   }
   .header-buttons{
     display: flex;
@@ -91,14 +91,14 @@
   .container{
     background-color: $white;
     border-radius: 35px;
-    padding: 16px;
+    padding: 1.5vw;
     box-shadow: 0px 4px 8px $grey;
   }
   .cards-field{
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap; // Перенос картинок
-    gap: 16px; // Отступы между изображениями
+    gap: 1.5vw; // Отступы между изображениями
   }
 
   @media(max-width: 650px){

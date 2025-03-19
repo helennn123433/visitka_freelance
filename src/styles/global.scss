@@ -21,9 +21,20 @@ $font-inter: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
+    height: 100%;
+    margin: 0;
+}
+
+html{
+  height:100%;
 }
 
 body{
   background-color: $light-grey;
   padding: 20px;
+  height: 100%;
+}
+
+html, body, #app {
+  box-sizing: border-box; /* Чтобы padding не увеличивал размеры */
 }

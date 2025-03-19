@@ -8,35 +8,43 @@
   
 </script>
 <style lang="scss">
+  .search-container{
+    position: relative;
+    width: 70vw;
+    margin-right: 1vw;
+    input{
+      font-size: 1.5vw;
+    }
+  }
+  .search-input {
+    width: 100%;
+    padding: 2vw 2vw 2vw 4vw;
+    background-color: $light-grey;
+    border-radius: 5vw;
+    outline: none;
+    box-shadow: 0vw 1vw 2vw $grey;
+  }
+  .search-icon {
+    position: absolute;
+    left: 1vw;
+    top: 50%;
+    width: 3vw;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  @media(max-width: 450px){
     .search-container{
-        position: relative;
-        width: 80%;
-        margin-right: 20px;
+      width: 100%;
+      margin-right: 0;
     }
     .search-input {
-      width: 100%;
-      padding: 20px 20px 20px 40px;
-      background-color: $light-grey;
-      border-radius: 32px;
-      outline: none;
-      box-shadow: 0px 4px 8px $grey;
+      font-size: 14px;
+      padding: 8px 12px 8px 36px;
+      border-radius: 20px;
     }
-
     .search-icon {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
+      //width: 20px;
+      left: 8px;
     }
-
-    @media(max-width: 450px){
-      .search-container{
-        width: 100%;
-        margin-right: 0;
-      }
-      .search-input {
-        padding: 10px 10px 10px 40px;
-      }
-    }
+  }
 </style>

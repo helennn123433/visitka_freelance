@@ -71,16 +71,21 @@
 </script>
 <style lang="scss">
   .header{
-    width: 100%;
+    width:100%;
+    position: sticky;
+    z-index: 100;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5vw;
+    margin-bottom: 1vw;
   }
   .header-buttons{
     display: flex;
-    gap: 20px;
-    margin-right: 20px;
+    gap: 2vw;
+    margin-right: 2vw;
+    img{
+      width: 3vw;
+    }
     img:hover{
       filter: brightness(0.1) invert(0.3);
     }
@@ -88,17 +93,28 @@
   .icon{
     cursor: pointer;
   }
-  .container{
+  .container {
+    display: flex;
+    flex-direction: column;
     background-color: $white;
-    border-radius: 35px;
+    border-radius: 5vw;
     padding: 1.5vw;
     box-shadow: 0px 4px 8px $grey;
+    height: calc(100vh - 40px); /* 100% высоты экрана минус отступы */
+    overflow: hidden; /* Запрещаем общий скролл страницы */
   }
   .cards-field{
+    flex-grow: 1; // Занимает оставшееся пространство
+    min-height: 0; // Решает проблему с flex и overflow
+    border-radius: 5vw;
+    overflow: hidden;
+    overflow-y: auto; // Позволяет прокручивать карточки 
+    padding: 1vw;
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap; // Перенос картинок
     gap: 1.5vw; // Отступы между изображениями
+    justify-content: space-between;
+    align-content: space-between;
   }
 
   @media(max-width: 650px){
@@ -111,10 +127,11 @@
   @media(max-width: 450px){
     .header{
       flex-direction: column;
-      gap: 16px;
-    }
-    .header-buttons{
-      margin-right:0;
+      gap: 3vw;
+      margin-bottom: 3vw;;
+      .header-buttons{
+        margin-right:0;
+      }
     }
   }
   

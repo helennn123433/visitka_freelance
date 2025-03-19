@@ -18,11 +18,12 @@
   }
   .search-input {
     width: 100%;
-    padding: 2vw 2vw 2vw 4vw;
+    padding: 2vw 2vw 2vw 6vw;
     background-color: $light-grey;
     border-radius: 5vw;
     outline: none;
     box-shadow: 0vw 1vw 2vw $grey;
+    font-size: 3vw;
   }
   .search-icon {
     position: absolute;
@@ -43,7 +44,6 @@
       border-radius: 20px;
     }
     .search-icon {
-      //width: 20px;
       left: 8px;
     }
   }

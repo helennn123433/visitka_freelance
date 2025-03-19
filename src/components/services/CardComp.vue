@@ -20,6 +20,7 @@
   }>();
 </script>
 <style lang="scss">
+@import '../../styles/colors.scss';
   .image {
     width: 100%; // Изображения занимают всю ширину контейнера
     height: 100%;

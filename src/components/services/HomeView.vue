@@ -19,57 +19,19 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, onMounted } from "vue";
+  import { Image } from "@/interfaces/services/Image";  // Импортируем интерфейс
+  import imagesData from "@/backend/services/images.json"; // Импортируем картинки из JSON
   import CardComp from "@/components/services/CardComp.vue";
   import SearchComp from "@/components/services/SearchComp.vue";
 
-  interface Image {
-    src: string;
-    alt: string;
-    title: string;
-    price: string;
-  }
-  // Используем свойство с типом Image[]
-  const images = ref<Image[]>([
-    {
-      src: "https://avatars.mds.yandex.net/i?id=9c29de4d7c8431e0a99966cb2ab938a9e4b6fba3-8522161-images-thumbs&n=13",
-      alt: "Image 1",
-      title: "Card 1",
-      price: "от 1200 Р/час"
-    },
-    {
-      src: "https://i.ytimg.com/vi/I0JtD7hxdds/maxresdefault.jpg",
-      alt: "Image 2",
-      title: "Card 2",
-      price: "от 1200 Р/час"
-    },
-    {
-      src: "https://avatars.mds.yandex.net/i?id=6adfc3b38f261cf6f55babcbdfca603596bb2fa5-4612626-images-thumbs&n=13",
-      alt: "Image 3",
-      title: "Card 3",
-      price: "от 1200 Р/час"
-    },
-    {
-      src: "https://avatars.mds.yandex.net/i?id=8cf4526926eb2a43fba77298842822510fc5aa4d-7664017-images-thumbs&n=13",
-      alt: "Image 4",
-      title: "Card 4",
-      price: "от 1200 Р/час"
-    },
-    {
-      src: "https://avatars.mds.yandex.net/i?id=ec806c2691eeeb8fcf37218273a716ce0ee58dff-8981283-images-thumbs&n=13",
-      alt: "Image 5",
-      title: "Card 5",
-      price: "от 1200 Р/час"
-    },
-    {
-      src: "https://avatars.mds.yandex.net/i?id=232120f27e904b9a43ccd4aa6d941cd3635191f4-8324697-images-thumbs&n=13",
-      alt: "Image 6",
-      title: "Card 6",
-      price: "от 1200 Р/час"
-    },
-  ]);
+  const images = ref<Image[]>([]);
+  onMounted(() => {
+    images.value = imagesData;
+  });
 </script>
 <style lang="scss">
+  @import '../../styles/colors.scss';
   .header{
     width:100%;
     position: sticky;

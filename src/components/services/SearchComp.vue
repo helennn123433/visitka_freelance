@@ -8,6 +8,7 @@
   
 </script>
 <style lang="scss">
+@import '../../styles/colors.scss';
   .search-container{
     position: relative;
     width: 70vw;

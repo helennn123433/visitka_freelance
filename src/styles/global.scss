@@ -1,13 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-
-$blue: #0652FF;
-$green: #25FF08;
-$grey: #898989;
-$black: #000000;
-$light-grey: #EFF0F2;
-$white: #FFFFFF;
-// _variables.scss
-$font-inter: 'Inter', sans-serif;
+@use './colors.scss' as *;
 
 * {
   margin: 0;

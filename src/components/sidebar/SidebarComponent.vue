@@ -1,26 +1,58 @@
 <template>
   <div class="main">
-    <div class="sidecard__main">
+    <div class="sidebar__main">
       <div>
         <div class="logo__main">
-          <img src="./images/H31.svg" class="img_n31" alt="Logo_H31">
+          <img
+            class="img_n31"
+            src="./images/H31.svg"
+            alt="Logo_H31"
+          >
         </div>
-        <button class="btn" autofocus @click="toggleIcon('info')">
-          <img src="./images/info.svg" class="img_plz" alt="info" :class="{ active: activeIcon === 'info' }">
+        <button
+          class="btn"
+          @click="toggleIcon('info')"
+        >
+          <img
+            class="img_plz"
+            src="./images/info.svg"
+            alt="info"
+            :class="{ active: activeIcon === 'info' }"
+          >
           <span class="btn-text">О нас</span>
         </button>
-        <button class="btn" @click="toggleIcon('list')">
-          <img src="./images/list.svg" class="img_plz" alt="list" :class="{ active: activeIcon === 'list' }">
+        <button
+          class="btn"
+          @click="toggleIcon('list')"
+        >
+          <img
+            class="img_plz"
+            src="./images/list.svg"
+            alt="list"
+            :class="{ active: activeIcon === 'list' }"
+          >
           <span class="btn-text">Услуги</span>
         </button>
-        <button class="btn" @click="toggleIcon('email')">
-          <img src="./images/email.svg" class="img_plz" alt="email" :class="{ active: activeIcon === 'email' }">
+        <button
+          class="btn"
+          @click="toggleIcon('email')"
+        >
+          <img
+            class="img_plz"
+            src="./images/email.svg"
+            alt="email"
+            :class="{ active: activeIcon === 'email' }"
+          >
           <span class="btn-text">Контакты</span>
         </button>
       </div>
       <div class="btn_bottom">
         <button class="btn_discount">
-          <img src="./images/light.svg" class="img_plz" alt="light">
+          <img
+            class="img_plz"
+            src="./images/light.svg"
+            alt="light"
+          >
           <span class="btn-text">
             Получить скидку <b>25%</b>
           </span>
@@ -66,14 +98,14 @@ const toggleIcon = (iconName: string) => {
   filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%) hue-rotate(214deg) brightness(100%) contrast(105%);
 }
 
-.sidecard__main {
+.sidebar__main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 80vh;
-  width: 20vh;
+  height: 90vh;
+  width: 15vh;
   max-width: 20%;
-  min-width: 20%;
+  min-width: 15%;
   max-height: 80%;
   background-color: white;
   border-radius: 32px;

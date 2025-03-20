@@ -10,7 +10,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/sidebar",
     name: "sidebar",
-    component: () => import("../components/sidebar/Sidebar.vue"),
+    component: () => import("../components/sidebar/SidebarComponent.vue"),
   },
   {
     path: "/about",

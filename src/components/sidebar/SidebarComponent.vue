@@ -5,16 +5,16 @@
         <div class="logo__main">
           <img src="./images/H31.svg" class="img_n31" alt="Logo_H31">
         </div>
-        <button class="btn" autofocus @click="changeIconColor('info')">
-          <img src="./images/info.svg" class="img_plz" alt="info" :style="{ filter: activeIcon === 'info' ? 'brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%) hue-rotate(214deg) brightness(100%) contrast(105%)' : '' }">
+        <button class="btn" autofocus @click="toggleIcon('info')">
+          <img src="./images/info.svg" class="img_plz" alt="info" :class="{ active: activeIcon === 'info' }">
           <span class="btn-text">О нас</span>
         </button>
-        <button class="btn" @click="changeIconColor('list')">
-          <img src="./images/list.svg" class="img_plz" alt="list" :style="{ filter: activeIcon === 'list' ? 'brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%) hue-rotate(214deg) brightness(100%) contrast(105%)' : '' }">
+        <button class="btn" @click="toggleIcon('list')">
+          <img src="./images/list.svg" class="img_plz" alt="list" :class="{ active: activeIcon === 'list' }">
           <span class="btn-text">Услуги</span>
         </button>
-        <button class="btn" @click="changeIconColor('email')">
-          <img src="./images/email.svg" class="img_plz" alt="email" :style="{ filter: activeIcon === 'email' ? 'brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%) hue-rotate(214deg) brightness(100%) contrast(105%)' : '' }">
+        <button class="btn" @click="toggleIcon('email')">
+          <img src="./images/email.svg" class="img_plz" alt="email" :class="{ active: activeIcon === 'email' }">
           <span class="btn-text">Контакты</span>
         </button>
       </div>
@@ -30,17 +30,16 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Vue } from "vue-class-component";
+<script setup lang="ts">
+import { ref } from 'vue';
 
-export default class Sidebar extends Vue {
-  activeIcon: string | null = null;
+const activeIcon = ref<string | null>(null);
 
-  changeIconColor(iconName: string) {
-    this.activeIcon = this.activeIcon === iconName ? null : iconName;
-  }
-}
+const toggleIcon = (iconName: string) => {
+  activeIcon.value = activeIcon.value === iconName ? null : iconName;
+};
 </script>
+
 <style>
 .main {
   display: flex;
@@ -60,6 +59,11 @@ export default class Sidebar extends Vue {
   width: 24px;
   height: 24px;
   margin-right: 8px;
+  transition: filter 0.3s ease;
+}
+
+.img_plz.active {
+  filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%) hue-rotate(214deg) brightness(100%) contrast(105%);
 }
 
 .sidecard__main {
@@ -86,6 +90,12 @@ export default class Sidebar extends Vue {
   color: #898989;
   font-size: 16px;
   text-align: left;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: #EFF0F2;
+  border: 0 solid white;
+  color: black;
 }
 
 .btn:focus{
@@ -106,7 +116,10 @@ export default class Sidebar extends Vue {
   font-size: 16px;
   border-radius: 8px;
   text-align: center;
-
+  cursor: pointer;
+}
+.btn_discount:hover {
+  background-color: #0652AA;
 }
 
 .btn_bottom {

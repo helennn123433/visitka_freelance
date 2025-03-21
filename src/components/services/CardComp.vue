@@ -8,7 +8,6 @@
     <div class="price">
       {{ image.price }}
     </div>
-    <!--<div class="gradient"></div>-->
     <div class="title">
       {{ image.title }}
     </div>
@@ -31,7 +30,7 @@
   }
 
   .card {
-    flex: 0 0 49%;
+    flex: 0 0 48.5%;
     position: relative;
     color: $white;
     width: auto;
@@ -50,10 +49,10 @@
       right: 5%;
       background-color: $blue;
       color: $white;
-      border-radius: 1.7vw;
+      border-radius: 1.5vw;
       font-weight: bold;
-      font-size: 1.5vw;
-      padding: 2vw 1.5vw;
+      font-size: 1vw;
+      padding: 1.5vw 1vw;
       z-index: 10;
       transition: background-color 0.3s ease;
     }
@@ -66,7 +65,7 @@
       font-weight: bold;
       text-transform: uppercase;
       font-weight: 800;
-      font-size: 3.5vw;
+      font-size: 2.5vw;
     }
     .price, .title {
       transition: transform 0.3s ease, font-size 0.3s ease;
@@ -78,11 +77,11 @@
       flex: 0 0 100%;
       margin-bottom: 2vw;
       .title {
-        font-size: 7vw;
+        font-size: 6vw;
       }
       .price {
-        font-size: 4vw;
-        padding: 4vw 3vw;
+        font-size: 3vw;
+        padding: 3vw 2vw;
         border-radius: 3.4vw;
       }
       .card:hover .price {

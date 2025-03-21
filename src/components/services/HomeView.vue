@@ -1,21 +1,21 @@
 <template>
   <div class="container">
-    <div class="header">
-      <SearchComp />
-      <div class="header-buttons">
-        <img src="@/assets/img/services/phone-icon.svg" alt="Иконка телефона" class="icon" />
-        <img src="@/assets/img/services/tg-icon.svg" alt="Иконка телеграма" class="icon" />
-        <img src="@/assets/img/services/email-icon.svg" alt="Иконка почты" class="icon" />
+      <div class="header">
+        <SearchComp />
+        <div class="header-buttons">
+          <img src="@/assets/img/services/phone-icon.svg" alt="Иконка телефона" class="icon" />
+          <img src="@/assets/img/services/tg-icon.svg" alt="Иконка телеграма" class="icon" />
+          <img src="@/assets/img/services/email-icon.svg" alt="Иконка почты" class="icon" />
+        </div>
+      </div>
+      <div class="cards-field">
+        <CardComp
+          v-for="(image, index) in images"
+          :key="index"
+          :image="image"
+        />
       </div>
     </div>
-    <div class="cards-field">
-      <CardComp
-        v-for="(image, index) in images"
-        :key="index"
-        :image="image"
-      />
-    </div>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -40,13 +40,14 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1vw;
+    padding-left: 0.7vw;
   }
   .header-buttons{
     display: flex;
     gap: 2vw;
     margin-right: 2vw;
     img{
-      width: 3vw;
+      width: 2vw;
     }
     img:hover{
       filter: brightness(0.1) invert(0.3);
@@ -55,15 +56,17 @@
   .icon{
     cursor: pointer;
   }
+  
   .container {
     display: flex;
     flex-direction: column;
     background-color: $white;
-    border-radius: 5vw;
+    border-radius: 2vw;
     padding: 1.5vw;
     box-shadow: 0px 4px 8px $grey;
     height: calc(100vh - 40px); /* 100% высоты экрана минус отступы */
     overflow: hidden; /* Запрещаем общий скролл страницы */
+    width: 75vw;
   }
   .cards-field{
     flex-grow: 1; // Занимает оставшееся пространство
@@ -71,7 +74,7 @@
     border-radius: 5vw;
     overflow: hidden;
     overflow-y: auto; // Позволяет прокручивать карточки 
-    padding: 1vw;
+    padding: 0.7vw;
     display: flex;
     flex-wrap: wrap; // Перенос картинок
     gap: 1.5vw; // Отступы между изображениями
@@ -87,12 +90,18 @@
   }
 
   @media(max-width: 450px){
+    .container{
+      width: 95vw;
+    }
     .header{
       flex-direction: column;
       gap: 3vw;
       margin-bottom: 3vw;;
       .header-buttons{
         margin-right:0;
+      }
+      img{
+        width: 3vw;
       }
     }
   }

@@ -63,28 +63,26 @@ import MyCard from "./MyCard.vue";
   font-family: "Inter", sans-serif;
   display: flex;
   flex-direction: column;
-  padding-right: 16px;
+  padding: 1.5rem clamp(1rem, 5%, 3rem);
   gap: 16px;
   border: 2px solid #eff0f2;
   border-radius: 32px;
-  padding-left: 31px;
-  height: 80vh;
+  box-sizing: border-box;
+  min-height: auto;
+  text-align: center;
 }
 
 .header {
-  //border: solid 1px red;
   align-self: flex-start;
   line-height: 100%;
   color: #0652ff;
-  font-size: 32px;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 800;
   margin-top: 27px;
-  //margin-bottom: -10px;
 }
 
 .upperText {
-  //border: solid 1px red;
-  font-size: 16px;
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
   text-align: start;
   line-height: 100%;
   letter-spacing: 0%;
@@ -92,18 +90,29 @@ import MyCard from "./MyCard.vue";
 }
 
 .middleText {
-  //border: solid 1px red;
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  font-family: "Inter", sans-serif;
-  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
   color: #0652ff;
-  padding-left: 36px;
-  padding-right: 36px;
 }
 
 .btn {
   align-self: center;
+}
+
+@media (max-width: 730px) {
+  .middleText {
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+    gap: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .middleText {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 </style>

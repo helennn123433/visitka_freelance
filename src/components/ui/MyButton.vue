@@ -8,17 +8,17 @@
 
 <style lang="scss" scoped>
 .btn {
+  font-family: 'Inter_normal', sans-serif;
   border-radius: 32px;
   background-color: #0652ff;
-  border-color: #0652ff;
+  border: none;
   color: #ffffff;
-  width: clamp(200px, 40vw, 400px);
-  height: clamp(45px, 6vh, 60px);
-  font-size: clamp(0.875rem, 2.5vw, 1rem);
+  padding: 14.5px 85.6px;
+  font-size: 16px;
   font-weight: 500;
-  padding-right: 6px;
-  padding-left: 6px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn:hover {

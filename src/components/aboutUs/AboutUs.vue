@@ -54,13 +54,12 @@
 </template>
 
 <script setup lang="ts">
-import MyButton from "./MyButton.vue";
-import MyCard from "./MyCard.vue";
+import MyButton from '../ui/MyButton.vue';
+import MyCard from './MyCard.vue';
 </script>
 
 <style lang="scss" scoped>
 .container {
-  font-family: "Inter", sans-serif;
   display: flex;
   flex-direction: column;
   padding: 1.5rem clamp(1rem, 5%, 3rem);

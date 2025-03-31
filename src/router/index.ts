@@ -1,12 +1,10 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import component from "*.vue";
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
-    name: "home",
-    component: () => import("@/components/sidebar/SidebarComponent.vue"),
+    path: '/',
+    name: 'home',
+    component: () => import('@/components/aboutUs/AboutUs.vue'),
   },
 ];
 

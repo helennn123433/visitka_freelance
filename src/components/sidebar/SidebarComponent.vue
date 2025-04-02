@@ -40,15 +40,11 @@
         </button>
       </div>
     </div>
-    <div class="main__all__staff">
-      <about-us />
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import AboutUs from '@/components/aboutUs/AboutUs.vue';
 
 const activeIcon = ref<string | null>(null);
 
@@ -60,9 +56,7 @@ const toggleIcon = (iconName: string) => {
 <style>
 .main {
   display: flex;
-  flex-direction: row;
-  background-color: #eff0f2;
-  padding: 10px;
+  margin-right: 0.6vw;
 }
 
 .logo__main {
@@ -92,14 +86,11 @@ const toggleIcon = (iconName: string) => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 95vh;
-  width: 15vh;
-  max-width: 20%;
-  min-width: 15%;
-  max-height: 80%;
+  height: 100vh;
+  max-width: 20vh;
+  min-width: 8vh;
   background-color: white;
   border-radius: 32px;
-  margin: 10px;
 }
 
 .btn {
@@ -179,8 +170,8 @@ const toggleIcon = (iconName: string) => {
     margin-right: 12px;
   }
   .btn {
-    font-size: 21px;
-    padding: 1vh;
+    font-size: 15px;
+    padding: 0.9vh;
   }
 }
 
@@ -193,7 +184,6 @@ const toggleIcon = (iconName: string) => {
 
   .btn {
     font-size: 14px;
-    font-family: Inter, sans-serif;
     padding: 0.8vh;
   }
 
@@ -209,7 +199,6 @@ const toggleIcon = (iconName: string) => {
 
   .btn {
     font-size: 12px;
-    font-family: Inter, sans-serif;
     padding: 0.6vh;
   }
 
@@ -225,7 +214,6 @@ const toggleIcon = (iconName: string) => {
 
   .img_plz {
     display: flex;
-    font-family: Inter, sans-serif;
     margin-right: 0;
   }
 

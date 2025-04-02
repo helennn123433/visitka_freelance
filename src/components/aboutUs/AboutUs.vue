@@ -69,6 +69,7 @@ import MyCard from './MyCard.vue';
   box-sizing: border-box;
   min-height: auto;
   text-align: center;
+  background: white;
 }
 
 .header {
@@ -84,7 +85,7 @@ import MyCard from './MyCard.vue';
   font-size: clamp(0.875rem, 2.5vw, 1rem);
   text-align: start;
   line-height: 100%;
-  letter-spacing: 0%;
+  letter-spacing: 0;
   font-weight: 500;
 }
 

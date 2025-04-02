@@ -154,15 +154,6 @@ const toggleIcon = (iconName: string) => {
   font-size: 21px;
 }
 
-.main__all__staff {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100vh;
-  overflow: scroll;
-  margin: 10px;
-}
-
 @media (max-width: 1440px) {
   .img_plz {
     width: 30px;

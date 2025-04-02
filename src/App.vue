@@ -4,6 +4,7 @@
       <sidebar-component />
     </div>
     <div class="all__staff">
+      <!--      внутри этого элементе должны быть остальные окна-->
       <about-us />
     </div>
   </div>

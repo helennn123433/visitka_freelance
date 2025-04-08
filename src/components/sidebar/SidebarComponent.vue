@@ -63,11 +63,12 @@ const toggleIcon = (iconName: string) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1vh;
+  padding: 2vh 2vh 1vh 2vh;
 }
 .img_n31 {
   max-width: 100%;
   height: auto;
+  //margin: 0.5vh 2vh 0.5vh 2vh;
 }
 
 .img_plz {
@@ -86,7 +87,7 @@ const toggleIcon = (iconName: string) => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100vh;
+  height: 95vh;
   max-width: 20vh;
   min-width: 8vh;
   background-color: white;

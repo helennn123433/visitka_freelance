@@ -23,6 +23,5 @@ import AboutUs from '@/components/aboutUs/AboutUs.vue';
 }
 .all__staff {
   max-height: 100vh;
-  overflow: scroll;
 }
 </style>

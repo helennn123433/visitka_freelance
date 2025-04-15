@@ -63,6 +63,7 @@ import MyCard from './MyCard.vue';
   display: flex;
   flex-direction: column;
   padding: 1.5rem clamp(1rem, 5%, 3rem);
+  margin: 1.5vw 1.5vw 0 1vw;
   gap: 16px;
   border: 2px solid #eff0f2;
   border-radius: 32px;

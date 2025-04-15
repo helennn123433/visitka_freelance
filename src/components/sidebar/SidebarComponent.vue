@@ -35,7 +35,7 @@
       </div>
       <div class="btn_bottom">
         <button class="btn_discount">
-          <img class="img_plz" src="./images/light.svg" alt="light" />
+          <img class="img_discount" src="./images/light.svg" alt="light" />
           <span class="btn-text"> Получить скидку <b>25%</b> </span>
         </button>
       </div>
@@ -56,26 +56,19 @@ const toggleIcon = (iconName: string) => {
 <style>
 .main {
   display: flex;
-  margin-right: 0.6vw;
+  margin: 1.5vw 1.5vw 0 1.5vw;
 }
 
 .logo__main {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2vh 2vh 1vh 2vh;
+  padding: 2vh 2vh 2vh 2vh;
+  margin-top: 1vh;
 }
 .img_n31 {
   max-width: 100%;
   height: auto;
-  //margin: 0.5vh 2vh 0.5vh 2vh;
-}
-
-.img_plz {
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-  transition: filter 0.3s ease;
 }
 
 .img_plz.active {
@@ -87,8 +80,9 @@ const toggleIcon = (iconName: string) => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 95vh;
-  max-width: 20vh;
+  width: 30vw;
+  height: 93vh;
+  max-width: 30vh;
   min-width: 8vh;
   background-color: white;
   border-radius: 32px;
@@ -106,6 +100,7 @@ const toggleIcon = (iconName: string) => {
   text-align: left;
   cursor: pointer;
 }
+
 .btn:hover {
   background-color: #eff0f2;
   border: 0 solid white;
@@ -118,17 +113,21 @@ const toggleIcon = (iconName: string) => {
   color: black;
 }
 
+.btn-text {
+  font-size: 18px;
+}
+
 .btn_discount {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 1vh;
+  padding: 1.2vh 0 1.2vh 0;
   background-color: #0652ff;
   border: 0 solid white;
   color: #ffffff;
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: 20px;
   text-align: center;
   cursor: pointer;
 }
@@ -141,18 +140,25 @@ const toggleIcon = (iconName: string) => {
 }
 
 .img_plz {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   margin-right: 12px;
+  margin-left: 12px;
+}
+
+.img_discount {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
 }
 
 .btn {
   font-size: 21px;
-  padding: 1vh;
+  padding: 1.5vh;
 }
 
 .btn_discount {
-  font-size: 21px;
+  font-size: 1vw;
 }
 
 @media (max-width: 1440px) {

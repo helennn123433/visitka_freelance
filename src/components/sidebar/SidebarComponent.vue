@@ -34,10 +34,10 @@
         </button>
       </div>
       <div class="btn_bottom">
-        <button class="btn_discount">
+        <my-button class="btn_discount">
           <img class="img_discount" src="./images/light.svg" alt="light" />
-          <span class="btn-text"> Получить скидку <b>25%</b> </span>
-        </button>
+          <span>Получить скидку <b>25%</b></span>
+        </my-button>
       </div>
     </div>
   </div>
@@ -45,6 +45,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import MyButton from '@/components/ui/MyButton.vue';
 
 const activeIcon = ref<string | null>(null);
 
@@ -57,6 +58,7 @@ const toggleIcon = (iconName: string) => {
 .main {
   display: flex;
   margin: 1.5vw 1.5vw 0 1.5vw;
+  font-family: 'Inter', sans-serif;
 }
 
 .logo__main {
@@ -114,6 +116,7 @@ const toggleIcon = (iconName: string) => {
 }
 
 .btn-text {
+  font-family: 'Inter', sans-serif;
   font-size: 18px;
 }
 
@@ -136,6 +139,8 @@ const toggleIcon = (iconName: string) => {
 }
 
 .btn_bottom {
+  display: flex;
+  justify-content: center;
   padding: 1vh;
 }
 

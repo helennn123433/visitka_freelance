@@ -63,12 +63,14 @@ import MyCard from './MyCard.vue';
   display: flex;
   flex-direction: column;
   padding: 1.5rem clamp(1rem, 5%, 3rem);
+  margin: 1.5vw 1.5vw 0 1vw;
   gap: 16px;
   border: 2px solid #eff0f2;
   border-radius: 32px;
   box-sizing: border-box;
   min-height: auto;
   text-align: center;
+  background: white;
 }
 
 .header {
@@ -84,7 +86,7 @@ import MyCard from './MyCard.vue';
   font-size: clamp(0.875rem, 2.5vw, 1rem);
   text-align: start;
   line-height: 100%;
-  letter-spacing: 0%;
+  letter-spacing: 0;
   font-weight: 500;
 }
 

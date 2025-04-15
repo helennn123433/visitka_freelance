@@ -3,60 +3,41 @@
     <div class="sidebar__main">
       <div>
         <div class="logo__main">
-          <img
-            class="img_n31"
-            src="./images/H31.svg"
-            alt="Logo_H31"
-          >
+          <img class="img_n31" src="./images/H31.svg" alt="Logo_H31" />
         </div>
-        <button
-          class="btn"
-          @click="toggleIcon('info')"
-        >
+        <button class="btn" @click="toggleIcon('info')">
           <img
             class="img_plz"
             src="./images/info.svg"
             alt="info"
             :class="{ active: activeIcon === 'info' }"
-          >
+          />
           <span class="btn-text">О нас</span>
         </button>
-        <button
-          class="btn"
-          @click="toggleIcon('list')"
-        >
+        <button class="btn" @click="toggleIcon('list')">
           <img
             class="img_plz"
             src="./images/list.svg"
             alt="list"
             :class="{ active: activeIcon === 'list' }"
-          >
+          />
           <span class="btn-text">Услуги</span>
         </button>
-        <button
-          class="btn"
-          @click="toggleIcon('email')"
-        >
+        <button class="btn" @click="toggleIcon('email')">
           <img
             class="img_plz"
             src="./images/email.svg"
             alt="email"
             :class="{ active: activeIcon === 'email' }"
-          >
+          />
           <span class="btn-text">Контакты</span>
         </button>
       </div>
       <div class="btn_bottom">
-        <button class="btn_discount">
-          <img
-            class="img_plz"
-            src="./images/light.svg"
-            alt="light"
-          >
-          <span class="btn-text">
-            Получить скидку <b>25%</b>
-          </span>
-        </button>
+        <my-button class="btn_discount">
+          <img class="img_discount" src="./images/light.svg" alt="light" />
+          <span>Получить скидку <b>25%</b></span>
+        </my-button>
       </div>
     </div>
   </div>
@@ -64,6 +45,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import MyButton from '@/components/ui/MyButton.vue';
 
 const activeIcon = ref<string | null>(null);
 
@@ -75,41 +57,37 @@ const toggleIcon = (iconName: string) => {
 <style>
 .main {
   display: flex;
-  flex-direction: row;
-  background-color: #EFF0F2;
+  margin: 1.5vw 1.5vw 0 1.5vw;
+  font-family: 'Inter', sans-serif;
 }
 
 .logo__main {
-  padding: 1vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2vh 2vh 2vh 2vh;
+  margin-top: 1vh;
 }
 .img_n31 {
   max-width: 100%;
   height: auto;
 }
 
-.img_plz {
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-  transition: filter 0.3s ease;
-}
-
 .img_plz.active {
-  filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%) hue-rotate(214deg) brightness(100%) contrast(105%);
+  filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%)
+    hue-rotate(214deg) brightness(100%) contrast(105%);
 }
 
 .sidebar__main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 90vh;
-  width: 15vh;
-  max-width: 20%;
-  min-width: 15%;
-  max-height: 80%;
+  width: 30vw;
+  height: 93vh;
+  max-width: 30vh;
+  min-width: 8vh;
   background-color: white;
   border-radius: 32px;
-  margin: 20px;
 }
 
 .btn {
@@ -124,16 +102,22 @@ const toggleIcon = (iconName: string) => {
   text-align: left;
   cursor: pointer;
 }
+
 .btn:hover {
-  background-color: #EFF0F2;
+  background-color: #eff0f2;
   border: 0 solid white;
   color: black;
 }
 
-.btn:focus{
-  background-color: #EFF0F2;
+.btn:focus {
+  background-color: #eff0f2;
   border: 0 solid white;
   color: black;
+}
+
+.btn-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
 }
 
 .btn_discount {
@@ -141,47 +125,56 @@ const toggleIcon = (iconName: string) => {
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 1vh;
-  background-color: #0652FF;
+  padding: 1.2vh 0 1.2vh 0;
+  background-color: #0652ff;
   border: 0 solid white;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 16px;
-  border-radius: 8px;
+  border-radius: 20px;
   text-align: center;
   cursor: pointer;
 }
 .btn_discount:hover {
-  background-color: #0652AA;
+  background-color: #0652aa;
 }
 
 .btn_bottom {
+  display: flex;
+  justify-content: center;
   padding: 1vh;
 }
 
 .img_plz {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   margin-right: 12px;
+  margin-left: 12px;
+}
+
+.img_discount {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
 }
 
 .btn {
   font-size: 21px;
-  padding: 1vh;
+  padding: 1.5vh;
 }
 
 .btn_discount {
-  font-size: 21px;
+  font-size: 1vw;
 }
 
 @media (max-width: 1440px) {
-  .img_plz{
+  .img_plz {
     width: 30px;
     height: 30px;
     margin-right: 12px;
   }
   .btn {
-    font-size: 21px;
-    padding: 1vh;
+    font-size: 15px;
+    padding: 0.9vh;
   }
 }
 
@@ -194,7 +187,6 @@ const toggleIcon = (iconName: string) => {
 
   .btn {
     font-size: 14px;
-    font-family: Inter,sans-serif;
     padding: 0.8vh;
   }
 
@@ -210,7 +202,6 @@ const toggleIcon = (iconName: string) => {
 
   .btn {
     font-size: 12px;
-    font-family: Inter,sans-serif;
     padding: 0.6vh;
   }
 
@@ -226,7 +217,6 @@ const toggleIcon = (iconName: string) => {
 
   .img_plz {
     display: flex;
-    font-family: Inter,sans-serif;
     margin-right: 0;
   }
 

@@ -1,38 +1,5 @@
-<<<<<<< HEAD
-@use './colors.scss' as *;
-
-* {
-  margin: 0;
-  padding: 0;
-  border: 0; 
-  box-sizing: border-box;
-}
-
-#app{
-    font-family: $font-inter;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    height: 100%;
-    margin: 0;
-}
-
-html{
-  height:100%;
-}
-
-body{
-  background-color: $light-grey;
-  padding: 20px;
-  height: 100%;
-}
-
-html, body, #app {
-  box-sizing: border-box; /* Чтобы padding не увеличивал размеры */
-=======
 body{
     margin: 0;
     padding: 0;
     font-family: 'Inter_normal', sans-serif;
->>>>>>> master
 }

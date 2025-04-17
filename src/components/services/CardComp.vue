@@ -18,7 +18,7 @@
     image: { src: string; alt: string; title: string; price: string; };
   }>();
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../styles/colors.scss';
   .image {
     width: 100%; // Изображения занимают всю ширину контейнера

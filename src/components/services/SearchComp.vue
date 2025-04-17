@@ -7,7 +7,7 @@
 <script setup lang="ts">
   
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../../styles/colors.scss';
   .search-container{
     position: relative;

@@ -64,8 +64,8 @@
     border-radius: 2vw;
     padding: 1.5vw;
     box-shadow: 0px 4px 8px $grey;
-    height: calc(100vh - 40px); /* 100% высоты экрана минус отступы */
-    overflow: hidden; /* Запрещаем общий скролл страницы */
+    //height: calc(100vh - 40px); /* 100% высоты экрана минус отступы */
+    // overflow: hidden; /* Запрещаем общий скролл страницы */
     width: 75vw;
   }
   .cards-field{

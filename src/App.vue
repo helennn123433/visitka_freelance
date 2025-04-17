@@ -1,27 +1,78 @@
 <template>
   <div class="main__app">
-    <div>
-      <sidebar-component />
-    </div>
-    <div class="all__staff">
-      <!--      внутри этого элементе должны быть остальные окна-->
-      <about-us />
+    <SidebarComponent
+      :activeIcon="activeSection"
+      @icon-click="scrollToSection"
+    />
+
+    <!-- В этом контейнере все «полноэкранные» разделы -->
+    <div class="all__staff" ref="wrapper">
+      <section id="info" class="section">
+        <AboutUs />
+      </section>
+      <section id="list" class="section">
+        <HomeView />      
+      </section>
+      <section id="email" class="section">
+        <Contacts />      
+      </section>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import SidebarComponent from '@/components/sidebar/SidebarComponent.vue';
-import AboutUs from '@/components/aboutUs/AboutUs.vue';
+import { ref, onMounted, onUnmounted } from 'vue'
+import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
+import AboutUs from '@/components/aboutUs/AboutUs.vue'
+import HomeView from './components/services/HomeView.vue'
+
+const sectionIds = ['info','list','email'] as const
+const activeSection = ref<string>(sectionIds[0])
+const wrapper = ref<HTMLElement>()!
+
+function scrollToSection(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+}
+
+onMounted(() => {
+  const observer = new IntersectionObserver(
+    entries => {
+      for (const e of entries) {
+        if (e.isIntersecting) activeSection.value = e.target.id
+      }
+    },
+    { root: wrapper.value, threshold: 0.5 }
+  )
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id)
+    if (el) observer.observe(el)
+  })
+  onUnmounted(() => observer.disconnect())
+})
 </script>
 
 <style>
 .main__app {
   display: flex;
-  padding: 1vw;
-  background-color: #eff0f2;
+  height: 100vh;
 }
+
+/* контейнер со всеми секциями */
 .all__staff {
-  max-height: 100vh;
+  flex: 1;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  /* для плавного скролла при колесике/треке можно ещё добавить */
+  scroll-behavior: smooth;
+}
+
+/* каждая секция «на весь экран» */
+.section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  /* делаем секцию ровно высотой экрана */
+  min-height: 100vh;
+  padding: 2rem;
+  box-sizing: border-box;
 }
 </style>

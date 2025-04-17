@@ -2,56 +2,69 @@
   <div class="main">
     <div class="sidebar__main">
       <div>
+        <!-- Логотип -->
         <div class="logo__main">
           <img class="img_n31" src="./images/H31.svg" alt="Logo_H31" />
         </div>
-        <button class="btn" @click="toggleIcon('info')">
-          <img
-            class="img_plz"
-            src="./images/info.svg"
-            alt="info"
-            :class="{ active: activeIcon === 'info' }"
-          />
+
+        <!-- Кнопка "О нас" -->
+        <button
+          class="btn"
+          :class="{ active: activeIcon === 'info' }"
+          @click="toggle('info')"
+        >
+          <img class="img_plz" src="./images/info.svg" alt="info" :class="{ active: activeIcon === 'info' }"/>
           <span class="btn-text">О нас</span>
         </button>
-        <button class="btn" @click="toggleIcon('list')">
-          <img
-            class="img_plz"
-            src="./images/list.svg"
-            alt="list"
-            :class="{ active: activeIcon === 'list' }"
-          />
+
+        <!-- Кнопка "Услуги" -->
+        <button
+          class="btn"
+          :class="{ active: activeIcon === 'list' }"
+          @click="toggle('list')"
+        >
+          <img class="img_plz" src="./images/list.svg" alt="list" :class="{ active: activeIcon === 'list' }"/>
           <span class="btn-text">Услуги</span>
         </button>
-        <button class="btn" @click="toggleIcon('email')">
-          <img
-            class="img_plz"
-            src="./images/email.svg"
-            alt="email"
-            :class="{ active: activeIcon === 'email' }"
-          />
+
+        <!-- Кнопка "Контакты" -->
+        <button
+          class="btn"
+          :class="{ active: activeIcon === 'email' }"
+          @click="toggle('email')"
+        >
+          <img class="img_plz" src="./images/email.svg" alt="email" :class="{ active: activeIcon === 'email' }"/>
           <span class="btn-text">Контакты</span>
         </button>
       </div>
+
+      <!-- Нижняя кнопка со скидкой -->
       <div class="btn_bottom">
-        <my-button class="btn_discount">
+        <MyButton class="btn_discount">
           <img class="img_discount" src="./images/light.svg" alt="light" />
           <span>Получить скидку <b>25%</b></span>
-        </my-button>
+        </MyButton>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import MyButton from '@/components/ui/MyButton.vue';
+import { toRef } from 'vue'
+import MyButton from '@/components/ui/MyButton.vue'
 
-const activeIcon = ref<string | null>(null);
+// Получаем весь props-объект
+const props = defineProps<{ activeIcon: string }>()
 
-const toggleIcon = (iconName: string) => {
-  activeIcon.value = activeIcon.value === iconName ? null : iconName;
-};
+// Делает props.activeIcon реактивным отдельным ref
+const activeIcon = toRef(props, 'activeIcon')
+
+// Объявляем эмит событий через массив имён — без сигнатуры параметров
+const emit = defineEmits(['icon-click'] as const)
+
+function toggle(section: string) {
+  emit('icon-click', section)
+}
 </script>
 
 <style>
@@ -109,15 +122,19 @@ const toggleIcon = (iconName: string) => {
   color: black;
 }
 
-.btn:focus {
+/*.btn:focus {
   background-color: #eff0f2;
   border: 0 solid white;
   color: black;
-}
+}*/
 
 .btn-text {
   font-family: 'Inter', sans-serif;
   font-size: 18px;
+}
+
+.btn.active {
+  color: black;
 }
 
 .btn_discount {

@@ -1,5 +1,6 @@
 <template>
   <div class="main__app">
+    
     <SidebarComponent
       :activeIcon="activeSection"
       @icon-click="scrollToSection"
@@ -8,6 +9,7 @@
     <!-- В этом контейнере все «полноэкранные» разделы -->
     <div class="all__staff" ref="wrapper">
       <section id="info" class="section">
+        <header-comp />
         <AboutUs />
       </section>
       <section id="list" class="section">
@@ -25,6 +27,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
 import AboutUs from '@/components/aboutUs/AboutUs.vue'
 import HomeView from './components/services/HomeView.vue'
+import HeaderComp from './components/services/HeaderComp.vue'
 
 const sectionIds = ['info','list','email'] as const
 const activeSection = ref<string>(sectionIds[0])
@@ -57,12 +60,11 @@ onMounted(() => {
   height: 100vh;
 }
 
-/* контейнер со всеми секциями */
 .all__staff {
   flex: 1;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
-  /* для плавного скролла при колесике/треке можно ещё добавить */
+  /* плавный скролл при колесике */
   scroll-behavior: smooth;
 }
 
@@ -70,9 +72,9 @@ onMounted(() => {
 .section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  /* делаем секцию ровно высотой экрана */
   min-height: 100vh;
   padding: 2rem;
   box-sizing: border-box;
+  scroll-margin-top: 5vh;
 }
 </style>

@@ -23,7 +23,7 @@
     background-color: $light-grey;
     border-radius: 5vw;
     outline: none;
-    box-shadow: 0vw 1vw 2vw $grey;
+    //box-shadow: 0vw 1vw 2vw $grey;
     font-size: 3vw;
   }
   .search-icon {

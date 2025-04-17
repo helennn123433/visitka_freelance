@@ -1,13 +1,5 @@
 <template>
   <div class="container">
-      <div class="header">
-        <SearchComp />
-        <div class="header-buttons">
-          <img src="@/assets/img/services/phone-icon.svg" alt="Иконка телефона" class="icon" />
-          <img src="@/assets/img/services/tg-icon.svg" alt="Иконка телеграма" class="icon" />
-          <img src="@/assets/img/services/email-icon.svg" alt="Иконка почты" class="icon" />
-        </div>
-      </div>
       <div class="cards-field">
         <CardComp
           v-for="(image, index) in images"
@@ -23,13 +15,13 @@
   import { Image } from "@/interfaces/services/Image";  // Импортируем интерфейс
   import imagesData from "@/backend/services/images.json"; // Импортируем картинки из JSON
   import CardComp from "@/components/services/CardComp.vue";
-  import SearchComp from "@/components/services/SearchComp.vue";
 
   const images = ref<Image[]>([]);
   onMounted(() => {
     images.value = imagesData;
   });
 </script>
+
 <style lang="scss">
   @import '../../styles/colors.scss';
   .header{
@@ -64,8 +56,6 @@
     border-radius: 2vw;
     padding: 1.5vw;
     box-shadow: 0px 4px 8px $grey;
-    //height: calc(100vh - 40px); /* 100% высоты экрана минус отступы */
-    // overflow: hidden; /* Запрещаем общий скролл страницы */
     width: 75vw;
   }
   .cards-field{

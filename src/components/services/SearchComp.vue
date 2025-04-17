@@ -22,8 +22,10 @@
     padding: 15px 15px 15px 50px;
     background-color: $light-grey;
     border-radius: 5vw;
+    border: 1px solid black;
     outline: none;
     //box-shadow: 0vw 1vw 2vw $grey;
+    box-shadow: none;
     font-size: 3vw;
   }
   .search-icon {

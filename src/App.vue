@@ -40,11 +40,17 @@ function scrollToSection(id: string) {
 onMounted(() => {
   const observer = new IntersectionObserver(
     entries => {
-      for (const e of entries) {
-        if (e.isIntersecting) activeSection.value = e.target.id
-      }
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          activeSection.value = entry.target.id
+        }
+      })
     },
-    { root: wrapper.value, threshold: 0.5 }
+    {
+      root: null, // Следим за viewport
+      rootMargin: '0px',
+      threshold: 0.5
+    }
   )
   sectionIds.forEach(id => {
     const el = document.getElementById(id)
@@ -64,15 +70,10 @@ onMounted(() => {
 .all__staff {
   flex: 1;
   overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  /* плавный скролл при колесике */
-  scroll-behavior: smooth;
 }
 
 /* каждая секция «на весь экран» */
 .section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   min-height: 100vh;
   padding: 2rem;
   box-sizing: border-box;

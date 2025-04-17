@@ -24,31 +24,7 @@
 
 <style lang="scss" scoped>
   @import '../../styles/colors.scss';
-  .header{
-    width:100%;
-    position: sticky;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1vw;
-    padding-left: 0.7vw;
-  }
-  .header-buttons{
-    display: flex;
-    gap: 2vw;
-    margin-right: 2vw;
-    img{
-      width: 2vw;
-    }
-    img:hover{
-      filter: brightness(0.1) invert(0.3);
-    }
-  }
-  .icon{
-    cursor: pointer;
-  }
-  
+
   .container {
     display: flex;
     flex-direction: column;

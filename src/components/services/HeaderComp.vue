@@ -2,7 +2,7 @@
     <div class="header">
       <SearchComp />
       <div class="header-buttons">
-        <img src="@/assets/img/services/phone-icon.svg" alt="Иконка телефона" class="icon" />
+        <img src="@/assets/img/services/phone-icon.svg" alt="Иконка телефона" class="icon phone-icon" />
         <img src="@/assets/img/services/tg-icon.svg" alt="Иконка телеграма" class="icon" />
         <img src="@/assets/img/services/email-icon.svg" alt="Иконка почты" class="icon" />
       </div>
@@ -33,6 +33,9 @@
   
       &:hover {
         filter: brightness(0.1) invert(0.3);
+      }
+      &.phone-icon {  
+        width: 1.7vw; 
       }
     }
   }

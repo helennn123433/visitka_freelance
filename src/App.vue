@@ -79,4 +79,16 @@ onMounted(() => {
   box-sizing: border-box;
   scroll-margin-top: 5vh;
 }
+
+.section#info{
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2vw 1vw 1vw; 
+  margin: 1.5vw 1.5vw 0 0.5vw;
+  border: 2px solid #eff0f2;
+  border-radius: 32px;
+  box-sizing: border-box;
+  min-height: auto;
+  background: white;
+}
 </style>

@@ -30,9 +30,8 @@
     flex-direction: column;
     background-color: $white;
     border-radius: 2vw;
-    padding: 1.5vw;
+    padding: 1.5vw 1vw 2vw 1.5vw;
     box-shadow: 0px 4px 8px $grey;
-    width: 75vw;
   }
   .cards-field{
     flex-grow: 1; // Занимает оставшееся пространство

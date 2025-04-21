@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
 import AboutUs from '@/components/aboutUs/AboutUs.vue'
 import HomeView from './components/services/HomeView.vue'
@@ -56,7 +56,6 @@ onMounted(() => {
     const el = document.getElementById(id)
     if (el) observer.observe(el)
   })
-  onUnmounted(() => observer.disconnect())
 })
 </script>
 
@@ -87,6 +86,7 @@ onMounted(() => {
   margin: 1.5vw 1.5vw 0 0.5vw;
   border: 2px solid #eff0f2;
   border-radius: 32px;
+  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   min-height: auto;
   background: white;

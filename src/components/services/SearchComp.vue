@@ -22,9 +22,9 @@
     padding: 15px 15px 15px 50px;
     background-color: $light-grey;
     border-radius: 5vw;
-    border: 1px solid black;
+    border: none;
     outline: none;
-    box-shadow: 0vw 1vw 2vw $grey;
+    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
     font-size: 3vw;
   }
   .search-icon {

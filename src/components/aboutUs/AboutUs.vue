@@ -54,8 +54,8 @@
 </template>
 
 <script setup lang="ts">
-import MyButton from '../ui/MyButton.vue';
-import MyCard from './MyCard.vue';
+import MyButton from '@/components/ui/MyButton.vue';
+import MyCard from '@/components/aboutUs/MyCard.vue';
 </script>
 
 <style lang="scss" scoped>

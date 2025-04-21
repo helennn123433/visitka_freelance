@@ -19,22 +19,12 @@
       </p>
     </div>
     <div class="middleText">
-      <my-card>
-        <template v-slot:upper>2</template>
-        <template v-slot:lower>ГОДА РАБОТЫ</template>
-      </my-card>
-      <my-card>
-        <template v-slot:upper>20</template>
-        <template v-slot:lower>РАЗРАБОТЧИКОВ</template>
-      </my-card>
-      <my-card>
-        <template v-slot:upper>35</template>
-        <template v-slot:lower>ПРОЕКТОВ</template>
-      </my-card>
-      <my-card>
-        <template v-slot:upper>46</template>
-        <template v-slot:lower>НАПРАВЛЕНИЙ</template>
-      </my-card>
+      <my-card 
+        v-for="stat in stats" 
+        :key="stat.id"
+        :upper="stat.upper" 
+        :lower="stat.lower" 
+      />
     </div>
     <div class="upperText">
       <p>
@@ -56,6 +46,13 @@
 <script setup lang="ts">
 import MyButton from '@/components/ui/MyButton.vue';
 import MyCard from '@/components/aboutUs/MyCard.vue';
+
+const stats = [
+  { id: 1, upper: '2', lower: 'ГОДА РАБОТЫ' },
+  { id: 2, upper: '20', lower: 'РАЗРАБОТЧИКОВ' },
+  { id: 3, upper: '35', lower: 'ПРОЕКТОВ' },
+  { id: 4, upper: '46', lower: 'НАПРАВЛЕНИЙ' }
+];
 </script>
 
 <style lang="scss" scoped>

@@ -26,8 +26,8 @@
 import { ref, onMounted } from 'vue'
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
 import AboutUs from '@/components/aboutUs/AboutUs.vue'
-import HomeView from './components/services/HomeView.vue'
-import HeaderComp from './components/services/HeaderComp.vue'
+import HomeView from '@/components/services/HomeView.vue'
+import HeaderComp from '@/components/services/HeaderComp.vue'
 
 const sectionIds = ['info','list','email'] as const
 const activeSection = ref<string>(sectionIds[0])

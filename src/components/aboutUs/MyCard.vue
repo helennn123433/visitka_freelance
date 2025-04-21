@@ -1,11 +1,16 @@
 <template>
-  <div>
-    <div class="bigText"><slot name="upper"></slot></div>
-    <div class="lowText"><slot name="lower"></slot></div>
+  <div class="card">
+    <div class="bigText">{{ upper }}</div>
+    <div class="lowText">{{ lower }}</div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+defineProps({
+  upper: { type: [String, Number], required: true },
+  lower: { type: String, required: true }
+});
+</script>
 
 <style lang="scss" scoped>
 .bigText {

@@ -101,6 +101,7 @@ import MyCard from '@/components/aboutUs/MyCard.vue';
 
 .btn {
   align-self: center;
+  padding: 1.5vh;
 }
 
 @media (max-width: 730px) {

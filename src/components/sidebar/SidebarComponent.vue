@@ -79,7 +79,7 @@ function toggle(section: string) {
 }
 </script>
 
-<style>
+<style scoped>
 .main {
   display: flex;
   margin: 1.5vw 1.5vw 0 1.5vw;
@@ -113,6 +113,7 @@ function toggle(section: string) {
   min-width: 8vh;
   background-color: white;
   border-radius: 32px;
+  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
 .btn {

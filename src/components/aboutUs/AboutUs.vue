@@ -19,22 +19,12 @@
       </p>
     </div>
     <div class="middleText">
-      <my-card>
-        <template v-slot:upper>2</template>
-        <template v-slot:lower>ГОДА РАБОТЫ</template>
-      </my-card>
-      <my-card>
-        <template v-slot:upper>20</template>
-        <template v-slot:lower>РАЗРАБОТЧИКОВ</template>
-      </my-card>
-      <my-card>
-        <template v-slot:upper>35</template>
-        <template v-slot:lower>ПРОЕКТОВ</template>
-      </my-card>
-      <my-card>
-        <template v-slot:upper>46</template>
-        <template v-slot:lower>НАПРАВЛЕНИЙ</template>
-      </my-card>
+      <my-card 
+        v-for="stat in stats" 
+        :key="stat.id"
+        :upper="stat.upper" 
+        :lower="stat.lower" 
+      />
     </div>
     <div class="upperText">
       <p>
@@ -54,8 +44,15 @@
 </template>
 
 <script setup lang="ts">
-import MyButton from '../ui/MyButton.vue';
-import MyCard from './MyCard.vue';
+import MyButton from '@/components/ui/MyButton.vue';
+import MyCard from '@/components/aboutUs/MyCard.vue';
+
+const stats = [
+  { id: 1, upper: '2', lower: 'ГОДА РАБОТЫ' },
+  { id: 2, upper: '20', lower: 'РАЗРАБОТЧИКОВ' },
+  { id: 3, upper: '35', lower: 'ПРОЕКТОВ' },
+  { id: 4, upper: '46', lower: 'НАПРАВЛЕНИЙ' }
+];
 </script>
 
 <style lang="scss" scoped>
@@ -63,12 +60,14 @@ import MyCard from './MyCard.vue';
   display: flex;
   flex-direction: column;
   padding: 1.5rem clamp(1rem, 5%, 3rem);
+  margin: 0.5vw 0.5vw 0 1vw;
   gap: 16px;
   border: 2px solid #eff0f2;
   border-radius: 32px;
   box-sizing: border-box;
   min-height: auto;
   text-align: center;
+  background: white;
 }
 
 .header {
@@ -77,14 +76,14 @@ import MyCard from './MyCard.vue';
   color: #0652ff;
   font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 800;
-  margin-top: 27px;
+  margin-top: 1vh;
 }
 
 .upperText {
   font-size: clamp(0.875rem, 2.5vw, 1rem);
   text-align: start;
   line-height: 100%;
-  letter-spacing: 0%;
+  letter-spacing: 0;
   font-weight: 500;
 }
 
@@ -99,6 +98,7 @@ import MyCard from './MyCard.vue';
 
 .btn {
   align-self: center;
+  padding: 1.5vh;
 }
 
 @media (max-width: 730px) {

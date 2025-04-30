@@ -4,7 +4,11 @@
       <div>
         <!-- Логотип -->
         <div class="logo__main">
-          <img class="img_n31" src="./images/H31.svg" alt="Logo_H31" />
+          <img
+            class="img_n31"
+            src="./images/H31.svg"
+            alt="Logo_H31"
+          > 
         </div>
 
         <!-- Кнопка "О нас" -->
@@ -13,12 +17,12 @@
           :class="{ active: activeIcon === 'info' }"
           @click="toggle('info')"
         >
-          <img 
-            class="img_plz" 
-            src="./images/info.svg" 
-            alt="info" 
+          <img
+            class="img_plz"
+            src="./images/info.svg"
+            alt="info"
             :class="{ active: activeIcon === 'info' }"
-          />
+          >
           <span class="btn-text">О нас</span>
         </button>
 
@@ -28,12 +32,12 @@
           :class="{ active: activeIcon === 'list' }"
           @click="toggle('list')"
         >
-          <img 
-            class="img_plz" 
-            src="./images/list.svg" 
-            alt="list" 
+          <img
+            class="img_plz"
+            src="./images/list.svg"
+            alt="list"
             :class="{ active: activeIcon === 'list' }"
-          />
+          >
           <span class="btn-text">Услуги</span>
         </button>
 
@@ -43,12 +47,12 @@
           :class="{ active: activeIcon === 'email' }"
           @click="toggle('email')"
         >
-          <img 
-            class="img_plz" 
-            src="./images/email.svg" 
-            alt="email" 
+          <img
+            class="img_plz"
+            src="./images/email.svg"
+            alt="email"
             :class="{ active: activeIcon === 'email' }"
-          />
+          >
           <span class="btn-text">Контакты</span>
         </button>
       </div>
@@ -56,7 +60,11 @@
       <!-- Нижняя кнопка со скидкой -->
       <div class="btn_bottom">
         <MyButton class="btn_discount">
-          <img class="img_discount" src="./images/light.svg" alt="light" />
+          <img
+            class="img_discount"
+            src="./images/light.svg"
+            alt="light"
+          >
           <span>Получить скидку <b>25%</b></span>
         </MyButton>
       </div>
@@ -99,8 +107,8 @@ function toggle(section: string) {
 }
 
 .img_plz.active {
-  filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%)
-    hue-rotate(214deg) brightness(100%) contrast(105%);
+  filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%) hue-rotate(214deg) brightness(100%)
+    contrast(105%);
 }
 
 .sidebar__main {

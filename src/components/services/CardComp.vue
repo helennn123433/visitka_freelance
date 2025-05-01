@@ -35,7 +35,7 @@
     color: $white;
     width: auto;
     overflow: hidden;
-    border-radius: 2.5vw;
+    border-radius: 3vw;
     cursor: pointer;
     img{
       transition: opacity 0.3s ease;
@@ -71,7 +71,7 @@
       transition: transform 0.3s ease, font-size 0.3s ease;
     }
   }
-  @media(max-width: 650px){
+  @media(max-width: 800px){
     .card {
       border-radius: 5vw;
       flex: 0 0 100%;

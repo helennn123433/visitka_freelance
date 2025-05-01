@@ -11,10 +11,10 @@
 @import '../../styles/colors.scss';
   .search-container{
     position: relative;
-    width: 55vw;
+    width: 70%;
     margin-right: 1vw;
     input{
-      font-size: 1vw;
+      font-size: 1.3vw;
     }
   }
   .search-input {

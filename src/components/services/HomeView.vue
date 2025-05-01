@@ -29,17 +29,17 @@
     display: flex;
     flex-direction: column;
     background-color: $white;
-    border-radius: 2vw;
-    padding: 1.5vw 1vw 2vw 1.5vw;
+    border-radius: 3vw;
+    //padding: 1.5vw 1vw 2vw 1.5vw;
+    padding: 1.5vw;
     box-shadow: 0px 4px 8px $grey;
   }
   .cards-field{
     flex-grow: 1; // Занимает оставшееся пространство
     min-height: 0; // Решает проблему с flex и overflow
-    border-radius: 5vw;
     overflow: hidden;
     overflow-y: auto; // Позволяет прокручивать карточки 
-    padding: 0.7vw;
+    //padding: 0.7vw;
     display: flex;
     flex-wrap: wrap; // Перенос картинок
     gap: 1.5vw; // Отступы между изображениями
@@ -47,10 +47,14 @@
     align-content: space-between;
   }
 
-  @media(max-width: 650px){
+  @media (max-width: 767px) {
     .cards-field{
       gap: 0;
       justify-content: center;
+    }
+    .container {
+      border-radius: 0;
+      box-shadow: none;
     }
   }
 

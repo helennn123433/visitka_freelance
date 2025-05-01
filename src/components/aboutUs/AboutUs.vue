@@ -60,10 +60,11 @@ const stats = [
   display: flex;
   flex-direction: column;
   padding: 1.5rem clamp(1rem, 5%, 3rem);
-  margin: 0.5vw 0.5vw 0 1vw;
+  //padding: 1.5vw;
+  //margin: 0.5vw 0.5vw 0 1vw;
   gap: 16px;
   border: 2px solid #eff0f2;
-  border-radius: 32px;
+  border-radius: 3vw;
   box-sizing: border-box;
   min-height: auto;
   text-align: center;
@@ -107,6 +108,14 @@ const stats = [
     gap: 1.2rem;
   }
 }
+
+@media (max-width: 767px) {
+    .container {
+      padding: 0;
+      border: none;
+      border-radius: 0;
+    }
+  }
 
 @media (max-width: 480px) {
   .middleText {

@@ -3,12 +3,34 @@
     
     <SidebarComponent
       :activeIcon="activeSection"
+      class="sidebar"
+      :class="{ 
+        'mobile-open': isMobile && isOpen,
+        'mobile-hidden': isMobile && !isOpen 
+      }"
       @icon-click="scrollToSection"
     />
+
+    <!--Размытие фона-->
+    <div
+      v-if="isMobile && isOpen"
+      class="overlay"
+      @click="closeSidebar"
+    ></div>
 
     <!-- В этом контейнере все «полноэкранные» разделы -->
     <div class="all__staff" ref="wrapper">
       <section id="info" class="section">
+        <!-- Хедер для телефонного размера -->
+        <header class="mobile-header">
+          <button @click="toggleSidebar" class="burger-btn">
+            &#9776;
+          </button>
+          <!-- Логотип -->
+          <div class="logo__main">
+            <img class="img_n31" src="./components/sidebar/images/H31.svg" alt="Logo_H31" />
+          </div>
+        </header>
         <header-comp />
         <AboutUs />
       </section>
@@ -23,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
 import AboutUs from '@/components/aboutUs/AboutUs.vue'
 import HomeView from '@/components/services/HomeView.vue'
@@ -33,11 +55,30 @@ const sectionIds = ['info','list','email'] as const
 const activeSection = ref<string>(sectionIds[0])
 const wrapper = ref<HTMLElement>()!
 
+const isOpen = ref(false)//
+const isMobile = ref(window.innerWidth < 768)//
+
+const toggleSidebar = () => {
+  isOpen.value = !isOpen.value
+}
+
+const closeSidebar = () => {
+  isOpen.value = false
+}
+
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768
+  if (!isMobile.value) {
+    isOpen.value = false // скрываем overlay
+  }
+}
+
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 
 onMounted(() => {
+  window.addEventListener('resize', handleResize)
   const observer = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
@@ -57,13 +98,30 @@ onMounted(() => {
     if (el) observer.observe(el)
   })
 })
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import './styles/colors.scss';
 .main__app {
   display: flex;
   height: 100vh;
   background-color: #eff0f2;
+  /*transition: margin-left 0.3s ease; */
+}
+
+@media (min-width: 768px) {
+  /*.main-content {
+    margin-left: 250px;
+  }*/
+}
+
+.sidebar {
+  transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
 .all__staff {
@@ -82,13 +140,81 @@ onMounted(() => {
 .section#info{
   display: flex;
   flex-direction: column;
-  padding: 1.5rem 2vw 1vw 1vw; 
-  margin: 1.5vw 1.5vw 0 0.5vw;
+  /*padding: 1.5rem 2vw 1vw 1vw; */
+  padding: 1.5vw;
+  /*margin: 1.5vw 1.5vw 0 0.5vw;*/
   border: 2px solid #eff0f2;
-  border-radius: 32px;
+  border-radius: 3vw;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   min-height: auto;
   background: white;
+}
+
+
+/* Мобильные стили */
+@media (max-width: 767px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1000;
+    transform: translateX(-110%);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar.mobile-hidden {
+    transform: translateX(-110%);
+  }
+
+  .main__app {
+    width: 100%;
+    padding:0;
+    margin: 0;
+    background-color: $white;
+  }
+  .section#info {
+    margin: 0;
+    border-radius: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+}
+
+/* Хедер только для мобилки */
+.mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .mobile-header {
+    display: none;
+  }
+}
+
+.burger-btn {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: $blue;
+  cursor: pointer;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(6px);
+  z-index: 999;
 }
 </style>

@@ -1,11 +1,15 @@
 <template>
   <div class="card">
-    <div class="bigText">{{ upper }}</div>
-    <div class="lowText">{{ lower }}</div>
+    <div class="bigText">
+      {{ upper }}
+    </div>
+    <div class="lowText">
+      {{ lower }}
+    </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"> 
 defineProps({
   upper: { type: [String, Number], required: true },
   lower: { type: String, required: true }

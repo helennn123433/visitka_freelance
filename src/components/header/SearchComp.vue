@@ -1,14 +1,22 @@
 <template>
-    <div class="search-container">
-        <img src="@/assets/img/search/search-icon.svg" alt="Поиск" class="search-icon"/>
-        <input type="text" placeholder="Найти..." class="search-input" />
-    </div>
+  <div class="search-container">
+    <img
+      src="@/assets/img/search/search-icon.svg"
+      alt="Поиск"
+      class="search-icon"
+    >
+    <input
+      type="text"
+      placeholder="Найти..."
+      class="search-input"
+    >
+  </div>
 </template>
 <script setup lang="ts">
   
 </script>
 <style lang="scss" scoped>
-@import '../../styles/colors.scss';
+@import '../../styles/colors.scss'; 
   .search-container{
     position: relative;
     width: 55vw;

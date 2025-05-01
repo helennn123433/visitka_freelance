@@ -11,7 +11,6 @@
       class="all__staff"
     >
       <header-comp />
-
       <section
         id="info"
         class="section"
@@ -90,19 +89,7 @@ onMounted(() => {
   scroll-margin-top: 5vh;
 }
 
-.section#info {
-  display: flex;
-  flex-direction: column;
-  padding: 1.5rem 2vw 1vw 1vw;
-  margin: 1.5vw 1.5vw 0 0.5vw;
-  border: 2px solid #eff0f2;
-  border-radius: 32px;
-  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
-  box-sizing: border-box;
-  min-height: auto;
-  background: white;
-}
-
+.section#info,
 .section#email {
   display: flex;
   flex-direction: column;

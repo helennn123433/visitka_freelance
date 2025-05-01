@@ -2,7 +2,7 @@
   <div class="contacts">
     <h2 class="contacts__title">
       КОНТАКТЫ
-    </h2> 
+    </h2>
     <p class="contacts__description">
       Наша команда работает над проектами удаленно. Мы готовы обсуждать все вопросы онлайн, организовывать митинги, а
       также договариваться о личной встрече в Санкт-Петербурге. Для общения с заказчиками мы используем Telegram и
@@ -15,43 +15,12 @@
         :contact="contact"
       />
     </div>
-  </div>
+  </div> 
 </template>
 
 <script setup lang="ts">
 import ContactCard from './ContactCard.vue'
-import emailIcon from '@/assets/img/contacts/email.svg'
-import phoneIcon from '@/assets/img/contacts/phone.svg'
-import telegramIcon from '@/assets/img/contacts/telega.svg'
-import whatsAppIcon from '@/assets/img/contacts/whatsApp.svg'
-import { Contact } from '@/interfaces/contacts/Contact'
-
-const contacts: Contact[] = [
-  {
-    id: 1,
-    icon: telegramIcon,
-    title: '@frtarget',
-    subtitle: 'Telegram — самый оперативный канал для связи с нами.',
-  },
-  {
-    id: 2,
-    icon: phoneIcon,
-    title: '+7(965)077-89-87',
-    subtitle: 'Если мы не смогли Вам оперативно ответить, то обязательно перезвоним.',
-  },
-  {
-    id: 3,
-    icon: whatsAppIcon,
-    title: '+7(965)077-89-87',
-    subtitle: 'Вы можете написать или позвонить нам в WhatsApp.',
-  },
-  {
-    id: 4,
-    icon: emailIcon,
-    title: 'alexpysenkov@gmail.com',
-    subtitle: 'Мы всегда ждем любые Ваши вопросы на почте.',
-  },
-]
+import { contacts } from '@/data/contacts'
 </script>
 
 <style lang="scss" scoped>

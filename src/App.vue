@@ -49,6 +49,7 @@ function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 
+
 onMounted(() => {
   const observer = new IntersectionObserver(
     (entries) => {

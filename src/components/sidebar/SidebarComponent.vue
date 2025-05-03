@@ -6,7 +6,7 @@
         <div class="logo__main">
           <img
             class="img_n31"
-            src="./images/H31.svg"
+            :src="Icons.H31"
             alt="Logo_H31"
           > 
         </div>
@@ -19,7 +19,7 @@
         >
           <img
             class="img_plz"
-            src="./images/info.svg"
+            :src="Icons.Info"
             alt="info"
             :class="{ active: activeIcon === 'info' }"
           >
@@ -34,7 +34,7 @@
         >
           <img
             class="img_plz"
-            src="./images/list.svg"
+            :src="Icons.List"
             alt="list"
             :class="{ active: activeIcon === 'list' }"
           >
@@ -49,7 +49,7 @@
         >
           <img
             class="img_plz"
-            src="./images/email.svg"
+            :src="Icons.atEmail"
             alt="email"
             :class="{ active: activeIcon === 'email' }"
           >
@@ -62,7 +62,7 @@
         <MyButton class="btn_discount">
           <img
             class="img_discount"
-            src="./images/light.svg"
+            :src="Icons.Light"
             alt="light"
           >
           <span>Получить скидку <b>25%</b></span>
@@ -74,13 +74,14 @@
 
 <script setup lang="ts">
 import { toRef } from 'vue'
+import { Icons } from "@/assets/img/Icons"
 import MyButton from '@/components/ui/MyButton.vue'
 
 const props = defineProps<{ activeIcon: string }>()
 
-const activeIcon = toRef(props, 'activeIcon')
-
 const emit = defineEmits(['icon-click'] as const)
+
+const activeIcon = toRef(props, 'activeIcon')
 
 function toggle(section: string) {
   emit('icon-click', section)
@@ -90,7 +91,7 @@ function toggle(section: string) {
 <style scoped>
 .main {
   display: flex;
-  margin: 1.5vw 1.5vw 0 1.5vw;
+  margin: 22px 22px 0 22px;
   font-family: 'Inter', sans-serif;
 }
 
@@ -101,6 +102,7 @@ function toggle(section: string) {
   padding: 2vh 2vh 2vh 2vh;
   margin-top: 1vh;
 }
+
 .img_n31 {
   max-width: 100%;
   height: auto;
@@ -166,6 +168,7 @@ function toggle(section: string) {
   text-align: center;
   cursor: pointer;
 }
+
 .btn_discount:hover {
   background-color: #0652aa;
 }
@@ -204,6 +207,7 @@ function toggle(section: string) {
     height: 30px;
     margin-right: 12px;
   }
+
   .btn {
     font-size: 15px;
     padding: 0.9vh;

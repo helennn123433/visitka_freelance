@@ -1,33 +1,35 @@
 <template>
-  <div class="main__app">
-    <SidebarComponent
+  <AppComponents.AuthModel v-if="authStore.openAdmin" />
+  <div
+    class="main__app"
+  >
+    <AppComponents.SidebarComponent
       :active-icon="activeSection"
       @icon-click="scrollToSection"
     />
-
     <!-- В этом контейнере все «полноэкранные» разделы -->
     <div
       ref="wrapper"
       class="all__staff"
     >
-      <header-comp />
+      <AppComponents.HeaderComp />
       <section
         id="info"
         class="section"
-      > 
-        <AboutUs />
+      >
+        <AppComponents.AboutUs />
       </section>
       <section
         id="list"
         class="section"
       >
-        <HomeView />
+        <AppComponents.HomeView />
       </section>
       <section
         id="email"
         class="section"
       >
-        <ContactsSection />
+        <AppComponents.ContactsSection />
       </section>
     </div>
   </div>
@@ -35,20 +37,17 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
-import AboutUs from '@/components/aboutUs/AboutUs.vue'
-import HomeView from '@/components/services/HomeView.vue'
-import HeaderComp from '@/components/header/HeaderComp.vue'
-import ContactsSection from '@/components/contacts/ContactsSection.vue'
+import { AppComponents } from '@/ComponentsLinks'
+import { useAuthStore } from "@/store/authStore";
 
+const authStore = useAuthStore()
 const sectionIds = ['info', 'list', 'email'] as const
 const activeSection = ref<string>(sectionIds[0])
-const wrapper = ref<HTMLElement>()!
+const wrapper = ref<HTMLElement>()
 
 function scrollToSection(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
-
 
 onMounted(() => {
   const observer = new IntersectionObserver(

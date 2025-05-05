@@ -1,10 +1,13 @@
 <template>
   <div class="container">
-    <div class="cards-field">
+    <div v-if="loading" class="loading">Загрузка данных...</div>
+    <div v-else-if="error" class="error">Ошибка загрузки: {{ error }}</div>
+    <div v-else class="cards-field">
       <CardComp
-        v-for="(image, index) in images"
-        :key="index"
-        :image="image"
+        v-for="service in services"
+        :key="service.id"
+        :service="service"
+        @updated="handleServiceUpdate"
       />
     </div>
   </div>
@@ -12,18 +15,47 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { Image } from '@/interfaces/services/Image' // Импортируем интерфейс
-import imagesData from '@/backend/services/images.json' // Импортируем картинки из JSON
+import axios from 'axios'
+//import { Image } from '@/interfaces/services/Image'
+import { Service } from '@/interfaces/services/Servise'
 import CardComp from '@/components/services/CardComp.vue'
 
-const images = ref<Image[]>([])
+const services = ref<Service[]>([])
+const loading = ref(true)
+const error = ref<string | null>(null)
+
+const fetchServices = async () => {
+  try {
+    const response = await axios.get<Service[]>('http://localhost:3004/services')
+    services.value = response.data
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Неизвестная ошибка'
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleServiceUpdate = () => {
+  fetchServices(); // При обновлении перезагружаем данные
+};
+
 onMounted(() => {
-  images.value = imagesData
+  fetchServices()
 })
 </script>
 
 <style lang="scss" scoped>
 @import '../../styles/colors.scss';
+
+.loading, .error {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.error {
+  color: red;
+}
 
 .container {
   display: flex;

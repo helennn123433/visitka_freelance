@@ -61,6 +61,12 @@
     }
   }
 
+  @media(max-width: 768px){
+    .header{
+      width: 100%;
+    }
+  }
+
   @media(max-width: 650px){
     .search-input {
       padding: 9px 12px 9px 30px;

@@ -3,56 +3,64 @@
     <div class="sidebar__main">
       <div>
         <!-- Логотип -->
-        <div class="logo__main">
-          <img class="img_n31" src="./images/H31.svg" alt="Logo_H31" />
+        <div class="sidebar__logo">
+          <div class="logo__main">
+            <img class="img_n31" src="./images/H31.svg" alt="Logo_H31" />
+          </div>
+
+          <button class="close-btn" @click="$emit('close')">×</button>
         </div>
+        
 
-        <!-- Кнопка "О нас" -->
-        <button
-          class="btn"
-          :class="{ active: activeIcon === 'info' }"
-          @click="toggle('info')"
-        >
-          <img 
-            class="img_plz" 
-            src="./images/info.svg" 
-            alt="info" 
+        <!--<div class="sidebar_btns">-->
+          <!-- Кнопка "О нас" -->
+          <button
+            class="btn"
             :class="{ active: activeIcon === 'info' }"
-          />
-          <span class="btn-text">О нас</span>
-        </button>
+            @click="toggle('info')"
+          >
+            <img 
+              class="img_plz" 
+              src="./images/info.svg" 
+              alt="info" 
+              :class="{ active: activeIcon === 'info' }"
+            />
+            <span class="btn-text">О нас</span>
+          </button>
 
-        <!-- Кнопка "Услуги" -->
-        <button
-          class="btn"
-          :class="{ active: activeIcon === 'list' }"
-          @click="toggle('list')"
-        >
-          <img 
-            class="img_plz" 
-            src="./images/list.svg" 
-            alt="list" 
+          <!-- Кнопка "Услуги" -->
+          <button
+            class="btn"
             :class="{ active: activeIcon === 'list' }"
-          />
-          <span class="btn-text">Услуги</span>
-        </button>
+            @click="toggle('list')"
+          >
+            <img 
+              class="img_plz" 
+              src="./images/list.svg" 
+              alt="list" 
+              :class="{ active: activeIcon === 'list' }"
+            />
+            <span class="btn-text">Услуги</span>
+          </button>
 
-        <!-- Кнопка "Контакты" -->
-        <button
-          class="btn"
-          :class="{ active: activeIcon === 'email' }"
-          @click="toggle('email')"
-        >
-          <img 
-            class="img_plz" 
-            src="./images/email.svg" 
-            alt="email" 
+          <!-- Кнопка "Контакты" -->
+          <button
+            class="btn"
             :class="{ active: activeIcon === 'email' }"
-          />
-          <span class="btn-text">Контакты</span>
-        </button>
-      </div>
+            @click="toggle('email')"
+          >
+            <img 
+              class="img_plz" 
+              src="./images/email.svg" 
+              alt="email" 
+              :class="{ active: activeIcon === 'email' }"
+            />
+            <span class="btn-text">Контакты</span>
+          </button>
+        <!--</div>-->
 
+        </div>
+        
       <!-- Нижняя кнопка со скидкой -->
       <div class="btn_bottom">
         <MyButton class="btn_discount">
@@ -72,7 +80,7 @@ const props = defineProps<{ activeIcon: string }>()
 
 const activeIcon = toRef(props, 'activeIcon')
 
-const emit = defineEmits(['icon-click'] as const)
+const emit = defineEmits(['icon-click', 'close'] as const)
 
 function toggle(section: string) {
   emit('icon-click', section)
@@ -93,6 +101,30 @@ function toggle(section: string) {
   padding: 2vh 2vh 2vh 2vh;
   margin-top: 1vh;
 }
+
+.sidebar__logo{
+  display: flex;
+  align-items: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #898989;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+@media (min-width: 768px) {
+  .close-btn {
+    display: none; /* убираем крестик на компе */
+  }
+}
+
 .img_n31 {
   max-width: 100%;
   height: auto;
@@ -217,11 +249,27 @@ function toggle(section: string) {
   .btn_discount {
     font-size: 14px;
   }
+
+  .sidebar__main{
+    width: 100% !important;
+    height: 99vh;
+    max-width: 100% !important;
+    min-width: 300px;
+    border-radius: 0 3vw 3vw;
+  }
+
+  .sidebar{
+    min-width: 300px;
+  }
+
+  .main{
+    margin: 0vw 1.5vw 0 0vw;
+  }
 }
 
 @media (max-width: 480px) {
   .img_plz {
-    display: none;
+    /*display: none;*/
   }
 
   .btn {
@@ -236,16 +284,16 @@ function toggle(section: string) {
 
 @media (max-width: 375px) {
   .btn-text {
-    display: none;
+    /*display: none;*/
   }
 
   .img_plz {
-    display: flex;
-    margin-right: 0;
+    /*display: flex;
+    margin-right: 0;*/
   }
 
   .btn {
-    justify-content: center;
+    /*justify-content: center;*/
   }
 }
 </style>

@@ -9,6 +9,7 @@
         'mobile-hidden': isMobile && !isOpen 
       }"
       @icon-click="scrollToSection"
+      @close="closeSidebar"
     />
 
     <!--Размытие фона-->
@@ -160,7 +161,14 @@ onUnmounted(() => {
     left: 0;
     height: 100%;
     z-index: 1000;
-    transform: translateX(-110%);
+    transform: translateX(-130%);
+    width: 70vw !important;
+    max-width: 70vw !important;
+  }
+
+  .sidebar__main{
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .sidebar.mobile-open {
@@ -168,7 +176,7 @@ onUnmounted(() => {
   }
 
   .sidebar.mobile-hidden {
-    transform: translateX(-110%);
+    transform: translateX(-130%);
   }
 
   .main__app {
@@ -186,10 +194,15 @@ onUnmounted(() => {
 
 }
 
+@media (max-width: 400px) {
+  .sidebar {
+    /*transform: translateX(-10%) !important;*/
+  }
+}
+
 /* Хедер только для мобилки */
 .mobile-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   color: white;
   padding: 1rem;
@@ -202,6 +215,7 @@ onUnmounted(() => {
 }
 
 .burger-btn {
+  position: relative;
   font-size: 1.5rem;
   background: none;
   border: none;
@@ -209,7 +223,10 @@ onUnmounted(() => {
   cursor: pointer;
 }
 
-/* Overlay */
+.logo__main{
+  margin: 0 auto;
+}
+
 .overlay {
   position: fixed;
   inset: 0;

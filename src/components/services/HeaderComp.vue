@@ -16,12 +16,15 @@
   const isMobile = ref(window.innerWidth < 768)
   const handleResize = () => {
     isMobile.value = window.innerWidth < 768
-    if (!isMobile.value) {
+    if (isMobile.value) {
       Show.value = false // скрываем значки
-    }
+    }else Show.value = true
   }
 
   onMounted(() => {
+    if (isMobile.value) {
+      Show.value = false // скрываем значки
+    }else Show.value = true
     window.addEventListener('resize', handleResize)
   })
   onUnmounted(() => {
@@ -37,7 +40,6 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1vw;
-    //padding-left: 0.7vw;
   }
   
   .header-buttons {

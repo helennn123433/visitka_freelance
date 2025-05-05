@@ -10,6 +10,7 @@
     "test-server": "json-server --watch ./server/services.json --port 3004"
   },
   "dependencies": {
+    "axios": "^1.9.0",
     "core-js": "^3.8.3",
     "sass": "^1.85.1",
     "vue": "^3.2.13",

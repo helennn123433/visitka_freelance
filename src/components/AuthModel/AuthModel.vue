@@ -2,19 +2,19 @@
   <div class="auth-model">
     <div class="auth-model__card">
       <div class="auth-model__card__title">
-        <h3>Authentication</h3>
+        <h3>Авторизация</h3>
       </div>
       <div class="auth-model__card__inputs">
         <input 
           v-model="login"
-          placeholder="login"
+          placeholder="логин"
           type="text"
           class="input"
         >
         <input
           v-model="password"
           type="password"
-          placeholder="password" 
+          placeholder="пароль"
           class="input"
         >
       </div>
@@ -23,13 +23,13 @@
           class="btn"
           @click="authStore.changeAdminModel"
         >
-          BACK
+          Назад
         </MyButton>
         <MyButton
           class="btn"
           @click="checkAuth"
         >
-          LOG IN
+          Вход
         </MyButton>
       </div>
     </div>
@@ -111,7 +111,7 @@ const checkAuth = () => {
   margin: 5px;
   padding: 10px;
   font-size: 16px;
-  background-color: white;
+  border: none;
   border-radius: 32px;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
 }

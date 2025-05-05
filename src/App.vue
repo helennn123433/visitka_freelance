@@ -1,9 +1,9 @@
 <template>
-  <AppComponents.AuthModel v-if="authStore.openAdmin" />
+  <AuthModel v-if="authStore.openAdmin" />
   <div
     class="main__app"
   >
-    <AppComponents.SidebarComponent
+    <SidebarComponent
       :active-icon="activeSection"
       @icon-click="scrollToSection"
     />
@@ -12,24 +12,24 @@
       ref="wrapper"
       class="all__staff"
     >
-      <AppComponents.HeaderComp />
+      <HeaderComp />
       <section
         id="info"
         class="section"
       >
-        <AppComponents.AboutUs />
+        <AboutUs />
       </section>
       <section
         id="list"
         class="section"
       >
-        <AppComponents.HomeView />
+        <HomeView />
       </section>
       <section
         id="email"
         class="section"
       >
-        <AppComponents.ContactsSection />
+        <ContactsSection />
       </section>
     </div>
   </div>
@@ -37,15 +37,21 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { AppComponents } from '@/ComponentsLinks'
 import { useAuthStore } from "@/store/authStore";
+import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
+import AboutUs from '@/components/aboutUs/AboutUs.vue'
+import HomeView from '@/components/services/HomeView.vue'
+import HeaderComp from '@/components/header/HeaderComp.vue'
+import ContactsSection from '@/components/contacts/ContactsSection.vue'
+import AuthModel from "@/components/AuthModel/AuthModel.vue";
 
 const authStore = useAuthStore()
+
 const sectionIds = ['info', 'list', 'email'] as const
 const activeSection = ref<string>(sectionIds[0])
 const wrapper = ref<HTMLElement>()
 
-function scrollToSection(id: string) {
+const scrollToSection = (id: string) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 

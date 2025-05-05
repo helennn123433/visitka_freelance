@@ -11,7 +11,6 @@ export const useAuthStore = defineStore('authStore', () => {
 
   const login = (credentials: Authentication) => {
     user.value = credentials
-    console.log(isAuthenticated.value)
   }
 
   const changeAdminModel = () => {

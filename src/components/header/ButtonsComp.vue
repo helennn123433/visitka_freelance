@@ -45,6 +45,9 @@
       &.phone-icon {  
         width: 1.7vw; 
       }
+      &.account-icon {  
+        width: 2.5vw; 
+      }
     }
   }
 
@@ -55,6 +58,9 @@
             width: 25px;
             &.phone-icon {  
               width: 20px; 
+            }
+            &.account-icon {  
+              width: 30px; 
             }
         }
     }

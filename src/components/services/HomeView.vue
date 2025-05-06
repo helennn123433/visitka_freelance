@@ -59,9 +59,6 @@
   }
 
   @media(max-width: 450px){
-    .container{
-      width: 95vw;
-    }
     .header{
       flex-direction: column;
       gap: 3vw;

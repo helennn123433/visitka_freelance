@@ -27,4 +27,16 @@
       }
     }
   }
+
+  @media (max-width: 768px) {
+    .header-buttons {
+        gap: 10vw;
+        img {
+            width: 25px;
+            &.phone-icon {  
+              width: 20px; 
+            }
+        }
+    }
+  }
   </style>

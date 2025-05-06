@@ -38,21 +38,4 @@
     align-items: center;
     margin-bottom: 1vw;
   }
-  
-  .header-buttons {
-    display: flex;
-    gap: 2vw;
-  
-    img {
-      width: 2vw;
-      cursor: pointer;
-  
-      &:hover {
-        filter: brightness(0.1) invert(0.3);
-      }
-      &.phone-icon {  
-        width: 1.7vw; 
-      }
-    }
-  }
   </style>

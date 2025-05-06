@@ -63,6 +63,7 @@
         
       <!-- Нижняя кнопка со скидкой -->
       <div class="btn_bottom">
+        <ButtonsComp/>
         <MyButton class="btn_discount">
           <img class="img_discount" src="./images/light.svg" alt="light" />
           <span>Получить скидку <b>25%</b></span>
@@ -73,8 +74,27 @@
 </template>
 
 <script setup lang="ts">
-import { toRef } from 'vue'
+import { toRef, ref, onMounted, onUnmounted } from 'vue'
 import MyButton from '@/components/ui/MyButton.vue'
+import ButtonsComp from '../services/ButtonsComp.vue'
+
+const Show = ref(true)
+const isMobile = ref(window.innerWidth < 768)
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768
+  if (isMobile.value) {
+    Show.value = true // показываем значки
+  }else Show.value = false
+}
+onMounted(() => {
+  if (isMobile.value) {
+    Show.value = true // показываем значки
+  }else Show.value = false
+  window.addEventListener('resize', handleResize)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 
 const props = defineProps<{ activeIcon: string }>()
 
@@ -196,8 +216,11 @@ function toggle(section: string) {
 
 .btn_bottom {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   padding: 1vh;
+  gap: 1vh;
 }
 
 .img_plz {

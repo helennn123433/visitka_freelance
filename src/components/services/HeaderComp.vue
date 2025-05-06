@@ -1,17 +1,14 @@
 <template>
     <div class="header">
       <SearchComp />
-      <div class="header-buttons" v-if="Show">
-        <img src="@/assets/img/services/phone-icon.svg" alt="Иконка телефона" class="icon phone-icon" />
-        <img src="@/assets/img/services/tg-icon.svg" alt="Иконка телеграма" class="icon" />
-        <img src="@/assets/img/services/email-icon.svg" alt="Иконка почты" class="icon" />
-      </div>
+      <ButtonsComp v-if="Show"></ButtonsComp>
     </div>
   </template>
   
   <script setup lang="ts" >
   import { ref, onMounted, onUnmounted } from "vue";
   import SearchComp from "@/components/services/SearchComp.vue"
+  import ButtonsComp from "./ButtonsComp.vue";
   const Show = ref(true)
   const isMobile = ref(window.innerWidth < 768)
   const handleResize = () => {

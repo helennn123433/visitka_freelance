@@ -75,6 +75,8 @@ const handleResize = () => {
 }
 
 function scrollToSection(id: string) {
+  activeSection.value = id
+  console.log('Setting activeSection to:', id)
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 

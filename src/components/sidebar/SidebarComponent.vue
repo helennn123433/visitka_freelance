@@ -103,6 +103,7 @@ const activeIcon = toRef(props, 'activeIcon')
 const emit = defineEmits(['icon-click', 'close'] as const)
 
 function toggle(section: string) {
+  console.log('Clicked section:', section)
   emit('icon-click', section)
 }
 </script>

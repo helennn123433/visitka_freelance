@@ -120,7 +120,7 @@ function toggle(section: string) {
 <style scoped>
 .main {
   display: flex;
-  margin: 1.5vw 1.5vw 0 1.5vw;
+  margin: 22px 22px 0 22px;
   font-family: 'Inter', sans-serif;
 }
 
@@ -129,8 +129,8 @@ function toggle(section: string) {
   display: flex;
   justify-content: center;
   align-items: center;
-  /*padding: 2vh 2vh 2vh 2vh;
-  margin-top: 1vh;*/
+  padding: 2vh 2vh 2vh 2vh;
+  margin-top: 1vh;
 }
 
 .sidebar__logo{
@@ -229,6 +229,7 @@ function toggle(section: string) {
   border-radius: 20px;
   text-align: center;
   cursor: pointer;
+  font-size: 1vw;
 }
 
 .btn_discount:hover {

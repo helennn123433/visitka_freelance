@@ -114,11 +114,11 @@
 
   .card:hover .price {
     background-color: transparent; /* Убираем фон при наведении */
-    transform: translateX(1vw) scale(1.2); /* Двигаем вправо */
+    transform: translateX(1vw) scale(1.1); /* Двигаем вправо */
   }
 
   .card:hover .title {
-    transform: translateX(-1vw) scale(1.2); /* Двигаем влево */
+    transform: translateX(-1vw) scale(1.1); /* Двигаем влево */
   }
 
 </style>

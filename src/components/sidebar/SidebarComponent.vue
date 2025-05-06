@@ -115,23 +115,26 @@ function toggle(section: string) {
 }
 
 .logo__main {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2vh 2vh 2vh 2vh;
-  margin-top: 1vh;
+  /*padding: 2vh 2vh 2vh 2vh;
+  margin-top: 1vh;*/
 }
 
 .sidebar__logo{
   display: flex;
   align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 1vh 2vw;
 }
 
 .close-btn {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 1.5rem;
+  right: 2vw;
+  font-size: 1.8rem;
   background: none;
   border: none;
   color: #898989;
@@ -148,6 +151,13 @@ function toggle(section: string) {
 .img_n31 {
   max-width: 100%;
   height: auto;
+}
+
+.img_plz {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  margin-left: 12px;
 }
 
 .img_plz.active {
@@ -223,13 +233,6 @@ function toggle(section: string) {
   gap: 1vh;
 }
 
-.img_plz {
-  width: 20px;
-  height: 20px;
-  margin-right: 12px;
-  margin-left: 12px;
-}
-
 .img_discount {
   width: 20px;
   height: 20px;
@@ -295,14 +298,14 @@ function toggle(section: string) {
     /*display: none;*/
   }
 
-  .btn {
+  /*.btn {
     font-size: 12px;
     padding: 0.6vh;
-  }
+  }*/
 
-  .btn_discount {
+  /*.btn_discount {
     font-size: 12px;
-  }
+  }*/
 }
 
 @media (max-width: 375px) {

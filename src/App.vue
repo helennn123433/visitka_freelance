@@ -31,7 +31,7 @@
           </button>
           <!-- Логотип -->
           <div class="logo__main">
-            <img class="img_n31" src="./components/sidebar/images/H31.svg" alt="Logo_H31" />
+            <img class="img_n31" src="@/assets/img/icons/H31.svg" alt="Logo_H31" />
           </div>
         </header>
         <header-comp />

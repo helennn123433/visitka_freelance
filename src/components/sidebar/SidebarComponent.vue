@@ -1,8 +1,8 @@
 <template>
   <div class="main">
     <div class="sidebar__main">
-      <div>
         <!-- Логотип -->
+        <div>
         <div class="sidebar__logo">
           <div class="logo__main">
             <img
@@ -16,7 +16,7 @@
           </div>-->
 
           <button class="close-btn" @click="$emit('close')">×</button>
-        
+        </div>
         
 
         <!-- Кнопка "О нас" -->
@@ -63,13 +63,11 @@
           >
           <span class="btn-text">Контакты</span>
         </button>
-      </div>
-
         </div>
         
       <!-- Нижняя кнопка со скидкой -->
       <div class="btn_bottom">
-        <ButtonsComp/>
+        <ButtonsComp v-if="Show"></ButtonsComp>
         <MyButton class="btn_discount">
           <img
             class="img_discount"
@@ -87,7 +85,7 @@
 import { toRef, ref, onMounted, onUnmounted } from 'vue'
 import { Icons } from "@/assets/img/Icons"
 import MyButton from '@/components/ui/MyButton.vue'
-import ButtonsComp from '../services/ButtonsComp.vue'
+import ButtonsComp from "@/components/header/ButtonsComp.vue";
 
 const Show = ref(true)
 const isMobile = ref(window.innerWidth < 768)
@@ -122,7 +120,7 @@ function toggle(section: string) {
 <style scoped>
 .main {
   display: flex;
-  margin: 22px 22px 0 22px;
+  margin: 1.5vw 1.5vw 0 1.5vw;
   font-family: 'Inter', sans-serif;
 }
 

@@ -2,39 +2,34 @@
   <div class="header_container">
     <div class="header">
       <SearchComp />
-      <div class="header-buttons">
-        <img
-          :src="Icons.Account"
-          alt="Иконка телефона"
-          class="icon account-icon"
-          @click="authStore.changeAdminModel"
-        >
-        <img
-          :src="Icons.Phone"
-          alt="Иконка телефона"
-          class="icon phone-icon"
-        >
-        <img
-          :src="Icons.Telegram"
-          alt="Иконка телеграма"
-          class="icon"
-        >
-        <img
-          :src="Icons.Email"
-          alt="Иконка почты"
-          class="icon"
-        >
-      </div>
+      <ButtonsComp v-if="Show"></ButtonsComp>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from "vue";
 import SearchComp from '@/components/header/SearchComp.vue'
-import { Icons } from "@/assets/img/Icons";
-import {useAuthStore} from "@/store/authStore";
 
-const authStore = useAuthStore()
+import ButtonsComp from "@/components/header/ButtonsComp.vue";
+  const Show = ref(true)
+  const isMobile = ref(window.innerWidth < 768)
+  const handleResize = () => {
+    isMobile.value = window.innerWidth < 768
+    if (isMobile.value) {
+      Show.value = false // скрываем значки
+    }else Show.value = true
+  }
+
+  onMounted(() => {
+    if (isMobile.value) {
+      Show.value = false // скрываем значки
+    }else Show.value = true
+    window.addEventListener('resize', handleResize)
+  })
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize)
+  })
 </script>
 
 <style lang="scss" scoped>

@@ -4,17 +4,26 @@
       <SearchComp />
       <div class="header-buttons">
         <img
-          src="@/assets/img/services/phone-icon.svg"
+          :src="Icons.Account"
           alt="Иконка телефона"
-          class="icon phone-icon" />
+          class="icon account-icon"
+          @click="authStore.changeAdminModel"
+        >
         <img
-          src="@/assets/img/services/tg-icon.svg"
+          :src="Icons.Phone"
+          alt="Иконка телефона"
+          class="icon phone-icon"
+        >
+        <img
+          :src="Icons.Telegram"
           alt="Иконка телеграма"
-          class="icon" />
+          class="icon"
+        >
         <img
-          src="@/assets/img/services/email-icon.svg"
+          :src="Icons.Email"
           alt="Иконка почты"
-          class="icon" />
+          class="icon"
+        >
       </div>
     </div>
   </div>
@@ -22,14 +31,19 @@
 
 <script setup lang="ts">
 import SearchComp from '@/components/header/SearchComp.vue'
+import { Icons } from "@/assets/img/Icons";
+import {useAuthStore} from "@/store/authStore";
+
+const authStore = useAuthStore()
 </script>
 
 <style lang="scss" scoped>
 @import '../../styles/colors.scss';
+
 .header_container {
   position: sticky;
   top: 1.5vw;
-  z-index: 1000;
+  z-index: 800;
   padding: 1vw 2vw 1vw 1vw;
   margin: 1.5vw 1.5vw 0 0.5vw;
   border: 2px solid #eff0f2;
@@ -59,6 +73,9 @@ import SearchComp from '@/components/header/SearchComp.vue'
     }
     &.phone-icon {
       width: 1.7vw;
+    }
+    &.account-icon {
+      width: 2.5vw;
     }
   }
 }

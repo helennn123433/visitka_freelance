@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script setup lang="ts"> 
+<script setup lang="ts">
 defineProps({
   upper: { type: [String, Number], required: true },
   lower: { type: String, required: true }
@@ -26,6 +26,11 @@ defineProps({
   font-weight: 700;
   line-height: 100%;
   letter-spacing: 0;
+}
+.adminCard {
+  display: flex;
+  justify-content: end;
+  width: 80%;
 }
 
 @media (max-width: 480px) {

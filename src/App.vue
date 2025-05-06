@@ -1,20 +1,22 @@
 <template>
-  <div class="main__app">
+  <AuthModel v-if="authStore.openAdmin" />
+  <div
+    class="main__app"
+  >
     <SidebarComponent
       :active-icon="activeSection"
       @icon-click="scrollToSection"
     />
-
     <!-- В этом контейнере все «полноэкранные» разделы -->
     <div
       ref="wrapper"
       class="all__staff"
     >
-      <header-comp />
+      <HeaderComp />
       <section
         id="info"
         class="section"
-      > 
+      >
         <AboutUs />
       </section>
       <section
@@ -35,17 +37,21 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useAuthStore } from "@/store/authStore";
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
 import AboutUs from '@/components/aboutUs/AboutUs.vue'
 import HomeView from '@/components/services/HomeView.vue'
 import HeaderComp from '@/components/header/HeaderComp.vue'
 import ContactsSection from '@/components/contacts/ContactsSection.vue'
+import AuthModel from "@/components/AuthModel/AuthModel.vue";
+
+const authStore = useAuthStore()
 
 const sectionIds = ['info', 'list', 'email'] as const
 const activeSection = ref<string>(sectionIds[0])
-const wrapper = ref<HTMLElement>()!
+const wrapper = ref<HTMLElement>()
 
-function scrollToSection(id: string) {
+const scrollToSection = (id: string) => {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 

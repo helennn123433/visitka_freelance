@@ -1,7 +1,17 @@
 <template>
   <div class="container">
     <div class="header">
-      О НАС
+      <div>О НАС</div>
+      <div
+        v-if="authStore.isAuthenticated"
+        class="adminCard"
+      >
+        <img
+          class="icon"
+          :src="Icons.Pencil"
+          alt="adminIcon"
+        >
+      </div>
     </div>
     <div class="upperText">
       <p>
@@ -43,6 +53,10 @@
 <script setup lang="ts">
 import MyButton from '@/components/ui/MyButton.vue'
 import MyCard from '@/components/aboutUs/MyCard.vue'
+import { Icons } from "@/assets/img/Icons";
+import { useAuthStore } from "@/store/authStore";
+
+const authStore = useAuthStore()
 
 const stats = [
   { id: 1, upper: '2', lower: 'ГОДА РАБОТЫ' },
@@ -68,12 +82,19 @@ const stats = [
 }
 
 .header {
+  display: flex;
+  justify-content: space-between;
   align-self: flex-start;
   line-height: 100%;
+  width: 100%;
   color: #0652ff;
   font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 800;
   margin-top: 1vh;
+}
+.icon {
+  width: 30px;
+  height: 30px;
 }
 
 .upperText {

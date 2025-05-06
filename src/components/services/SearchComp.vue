@@ -19,6 +19,7 @@
   }
   .search-input {
     width: 100%;
+    box-sizing: border-box;
     padding: 15px 15px 15px 50px;
     background-color: $light-grey;
     border-radius: 5vw;
@@ -64,6 +65,10 @@
   @media(max-width: 768px){
     .header{
       width: 100%;
+    }
+    .search-container{
+      width: 100%;
+      margin: 0;
     }
   }
 

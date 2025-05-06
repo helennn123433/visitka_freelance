@@ -1,10 +1,8 @@
 <template>
-  <div class="header_container">
     <div class="header">
       <SearchComp />
       <ButtonsComp v-if="Show"></ButtonsComp>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -35,25 +33,13 @@ import ButtonsComp from "@/components/header/ButtonsComp.vue";
 <style lang="scss" scoped>
 @import '../../styles/colors.scss';
 
-.header_container {
-  position: sticky;
-  top: 1.5vw;
-  z-index: 800;
-  padding: 1vw 2vw 1vw 1vw;
-  margin: 1.5vw 1.5vw 0 0.5vw;
-  border: 2px solid #eff0f2;
-  border-radius: 32px;
-  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
-  background: white;
-  transition: background-color 0.3s ease;
-}
-.header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-left: 0.7vw;
-}
+.header{
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1vw;
+  }
 
 .header-buttons {
   display: flex;

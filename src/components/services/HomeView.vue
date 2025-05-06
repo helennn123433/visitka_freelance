@@ -11,22 +11,22 @@
 </template>
 
 <script setup lang="ts">
+  import axios from 'axios';
   import { ref, onMounted } from "vue";
   import { Image } from "@/interfaces/services/Image";  
   //import imagesData from "@/backend/services/images.json"; 
   import CardComp from "@/components/services/CardComp.vue";
 
   const images = ref<Image[]>([]);
-  onMounted(async () => {
-    try {
-      const response = await fetch('/server/services.json'); 
-      const data = await response.json();
-      images.value = data.services; 
-    } catch (error) {
-      console.error('Ошибка загрузки данных:', error);
-    }
-    //images.value = imagesData;
-  });
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('/server/services.json');
+    images.value = response.data.services;
+  } catch (error) {
+    console.error('Ошибка загрузки данных:', error);
+  }
+});
 </script>
 
 <style lang="scss" scoped>

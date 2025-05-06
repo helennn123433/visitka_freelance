@@ -243,6 +243,7 @@ function toggle(section: string) {
   align-items: center;
   padding: 1vh;
   gap: 1vh;
+  margin: 1vw;
 }
 
 .img_discount {

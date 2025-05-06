@@ -1,6 +1,8 @@
 <template>
-  <div class="main__app">
-    
+  <AuthModel v-if="authStore.openAdmin" />
+  <div
+    class="main__app"
+  >
     <SidebarComponent
       :activeIcon="activeSection"
       class="sidebar"
@@ -35,11 +37,17 @@
         <header-comp />
         <AboutUs />
       </section>
-      <section id="list" class="section">
-        <HomeView />      
+      <section
+        id="list"
+        class="section"
+      >
+        <HomeView />
       </section>
-      <section id="email" class="section">
-        <Contacts />      
+      <section
+        id="email"
+        class="section"
+      >
+        <ContactsSection />
       </section>
     </div>
   </div>
@@ -47,14 +55,19 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useAuthStore } from "@/store/authStore";
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
 import AboutUs from '@/components/aboutUs/AboutUs.vue'
 import HomeView from '@/components/services/HomeView.vue'
-import HeaderComp from '@/components/services/HeaderComp.vue'
+import HeaderComp from '@/components/header/HeaderComp.vue'
+import ContactsSection from '@/components/contacts/ContactsSection.vue'
+import AuthModel from "@/components/AuthModel/AuthModel.vue";
 
-const sectionIds = ['info','list','email'] as const
+const authStore = useAuthStore()
+
+const sectionIds = ['info', 'list', 'email'] as const
 const activeSection = ref<string>(sectionIds[0])
-const wrapper = ref<HTMLElement>()!
+const wrapper = ref<HTMLElement>()
 
 const isOpen = ref(false)//
 const isMobile = ref(window.innerWidth < 768)//
@@ -83,9 +96,9 @@ function scrollToSection(id: string) {
 onMounted(() => {
   window.addEventListener('resize', handleResize)
   const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) {
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
           activeSection.value = entry.target.id
         }
       })
@@ -93,10 +106,10 @@ onMounted(() => {
     {
       root: null, // Следим за viewport
       rootMargin: '0px',
-      threshold: 0.5
-    }
+      threshold: 0.5,
+    },
   )
-  sectionIds.forEach(id => {
+  sectionIds.forEach((id) => {
     const el = document.getElementById(id)
     if (el) observer.observe(el)
   })
@@ -132,7 +145,6 @@ onUnmounted(() => {
   overflow-y: auto;
 }
 
-/* каждая секция «на весь экран» */
 .section {
   min-height: 100vh;
   margin: 1.5vw 1.5vw 0 1.5vw;
@@ -140,7 +152,8 @@ onUnmounted(() => {
   scroll-margin-top: 5vh;
 }
 
-.section#info{
+.section#info,
+.section#email {
   display: flex;
   flex-direction: column;
   /*padding: 1.5rem 2vw 1vw 1vw; */

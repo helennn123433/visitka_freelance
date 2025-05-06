@@ -12,16 +12,16 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from "vue";
-  import { Image } from "@/interfaces/services/Image";  // Импортируем интерфейс
-  //import imagesData from "@/backend/services/images.json"; // Импортируем картинки из JSON
+  import { Image } from "@/interfaces/services/Image";  
+  //import imagesData from "@/backend/services/images.json"; 
   import CardComp from "@/components/services/CardComp.vue";
 
   const images = ref<Image[]>([]);
   onMounted(async () => {
     try {
-      const response = await fetch('/server/services.json'); // путь к JSON-файлу в public
+      const response = await fetch('/server/services.json'); 
       const data = await response.json();
-      images.value = data.services; // учитываем структуру { services: [...] }
+      images.value = data.services; 
     } catch (error) {
       console.error('Ошибка загрузки данных:', error);
     }

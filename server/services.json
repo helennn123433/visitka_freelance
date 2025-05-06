@@ -1,0 +1,52 @@
+{
+    "services": [
+      {
+        "id": 1,
+        "title": "Веб-разработка",
+        "price": 50000,
+        "image": "https://via.placeholder.com/300x200?text=Web+Development"
+      },
+      {
+        "id": 2,
+        "title": "UI/UX Дизайн",
+        "price": 40000,
+        "image": "https://via.placeholder.com/300x200?text=UI/UX+Design"
+      },
+      {
+        "id": 3,
+        "title": "Мобильная разработка",
+        "price": 60000,
+        "image": "https://via.placeholder.com/300x200?text=Mobile+App"
+      },
+      {
+        "id": 4,
+        "title": "Графический дизайн",
+        "price": 30000,
+        "image": "https://via.placeholder.com/300x200?text=Graphic+Design"
+      },
+      {
+        "id": 5,
+        "title": "SEO-оптимизация",
+        "price": 25000,
+        "image": "https://via.placeholder.com/300x200?text=SEO"
+      },
+      {
+        "id": 6,
+        "title": "Копирайтинг",
+        "price": 20000,
+        "image": "https://via.placeholder.com/300x200?text=Copywriting"
+      },
+      {
+        "id": 7,
+        "title": "3D Моделирование",
+        "price": 45000,
+        "image": "https://via.placeholder.com/300x200?text=3D+Modeling"
+      },
+      {
+        "id": 8,
+        "title": "SMM Продвижение",
+        "price": 35000,
+        "image": "https://via.placeholder.com/300x200?text=SMM"
+      }
+    ]
+  }

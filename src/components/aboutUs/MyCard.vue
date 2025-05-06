@@ -1,7 +1,11 @@
 <template>
   <div class="card">
-    <div class="bigText">{{ upper }}</div>
-    <div class="lowText">{{ lower }}</div>
+    <div class="bigText">
+      {{ upper }}
+    </div>
+    <div class="lowText">
+      {{ lower }}
+    </div>
   </div>
 </template>
 
@@ -22,6 +26,11 @@ defineProps({
   font-weight: 700;
   line-height: 100%;
   letter-spacing: 0;
+}
+.adminCard {
+  display: flex;
+  justify-content: end;
+  width: 80%;
 }
 
 @media (max-width: 480px) {

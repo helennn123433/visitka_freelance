@@ -5,59 +5,65 @@
         <!-- Логотип -->
         <div class="sidebar__logo">
           <div class="logo__main">
-            <img class="img_n31" src="./images/H31.svg" alt="Logo_H31" />
+            <img
+            class="img_n31"
+            :src="Icons.H31"
+            alt="Logo_H31"
+            > 
           </div>
+          <!--<div class="logo__main">
+            <img class="img_n31" src="./images/H31.svg" alt="Logo_H31" />
+          </div>-->
 
           <button class="close-btn" @click="$emit('close')">×</button>
-        </div>
+        
         
 
-        <!--<div class="sidebar_btns">-->
-          <!-- Кнопка "О нас" -->
-          <button
-            class="btn"
+        <!-- Кнопка "О нас" -->
+        <button
+          class="btn"
+          :class="{ active: activeIcon === 'info' }"
+          @click="toggle('info')"
+        >
+          <img
+            class="img_plz"
+            :src="Icons.Info"
+            alt="info"
             :class="{ active: activeIcon === 'info' }"
-            @click="toggle('info')"
           >
-            <img 
-              class="img_plz" 
-              src="./images/info.svg" 
-              alt="info" 
-              :class="{ active: activeIcon === 'info' }"
-            />
-            <span class="btn-text">О нас</span>
-          </button>
+          <span class="btn-text">О нас</span>
+        </button>
 
-          <!-- Кнопка "Услуги" -->
-          <button
-            class="btn"
+        <!-- Кнопка "Услуги" -->
+        <button
+          class="btn"
+          :class="{ active: activeIcon === 'list' }"
+          @click="toggle('list')"
+        >
+          <img
+            class="img_plz"
+            :src="Icons.List"
+            alt="list"
             :class="{ active: activeIcon === 'list' }"
-            @click="toggle('list')"
           >
-            <img 
-              class="img_plz" 
-              src="./images/list.svg" 
-              alt="list" 
-              :class="{ active: activeIcon === 'list' }"
-            />
-            <span class="btn-text">Услуги</span>
-          </button>
+          <span class="btn-text">Услуги</span>
+        </button>
 
-          <!-- Кнопка "Контакты" -->
-          <button
-            class="btn"
+        <!-- Кнопка "Контакты" -->
+        <button
+          class="btn"
+          :class="{ active: activeIcon === 'email' }"
+          @click="toggle('email')"
+        >
+          <img
+            class="img_plz"
+            :src="Icons.atEmail"
+            alt="email"
             :class="{ active: activeIcon === 'email' }"
-            @click="toggle('email')"
           >
-            <img 
-              class="img_plz" 
-              src="./images/email.svg" 
-              alt="email" 
-              :class="{ active: activeIcon === 'email' }"
-            />
-            <span class="btn-text">Контакты</span>
-          </button>
-        <!--</div>-->
+          <span class="btn-text">Контакты</span>
+        </button>
+      </div>
 
         </div>
         
@@ -65,7 +71,11 @@
       <div class="btn_bottom">
         <ButtonsComp/>
         <MyButton class="btn_discount">
-          <img class="img_discount" src="./images/light.svg" alt="light" />
+          <img
+            class="img_discount"
+            :src="Icons.Light"
+            alt="light"
+          >
           <span>Получить скидку <b>25%</b></span>
         </MyButton>
       </div>
@@ -75,6 +85,7 @@
 
 <script setup lang="ts">
 import { toRef, ref, onMounted, onUnmounted } from 'vue'
+import { Icons } from "@/assets/img/Icons"
 import MyButton from '@/components/ui/MyButton.vue'
 import ButtonsComp from '../services/ButtonsComp.vue'
 
@@ -111,7 +122,7 @@ function toggle(section: string) {
 <style scoped>
 .main {
   display: flex;
-  margin: 1.5vw 1.5vw 0 1.5vw;
+  margin: 22px 22px 0 22px;
   font-family: 'Inter', sans-serif;
 }
 
@@ -162,8 +173,8 @@ function toggle(section: string) {
 }
 
 .img_plz.active {
-  filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%)
-    hue-rotate(214deg) brightness(100%) contrast(105%);
+  filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%) hue-rotate(214deg) brightness(100%)
+    contrast(105%);
 }
 
 .sidebar__main {
@@ -221,6 +232,7 @@ function toggle(section: string) {
   text-align: center;
   cursor: pointer;
 }
+
 .btn_discount:hover {
   background-color: #0652aa;
 }
@@ -255,6 +267,7 @@ function toggle(section: string) {
     height: 30px;
     margin-right: 12px;
   }
+
   .btn {
     font-size: 15px;
     padding: 0.9vh;

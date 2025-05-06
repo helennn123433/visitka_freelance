@@ -1,6 +1,6 @@
 export interface Image {
-    src: string;
-    alt: string;
-    title: string;
-    price: string;
-  }
+    id: number;
+    title: string; 
+    price: string; 
+    image: string;
+}

@@ -1,12 +1,11 @@
 <template>
-  <div class="card">
+  <div class="card" id=image.id>
     <img
-      :src="image.src"
-      :alt="image.alt"
+      :src="image.image"
       class="image"
     >
     <div class="price">
-      {{ image.price }}
+      {{ `от ${image.price} Р/час` }}
     </div>
     <div class="title">
       {{ image.title }}
@@ -15,7 +14,7 @@
 </template>
 <script setup lang="ts">
   defineProps<{
-    image: { src: string; alt: string; title: string; price: string; };
+    image: { id: number; title: string; price: string; image: string; };
   }>();
 </script>
 <style lang="scss" scoped>

@@ -1,12 +1,11 @@
 <template>
-  <div class="card">
+  <div class="card" id=image.id>
     <img
-      :src="image.src"
-      :alt="image.alt"
+      :src="image.image"
       class="image"
     >
     <div class="price">
-      {{ image.price }}
+      {{ `от ${image.price} Р/час` }}
     </div>
     <div class="title">
       {{ image.title }}
@@ -15,7 +14,7 @@
 </template>
 <script setup lang="ts">
   defineProps<{
-    image: { src: string; alt: string; title: string; price: string; };
+    image: { id: number; title: string; price: string; image: string; };
   }>();
 </script>
 <style lang="scss" scoped>
@@ -35,7 +34,7 @@
     color: $white;
     width: auto;
     overflow: hidden;
-    border-radius: 2.5vw;
+    border-radius: 3vw;
     cursor: pointer;
     img{
       transition: opacity 0.3s ease;
@@ -71,7 +70,7 @@
       transition: transform 0.3s ease, font-size 0.3s ease;
     }
   }
-  @media(max-width: 650px){
+  @media(max-width: 800px){
     .card {
       border-radius: 5vw;
       flex: 0 0 100%;
@@ -115,11 +114,11 @@
 
   .card:hover .price {
     background-color: transparent; /* Убираем фон при наведении */
-    transform: translateX(1vw) scale(1.2); /* Двигаем вправо */
+    transform: translateX(1vw) scale(1.05); /* Двигаем вправо */
   }
 
   .card:hover .title {
-    transform: translateX(-1vw) scale(1.2); /* Двигаем влево */
+    transform: translateX(-1vw) scale(1.05); /* Двигаем влево */
   }
 
 </style>

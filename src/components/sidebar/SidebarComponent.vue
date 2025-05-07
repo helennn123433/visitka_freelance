@@ -1,15 +1,23 @@
 <template>
   <div class="main">
     <div class="sidebar__main">
-      <div>
         <!-- Логотип -->
-        <div class="logo__main">
-          <img
+        <div>
+        <div class="sidebar__logo">
+          <div class="logo__main">
+            <img
             class="img_n31"
             :src="Icons.H31"
             alt="Logo_H31"
-          > 
+            > 
+          </div>
+          <!--<div class="logo__main">
+            <img class="img_n31" src="./images/H31.svg" alt="Logo_H31" />
+          </div>-->
+
+          <button class="close-btn" @click="$emit('close')">×</button>
         </div>
+        
 
         <!-- Кнопка "О нас" -->
         <button
@@ -55,10 +63,11 @@
           >
           <span class="btn-text">Контакты</span>
         </button>
-      </div>
-
+        </div>
+        
       <!-- Нижняя кнопка со скидкой -->
       <div class="btn_bottom">
+        <ButtonsComp v-if="Show"></ButtonsComp>
         <MyButton class="btn_discount">
           <img
             class="img_discount"
@@ -73,17 +82,37 @@
 </template>
 
 <script setup lang="ts">
-import { toRef } from 'vue'
+import { toRef, ref, onMounted, onUnmounted } from 'vue'
 import { Icons } from "@/assets/img/Icons"
 import MyButton from '@/components/ui/MyButton.vue'
+import ButtonsComp from "@/components/header/ButtonsComp.vue";
+
+const Show = ref(true)
+const isMobile = ref(window.innerWidth < 768)
+const handleResize = () => {
+  isMobile.value = window.innerWidth < 768
+  if (isMobile.value) {
+    Show.value = true // показываем значки
+  }else Show.value = false
+}
+onMounted(() => {
+  if (isMobile.value) {
+    Show.value = true // показываем значки
+  }else Show.value = false
+  window.addEventListener('resize', handleResize)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 
 const props = defineProps<{ activeIcon: string }>()
 
-const emit = defineEmits(['icon-click'] as const)
-
 const activeIcon = toRef(props, 'activeIcon')
 
+const emit = defineEmits(['icon-click', 'close'] as const)
+
 function toggle(section: string) {
+  console.log('Clicked section:', section)
   emit('icon-click', section)
 }
 </script>
@@ -96,6 +125,7 @@ function toggle(section: string) {
 }
 
 .logo__main {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,9 +133,41 @@ function toggle(section: string) {
   margin-top: 1vh;
 }
 
+.sidebar__logo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 1vh 2vw;
+}
+
+.close-btn {
+  position: absolute;
+  right: 2vw;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #898989;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+@media (min-width: 768px) {
+  .close-btn {
+    display: none; /* убираем крестик на компе */
+  }
+}
+
 .img_n31 {
   max-width: 100%;
   height: auto;
+}
+
+.img_plz {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  margin-left: 12px;
 }
 
 .img_plz.active {
@@ -122,7 +184,7 @@ function toggle(section: string) {
   max-width: 30vh;
   min-width: 8vh;
   background-color: white;
-  border-radius: 32px;
+  border-radius: 3vw;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
@@ -167,6 +229,7 @@ function toggle(section: string) {
   border-radius: 20px;
   text-align: center;
   cursor: pointer;
+  font-size: 1vw;
 }
 
 .btn_discount:hover {
@@ -175,15 +238,12 @@ function toggle(section: string) {
 
 .btn_bottom {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   padding: 1vh;
-}
-
-.img_plz {
-  width: 20px;
-  height: 20px;
-  margin-right: 12px;
-  margin-left: 12px;
+  gap: 1vh;
+  margin: 1vw;
 }
 
 .img_discount {
@@ -229,35 +289,51 @@ function toggle(section: string) {
   .btn_discount {
     font-size: 14px;
   }
+
+  .sidebar__main{
+    width: 100% !important;
+    height: 99vh;
+    max-width: 100% !important;
+    min-width: 300px;
+    border-radius: 0 3vw 3vw;
+  }
+
+  .sidebar{
+    min-width: 300px;
+  }
+
+  .main{
+    margin: 0vw 1.5vw 0 0vw;
+  }
 }
 
 @media (max-width: 480px) {
   .img_plz {
-    display: none;
+    /*display: none;*/
   }
 
-  .btn {
+  /*.btn {
     font-size: 12px;
     padding: 0.6vh;
-  }
+  }*/
 
-  .btn_discount {
+  /*.btn_discount {
     font-size: 12px;
-  }
+  }*/
 }
 
 @media (max-width: 375px) {
   .btn-text {
-    display: none;
+    /*display: none;*/
   }
 
   .img_plz {
-    display: flex;
-    margin-right: 0;
+    /*display: flex;
+    margin-right: 0;*/
   }
 
   .btn {
-    justify-content: center;
+    /*justify-content: center;*/
   }
 }
 </style>

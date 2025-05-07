@@ -66,13 +66,12 @@ const checkAuth = () => {
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: 1002;
 
   &__card{
     display: flex;
     flex-direction: column;
     width: 20%;
-    height: 30%;
     background-color: white;
     border-radius: 32px;
     box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
@@ -101,6 +100,7 @@ const checkAuth = () => {
       align-items: center;
       width: 100%;
       height: 100%;
+      margin-top: 10px;
     }
   }
 }
@@ -119,5 +119,6 @@ const checkAuth = () => {
 .btn{
   height: 30%;
   width: 40%;
+  padding: 5px;
 }
 </style>

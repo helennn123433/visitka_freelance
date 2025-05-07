@@ -19,14 +19,15 @@
 @import '../../styles/colors.scss'; 
   .search-container{
     position: relative;
-    width: 55vw;
+    width: 70%;
     margin-right: 1vw;
     input{
-      font-size: 1vw;
+      font-size: 1.3vw;
     }
   }
   .search-input {
     width: 100%;
+    box-sizing: border-box;
     padding: 15px 15px 15px 50px;
     background-color: $light-grey;
     border-radius: 5vw;
@@ -65,6 +66,16 @@
   @media(max-width: 1000px){
     .search-input {
       padding: 12px 12px 12px 50px;
+    }
+  }
+
+  @media(max-width: 768px){
+    .header{
+      width: 100%;
+    }
+    .search-container{
+      width: 100%;
+      margin: 0;
     }
   }
 

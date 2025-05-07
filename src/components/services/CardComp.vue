@@ -1,5 +1,16 @@
 <template>
   <div class="card" id=image.id>
+    <div
+      v-if="authStore.isAuthenticated"
+      class="adminCard"
+    >
+      <img 
+        class="settings-icon"
+        :src="Icons.Gear"
+        alt="шестерёнка"
+        @click="openEditModal"
+      >
+    </div>
     <img
       :src="image.image"
       class="image"
@@ -10,12 +21,54 @@
     <div class="title">
       {{ image.title }}
     </div>
+
+    <EditCard
+      v-if="isEditModalOpen"
+      :current-data="image"
+      @close="closeEditModal"
+      @save="handleSave"
+    />
   </div>
 </template>
 <script setup lang="ts">
-  defineProps<{
-    image: { id: number; title: string; price: string; image: string; };
-  }>();
+import { ref } from 'vue'
+import axios from 'axios'
+import { Icons } from "@/assets/img/Icons";
+import { useAuthStore } from "@/store/authStore";
+import EditCard from "@/components/services/EditCard.vue";
+
+const authStore = useAuthStore()
+  
+defineProps<{
+  image: { id: number; title: string; price: string; image: string; };
+}>();
+
+const emit = defineEmits(['updated'])
+const isEditModalOpen = ref(false)
+
+const openEditModal = () => {
+  isEditModalOpen.value = true
+}
+
+const closeEditModal = () => {
+  isEditModalOpen.value = false
+}
+
+const handleSave = async (updatedData: image) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:3004/services/${updatedData.id}`,
+      { ...updatedData}
+    )
+
+    if (response.status === 200) {
+      emit('updated')
+      closeEditModal()
+    }
+  } catch (error) {
+    alert('Ошибка при сохранении изменений')
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import '../../styles/colors.scss';
@@ -70,7 +123,40 @@
       transition: transform 0.3s ease, font-size 0.3s ease;
     }
   }
+
+  .settings-icon{
+    position: absolute;
+    top: 9%;
+    left: 5%;
+    width: 1.5vw;
+    height: 1.5vw;
+    cursor: pointer;
+    z-index: 20;
+    filter: brightness(0) invert(1);
+    transition: transform 0.3s ease;
+    transform-origin: center;
+  }
+
+  .settings-icon:hover {
+    animation: rotate 2s linear infinite;
+  }
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
   @media(max-width: 800px){
+    .settings-icon {
+      width: 4vw;
+      height: 4vw;
+      top: 9%;
+      left: 3%;
+    }
     .card {
       border-radius: 5vw;
       flex: 0 0 100%;

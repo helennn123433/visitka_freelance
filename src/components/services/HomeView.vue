@@ -2,9 +2,10 @@
   <div class="container">
       <div class="cards-field">
         <CardComp
-          v-for="(image, index) in images"
-          :key="index"
+          v-for="image in images"
+          :key="image.id"
           :image="image"
+          @updated="handleServiceUpdate"
         />
       </div>
     </div>
@@ -16,17 +17,25 @@
   import { Image } from "@/interfaces/services/Image";  
   //import imagesData from "@/backend/services/images.json"; 
   import CardComp from "@/components/services/CardComp.vue";
+  
 
   const images = ref<Image[]>([]);
-
-onMounted(async () => {
-  try {
-    const response = await axios.get('/server/services.json');
-    images.value = response.data.services;
-  } catch (error) {
-    console.error('Ошибка загрузки данных:', error);
+  
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get('http://localhost:3004/services');
+      images.value = response.data;
+    } catch (error) {
+      console.error('Ошибка загрузки данных:', error);
+    }
   }
-});
+  const handleServiceUpdate = () => {
+    fetchServices() 
+  };
+  
+  onMounted(() => {
+    fetchServices()
+  });
 </script>
 
 <style lang="scss" scoped>

@@ -1,25 +1,22 @@
 <template>
   <div class="main">
     <div class="sidebar__main">
-        <!-- Логотип -->
-        <div>
+      <div>
         <div class="sidebar__logo">
           <div class="logo__main">
             <img
-            class="img_n31"
-            :src="Icons.H31"
-            alt="Logo_H31"
+              class="img_n31"
+              :src="Icons.H31"
+              alt="Logo_H31"
             > 
           </div>
-          <!--<div class="logo__main">
-            <img class="img_n31" src="./images/H31.svg" alt="Logo_H31" />
-          </div>-->
-
-          <button class="close-btn" @click="$emit('close')">×</button>
+          <button
+            class="close-btn"
+            @click="$emit('close')"
+          >
+            ×
+          </button>
         </div>
-        
-
-        <!-- Кнопка "О нас" -->
         <button
           class="btn"
           :class="{ active: activeIcon === 'info' }"
@@ -33,8 +30,6 @@
           >
           <span class="btn-text">О нас</span>
         </button>
-
-        <!-- Кнопка "Услуги" -->
         <button
           class="btn"
           :class="{ active: activeIcon === 'list' }"
@@ -48,8 +43,6 @@
           >
           <span class="btn-text">Услуги</span>
         </button>
-
-        <!-- Кнопка "Контакты" -->
         <button
           class="btn"
           :class="{ active: activeIcon === 'email' }"
@@ -63,11 +56,9 @@
           >
           <span class="btn-text">Контакты</span>
         </button>
-        </div>
-        
-      <!-- Нижняя кнопка со скидкой -->
+      </div>
       <div class="btn_bottom">
-        <ButtonsComp v-if="Show"></ButtonsComp>
+        <ButtonsComp v-if="Show" />
         <MyButton class="btn_discount">
           <img
             class="img_discount"
@@ -91,14 +82,10 @@ const Show = ref(true)
 const isMobile = ref(window.innerWidth < 768)
 const handleResize = () => {
   isMobile.value = window.innerWidth < 768
-  if (isMobile.value) {
-    Show.value = true // показываем значки
-  }else Show.value = false
+  Show.value = !!isMobile.value;
 }
 onMounted(() => {
-  if (isMobile.value) {
-    Show.value = true // показываем значки
-  }else Show.value = false
+  Show.value = !!isMobile.value;
   window.addEventListener('resize', handleResize)
 })
 onUnmounted(() => {

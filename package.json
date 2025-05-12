@@ -10,6 +10,7 @@
     "test-server": "json-server --watch ./server/services.json --port 3004"
   },
   "dependencies": {
+    "@pinia/testing": "^1.0.1",
     "axios": "^1.9.0",
     "core-js": "^3.8.3",
     "pinia": "^3.0.2",

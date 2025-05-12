@@ -225,7 +225,7 @@ function toggle(section: string) {
   background-color: #0652ff;
   border: 0 solid white;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 15px;
   border-radius: 20px;
   text-align: center;
   cursor: pointer;
@@ -243,7 +243,7 @@ function toggle(section: string) {
   align-items: center;
   padding: 1vh;
   gap: 1vh;
-  margin: 1vw;
+  margin-bottom: 1vh;
 }
 
 .img_discount {

@@ -159,16 +159,16 @@ const handleSave = async (updatedData: image) => {
       transition: transform 0.3s ease, font-size 0.3s ease;
     }
     .delete-icon {
-  position: absolute;
-  top: 8%;
-  left: 12%;
-  width: 2vw;
-  height: 2vw;
-  cursor: pointer;
-  z-index: 20;
-  filter: brightness(0) invert(1);
-  transition: transform 0.3s ease;
-}
+      position: absolute;
+      top: 8%;
+      left: 12%;
+      width: 2vw;
+      height: 2vw;
+      cursor: pointer;
+      z-index: 20;
+      filter: brightness(0) invert(1);
+      transition: transform 0.3s ease;
+    }
 
 .delete-icon:hover {
   transform: scale(1.2);
@@ -208,6 +208,12 @@ const handleSave = async (updatedData: image) => {
       top: 9%;
       left: 3%;
     }
+    .adminCard .delete-icon {
+      width: 5vw;
+      height: 5vw;
+      top: 8%;
+      left: 12%;
+    }
     .card {
       border-radius: 5vw;
       flex: 0 0 100%;
@@ -231,13 +237,6 @@ const handleSave = async (updatedData: image) => {
     }
     .card:last-of-type {
       margin-bottom: 0;
-    }
-
-    .delete-icon {
-      width: 6vw;
-      height: 6vw;
-      top: 9%;
-      left: 15%;
     }
   }
   .card::after {

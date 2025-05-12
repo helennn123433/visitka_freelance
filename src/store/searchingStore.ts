@@ -1,19 +1,32 @@
 import { defineStore } from "pinia";
+import { ref, computed } from "vue";
 import { Image } from "@/interfaces/services/Image";
-import { ref } from "vue";
+import axios from "axios";
 
+export const useSearchingStore = defineStore('searchingStore', () => {
+  const images = ref<Image[]>([]);
+  const searchInput = ref<string>("");
 
-export const useSearchingStore = defineStore('searchingStore', () =>{
+  const filteredImages = computed(() => {
+    if (!searchInput.value.trim()) return images.value;
 
-  const images = ref<Image[]>([])
+    const searchTerm = searchInput.value.toLowerCase();
+    return images.value.filter(image =>
+      image.title.toLowerCase().includes(searchTerm));
+  });
 
-  const filteredImages = ref<Image[]>([])
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get('http://localhost:3004/services');
+      images.value = response.data;
+    } catch (error) {
+      console.error('Ошибка загрузки:', error);
+    }};
 
-  const searchInput = ref<string>("")
-
-  return{
+  return {
     images,
+    searchInput,
     filteredImages,
-    searchInput
-  }
-})
+    fetchServices
+  };
+});

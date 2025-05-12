@@ -29,49 +29,33 @@
 </template>
 
 <script setup lang="ts">
-  import axios from 'axios';
-  import { ref, onMounted, computed } from "vue";
-  import CardComp from "@/components/services/CardComp.vue";
-  import MyButton from "@/components/ui/MyButton.vue";
-  import { useAuthStore } from "@/store/authStore";
-  import AddDialog from "@/components/services/addDialog.vue";
-  import { useSearchingStore} from "@/store/searchingStore";
+import { ref, onMounted, computed } from "vue";
+import { useAuthStore } from "@/store/authStore";
+import { useSearchingStore } from "@/store/searchingStore";
+import CardComp from "@/components/services/CardComp.vue";
+import MyButton from "@/components/ui/MyButton.vue";
+import AddDialog from "@/components/services/addDialog.vue";
 
-  const searchStore = useSearchingStore();
-  const authStore = useAuthStore()
-  
-  // const images = ref<Image[]>([]);
-  const isDialogOpen = ref<boolean>(false);
-  
-  const toggleDialog = () => {
-    isDialogOpen.value = !isDialogOpen.value;
-  }
+const searchStore = useSearchingStore();
+const authStore = useAuthStore();
+const isDialogOpen = ref(false);
 
-  const maxId = computed(() => {
-    if (searchStore.images.length === 0) return 0;
-    const ids = searchStore.images.map(item => {
-      const num = Number(item.id);
-      return isNaN(num) ? 0 : num;
-    });
-    return Math.max(...ids);
-  });
+const maxId = computed(() => {
+  if (searchStore.images.length === 0) return 0;
+  return Math.max(...searchStore.images.map(item => Number(item.id)));
+});
 
-  const fetchServices = async () => {
-    try {
-      const response = await axios.get('http://localhost:3004/services');
-      searchStore.images = response.data;
-    } catch (error) {
-      console.error('Ошибка загрузки:', error);
-    }
-  };
+const toggleDialog = () => {
+  isDialogOpen.value = !isDialogOpen.value;
+};
 
-  const handleServiceUpdate = async () => {
-    await fetchServices()
-  };
+const handleServiceUpdate = async () => {
+  await searchStore.fetchServices();
+};
 
-  onMounted(() => {
-    fetchServices()
-  });
+onMounted(() => {
+  searchStore.fetchServices();
+});
 </script>
 
 <style lang="scss" scoped>

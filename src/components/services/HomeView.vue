@@ -14,7 +14,7 @@
     <add-dialog
       v-if="isDialogOpen"
       :next-id="(maxId + 1).toString()"
-      @toggleDialog="toggleDialog"
+      @toggle-dialog="toggleDialog"
       @service-added="handleServiceUpdate"
     />
     <div class="cards-field">
@@ -67,7 +67,7 @@ onMounted(() => {
     background-color: $white;
     border-radius: 3vw;
     padding: 1.5vw;
-    box-shadow: 0px 4px 8px $grey;
+    box-shadow: 0 4px 8px $grey;
 
     &__header{
       display: flex;

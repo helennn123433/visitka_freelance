@@ -59,8 +59,7 @@ const form = ref({
   image: ""
 });
 
-
-const emit = defineEmits(['toggleDialog', 'service-added']);
+const emit = defineEmits(['toggle-dialog', 'service-added']);
 
 const addService = async () => {
   try {
@@ -73,7 +72,7 @@ const addService = async () => {
     await axios.post('http://localhost:3004/services', newService);
     form.value = { title: "", price: 0, image: "" };
     emit('service-added');
-    emit('toggleDialog');
+    emit('toggle-dialog');
 
   } catch(err) {
     console.error('Ошибка добавления:', err);

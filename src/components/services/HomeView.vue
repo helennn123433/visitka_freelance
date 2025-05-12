@@ -17,6 +17,7 @@
   import { Image } from "@/interfaces/services/Image";  
   //import imagesData from "@/backend/services/images.json"; 
   import CardComp from "@/components/services/CardComp.vue";
+  
 
   const images = ref<Image[]>([]);
   

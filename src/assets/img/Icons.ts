@@ -17,6 +17,7 @@ import TelegramBlue from "@/assets/img/icons/telega_blue.svg"
 import WhatsAppBlue from "@/assets/img/icons/whatsApp.svg"
 import Pencil from "@/assets/img/icons/pencil.svg"
 import Gear from "@/assets/img/icons/gear.svg"
+import Trash from "@/assets/img/icons/trash.svg"
 
 export const Icons = {
   Account,
@@ -38,4 +39,5 @@ export const Icons = {
   WhatsAppBlue,
   Pencil,
   Gear,
+  Trash
 };

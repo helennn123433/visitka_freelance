@@ -33,9 +33,8 @@ describe('Contacts.vue', () => {
 
   it('отображает список контактов через компонент ContactCard', () => {
     const contactCards = wrapper.findAllComponents(ContactCard)
-    expect(contactCards.length).toBe(2) // соответствует моковым данным
+    expect(contactCards.length).toBe(2)
 
-    // Проверяем, что пропсы передаются правильно
     expect(contactCards[0].props('contact')).toEqual({
       id: 1,
       icon: '/path/to/icon1.png',

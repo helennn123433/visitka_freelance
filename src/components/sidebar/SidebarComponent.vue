@@ -225,11 +225,10 @@ function toggle(section: string) {
   background-color: #0652ff;
   border: 0 solid white;
   color: #ffffff;
-  font-size: 15px;
   border-radius: 20px;
   text-align: center;
   cursor: pointer;
-  font-size: 1vw;
+  font-size: 14px;
 }
 
 .btn_discount:hover {
@@ -243,7 +242,7 @@ function toggle(section: string) {
   align-items: center;
   padding: 1vh;
   gap: 1vh;
-  margin-bottom: 1vh;
+  margin: 1vh;
 }
 
 .img_discount {
@@ -257,8 +256,10 @@ function toggle(section: string) {
   padding: 1.5vh;
 }
 
-.btn_discount {
-  font-size: 1vw;
+@media (max-width: 1470px) {
+  .btn_discount{
+    font-size: 12px;
+  }
 }
 
 @media (max-width: 1440px) {

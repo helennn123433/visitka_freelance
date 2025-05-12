@@ -1,38 +1,74 @@
 <template>
   <div class="container">
-      <div class="cards-field">
-        <CardComp
-          v-for="image in images"
-          :key="image.id"
-          :image="image"
-          @updated="handleServiceUpdate"
-        />
-      </div>
+    <div
+      v-if="authStore.isAuthenticated"
+      class="container__header"
+    >
+      <my-button
+        class="container__btn"
+        @click="toggleDialog"
+      >
+        Добавить
+      </my-button>
     </div>
+    <add-dialog
+      v-if="isDialogOpen"
+      :next-id="(maxId + 1).toString()"
+      @toggleDialog="toggleDialog"
+      @service-added="handleServiceUpdate"
+    />
+    <div class="cards-field">
+      <CardComp
+        v-for="image in searchStore.filteredImages"
+        :key="image.id"
+        :image="image"
+        @updated="handleServiceUpdate"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
   import axios from 'axios';
-  import { ref, onMounted } from "vue";
-  import { Image } from "@/interfaces/services/Image";  
-  //import imagesData from "@/backend/services/images.json"; 
+  import { ref, onMounted, computed } from "vue";
   import CardComp from "@/components/services/CardComp.vue";
-  
+  import MyButton from "@/components/ui/MyButton.vue";
+  import { useAuthStore } from "@/store/authStore";
+  import AddDialog from "@/components/services/addDialog.vue";
+  import { useSearchingStore} from "@/store/searchingStore";
 
-  const images = ref<Image[]>([]);
+  const searchStore = useSearchingStore();
+  const authStore = useAuthStore()
   
+  // const images = ref<Image[]>([]);
+  const isDialogOpen = ref<boolean>(false);
+  
+  const toggleDialog = () => {
+    isDialogOpen.value = !isDialogOpen.value;
+  }
+
+  const maxId = computed(() => {
+    if (searchStore.images.length === 0) return 0;
+    const ids = searchStore.images.map(item => {
+      const num = Number(item.id);
+      return isNaN(num) ? 0 : num;
+    });
+    return Math.max(...ids);
+  });
+
   const fetchServices = async () => {
     try {
       const response = await axios.get('http://localhost:3004/services');
-      images.value = response.data;
+      searchStore.images = response.data;
     } catch (error) {
-      console.error('Ошибка загрузки данных:', error);
+      console.error('Ошибка загрузки:', error);
     }
-  }
-  const handleServiceUpdate = () => {
-    fetchServices() 
   };
-  
+
+  const handleServiceUpdate = async () => {
+    await fetchServices()
+  };
+
   onMounted(() => {
     fetchServices()
   });
@@ -46,19 +82,28 @@
     flex-direction: column;
     background-color: $white;
     border-radius: 3vw;
-    //padding: 1.5vw 1vw 2vw 1.5vw;
     padding: 1.5vw;
     box-shadow: 0px 4px 8px $grey;
+
+    &__header{
+      display: flex;
+      justify-content: end;
+    }
+
+    &__btn{
+      width: 150px;
+      height: 40px;
+      margin: 0 10px 10px 0;
+    }
   }
   .cards-field{
-    flex-grow: 1; // Занимает оставшееся пространство
-    min-height: 0; // Решает проблему с flex и overflow
+    flex-grow: 1;
+    min-height: 0;
     overflow: hidden;
-    overflow-y: auto; // Позволяет прокручивать карточки 
-    //padding: 0.7vw;
+    overflow-y: auto;
     display: flex;
-    flex-wrap: wrap; // Перенос картинок
-    gap: 1.5vw; // Отступы между изображениями
+    flex-wrap: wrap;
+    gap: 1.5vw;
     justify-content: space-between;
     align-content: space-between;
   }
@@ -87,5 +132,4 @@
       }
     }
   }
-  
 </style>

@@ -71,10 +71,10 @@ const handleDeleteConfirm = async () => {
 <style lang="scss" scoped>
 @import '../../styles/colors.scss';
   .image {
-    width: 100%; // Изображения занимают всю ширину контейнера
+    width: 100%;
     height: 100%;
-    background-size: cover; // Изображение будет масштабироваться с сохранением пропорций
-    background-position: center; // Центрируем изображение
+    background-size: cover;
+    background-position: center;
     position: relative;
     overflow: hidden;
   }
@@ -112,7 +112,6 @@ const handleDeleteConfirm = async () => {
       left: 7%;
       z-index: 10;
       color: $white;
-      font-weight: bold;
       text-transform: uppercase;
       font-weight: 800;
       font-size: 2.5vw;

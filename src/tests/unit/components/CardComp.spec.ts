@@ -1,4 +1,5 @@
 import { mount } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
 import CardComp from '@/components/services/CardComp.vue';
 
 describe('CardComp.vue', () => {
@@ -15,6 +16,17 @@ describe('CardComp.vue', () => {
     wrapper = mount(CardComp, {
       props: {
         image
+      },
+      global: {
+        plugins: [createTestingPinia({
+          stubActions: false,
+          createSpy: jest.fn, 
+          initialState: {
+            authStore: {
+              isAuthenticated: true
+            }
+          }
+        })]
       }
     });
   });
@@ -34,7 +46,3 @@ describe('CardComp.vue', () => {
     expect(img.attributes('src')).toBe(image.image);
   });
 });
-
-
-
-

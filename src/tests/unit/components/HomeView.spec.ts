@@ -1,48 +1,75 @@
 import { mount, flushPromises } from '@vue/test-utils';
 import HomeView from '@/components/services/HomeView.vue';
-import axios from 'axios';
+import CardComp from '@/components/services/CardComp.vue';
 
-// Мокаем axios
-jest.mock('axios');
-const mockedAxios = axios as jest.Mocked<typeof axios>;
+// Моки для стора
+jest.mock('@/store/searchingStore', () => ({
+  useSearchingStore: jest.fn(),
+}));
+
+jest.mock('@/store/authStore', () => ({
+  useAuthStore: jest.fn(),
+}));
+
+// Мокируем компоненты
+jest.mock('@/components/services/addDialog.vue', () => ({
+  __esModule: true,
+  default: {
+    template: '<div>AddDialogStub</div>',
+  },
+}));
+jest.mock('@/components/ui/MyButton.vue', () => ({
+  __esModule: true,
+  default: {
+    template: '<button><slot /></button>',
+  },
+}));
 
 describe('HomeView.vue', () => {
+  const mockFetchServices = jest.fn();
   const mockImages = [
-    { id: 1, title: 'Service A', price: '1000', image: 'a.jpg' },
-    { id: 2, title: 'Service B', price: '2000', image: 'b.jpg' }
+    { id: '1', title: 'Image 1' },
+    { id: '2', title: 'Image 2' },
   ];
 
   beforeEach(() => {
-    mockedAxios.get.mockResolvedValue({
-      data: { services: mockImages }
-    });
-  });
-
-  afterEach(() => {
     jest.clearAllMocks();
+
+    // мок стора поиска
+    require('@/store/searchingStore').useSearchingStore.mockReturnValue({
+      images: mockImages,
+      filteredImages: mockImages,
+      fetchServices: mockFetchServices,
+    });
+
+    // мок авторизации
+    require('@/store/authStore').useAuthStore.mockReturnValue({
+      isAuthenticated: true,
+    });
   });
 
   it('загружает и отображает карточки при монтировании', async () => {
     const wrapper = mount(HomeView);
+
     await flushPromises();
 
-    const cards = wrapper.findAllComponents({ name: 'CardComp' });
+    const cards = wrapper.findAllComponents(CardComp);
     expect(cards.length).toBe(mockImages.length);
-
-    mockImages.forEach((img) => {
+    mockImages.forEach(img => {
       expect(wrapper.html()).toContain(img.title);
-      expect(wrapper.html()).toContain(`от ${img.price} Р/час`);
     });
+
+    expect(mockFetchServices).toHaveBeenCalled();
   });
 
-  it('отображает сообщение об ошибке при неудачном запросе', async () => {
-    mockedAxios.get.mockRejectedValueOnce(new Error('Network error'));
+  it('не отображает кнопку "Добавить", если пользователь не авторизован', async () => {
+    require('@/store/authStore').useAuthStore.mockReturnValueOnce({
+      isAuthenticated: false,
+    });
 
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const wrapper = mount(HomeView);
     await flushPromises();
 
-    expect(errorSpy).toHaveBeenCalled();
-    errorSpy.mockRestore();
+    expect(wrapper.find('button').exists()).toBe(false);
   });
 });

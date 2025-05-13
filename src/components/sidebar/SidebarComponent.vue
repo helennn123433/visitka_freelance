@@ -221,15 +221,15 @@ function toggle(section: string) {
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 1.2vh 0 1.2vh 0;
+  padding: 1.7vh 0.5vw;
   background-color: #0652ff;
   border: 0 solid white;
   color: #ffffff;
-  font-size: 16px;
   border-radius: 20px;
   text-align: center;
   cursor: pointer;
-  font-size: 1vw;
+  white-space: nowrap;
+  font-size: 16px;
 }
 
 .btn_discount:hover {
@@ -241,15 +241,15 @@ function toggle(section: string) {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1vh;
+  padding-bottom: 1.5vh;
   gap: 1vh;
-  margin: 1vw;
+  margin: 1vh 1.3vh;
 }
 
 .img_discount {
-  width: 20px;
+  width: 16px;
   height: 20px;
-  margin-right: 4px;
+  margin-right: 3px;
 }
 
 .btn {
@@ -257,8 +257,10 @@ function toggle(section: string) {
   padding: 1.5vh;
 }
 
-.btn_discount {
-  font-size: 1vw;
+@media (max-width: 1470px) {
+  .btn_discount{
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 1440px) {

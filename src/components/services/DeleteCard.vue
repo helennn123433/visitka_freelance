@@ -1,18 +1,24 @@
 <template>
-    <div class="modal-overlay">
-      <div class="modal">
-        <p>Подтвердите удаление услуги</p>
-        <div class="modal-buttons">
-          <MyButton @click="$emit('confirm')" class="delete-btn">
-            Подтвердить
-          </MyButton>
-          <MyButton @click="$emit('cancel')" class="cancel-btn">
-            Отмена
-          </MyButton>
-        </div>
+  <div class="modal-overlay">
+    <div class="modal">
+      <p>Подтвердите удаление услуги</p>
+      <div class="modal-buttons">
+        <MyButton
+          class="delete-btn"
+          @click="$emit('confirm')"
+        >
+          Подтвердить
+        </MyButton>
+        <MyButton
+          class="cancel-btn"
+          @click="$emit('cancel')"
+        >
+          Отмена
+        </MyButton>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
   <script setup lang="ts">
   import MyButton from '@/components/ui/MyButton.vue'; 

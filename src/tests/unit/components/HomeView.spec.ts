@@ -1,4 +1,5 @@
 import { mount, flushPromises } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
 import HomeView from '@/components/services/HomeView.vue';
 import CardComp from '@/components/services/CardComp.vue';
 
@@ -18,6 +19,7 @@ jest.mock('@/components/services/addDialog.vue', () => ({
     template: '<div>AddDialogStub</div>',
   },
 }));
+
 jest.mock('@/components/ui/MyButton.vue', () => ({
   __esModule: true,
   default: {
@@ -35,21 +37,23 @@ describe('HomeView.vue', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // мок стора поиска
     require('@/store/searchingStore').useSearchingStore.mockReturnValue({
       images: mockImages,
       filteredImages: mockImages,
       fetchServices: mockFetchServices,
     });
 
-    // мок авторизации
     require('@/store/authStore').useAuthStore.mockReturnValue({
       isAuthenticated: true,
     });
   });
 
   it('загружает и отображает карточки при монтировании', async () => {
-    const wrapper = mount(HomeView);
+    const wrapper = mount(HomeView, {
+      global: {
+        plugins: [createTestingPinia()],
+      },
+    });
 
     await flushPromises();
 
@@ -67,7 +71,12 @@ describe('HomeView.vue', () => {
       isAuthenticated: false,
     });
 
-    const wrapper = mount(HomeView);
+    const wrapper = mount(HomeView, {
+      global: {
+        plugins: [createTestingPinia()],
+      },
+    });
+
     await flushPromises();
 
     expect(wrapper.find('button').exists()).toBe(false);

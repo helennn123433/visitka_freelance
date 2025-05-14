@@ -36,9 +36,10 @@ import CardComp from "@/components/services/CardComp.vue";
 import MyButton from "@/components/ui/MyButton.vue";
 import AddDialog from "@/components/services/addDialog.vue";
 
+const isDialogOpen = ref(false);
+
 const searchStore = useSearchingStore();
 const authStore = useAuthStore();
-const isDialogOpen = ref(false);
 
 const maxId = computed(() => {
   if (searchStore.images.length === 0) return 0;

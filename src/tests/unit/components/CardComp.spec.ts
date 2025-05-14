@@ -4,9 +4,9 @@ import CardComp from '@/components/services/CardComp.vue';
 
 describe('CardComp.vue', () => {
   const image = {
-    id: 1,
+    id: '1',
     title: 'Тестовая услуга',
-    price: '1000',
+    price: 1000,
     image: 'test.jpg'
   };
 
@@ -32,8 +32,11 @@ describe('CardComp.vue', () => {
   });
 
   afterEach(() => {
-    wrapper.unmount();
+    if (wrapper) {
+      wrapper.unmount();
+    }
   });
+
 
   it('рендерит заголовок и цену', () => {
     expect(wrapper.text()).toContain(`от ${image.price} Р/час`);

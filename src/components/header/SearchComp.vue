@@ -6,15 +6,21 @@
       class="search-icon"
     >
     <input
+      v-model="searchStore.searchInput"
       type="text"
       placeholder="Найти..."
       class="search-input"
+      @input="handleInput"
     >
   </div>
 </template>
+
 <script setup lang="ts">
-  
+import { useSearchingStore } from "@/store/searchingStore";
+
+const searchStore = useSearchingStore();
 </script>
+
 <style lang="scss" scoped>
 @import '../../styles/colors.scss'; 
   .search-container{

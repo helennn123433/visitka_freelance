@@ -1,52 +1,52 @@
 {
-    "services": [
-      {
-        "id": 1,
-        "title": "Веб-разработка",
-        "price": 50000,
-        "image": "https://via.placeholder.com/300x200?text=Web+Development"
-      },
-      {
-        "id": 2,
-        "title": "UI/UX Дизайн",
-        "price": 40000,
-        "image": "https://via.placeholder.com/300x200?text=UI/UX+Design"
-      },
-      {
-        "id": 3,
-        "title": "Мобильная разработка",
-        "price": 60000,
-        "image": "https://via.placeholder.com/300x200?text=Mobile+App"
-      },
-      {
-        "id": 4,
-        "title": "Графический дизайн",
-        "price": 30000,
-        "image": "https://via.placeholder.com/300x200?text=Graphic+Design"
-      },
-      {
-        "id": 5,
-        "title": "SEO-оптимизация",
-        "price": 25000,
-        "image": "https://via.placeholder.com/300x200?text=SEO"
-      },
-      {
-        "id": 6,
-        "title": "Копирайтинг",
-        "price": 20000,
-        "image": "https://via.placeholder.com/300x200?text=Copywriting"
-      },
-      {
-        "id": 7,
-        "title": "3D Моделирование",
-        "price": 45000,
-        "image": "https://via.placeholder.com/300x200?text=3D+Modeling"
-      },
-      {
-        "id": 8,
-        "title": "SMM Продвижение",
-        "price": 35000,
-        "image": "https://via.placeholder.com/300x200?text=SMM"
-      }
-    ]
-  }
+  "services": [
+    {
+      "id": "1",
+      "title": "Веб-разработка",
+      "price": 50000,
+      "image": "https://avatars.mds.yandex.net/i?id=9c29de4d7c8431e0a99966cb2ab938a9e4b6fba3-8522161-images-thumbs&n=13"
+    },
+    {
+      "id": "2",
+      "title": "UI/UX Дизайн",
+      "price": 40000,
+      "image": "https://i.ytimg.com/vi/I0JtD7hxdds/maxresdefault.jpg"
+    },
+    {
+      "id": "3",
+      "title": "Мобильная разработка",
+      "price": 60000,
+      "image": "https://avatars.mds.yandex.net/i?id=6adfc3b38f261cf6f55babcbdfca603596bb2fa5-4612626-images-thumbs&n=13"
+    },
+    {
+      "id": "4",
+      "title": "Графический дизайн",
+      "price": 30000,
+      "image": "https://avatars.mds.yandex.net/i?id=8cf4526926eb2a43fba77298842822510fc5aa4d-7664017-images-thumbs&n=13"
+    },
+    {
+      "id": "5",
+      "title": "SEO-оптимизация",
+      "price": 25000,
+      "image": "https://avatars.mds.yandex.net/i?id=ec806c2691eeeb8fcf37218273a716ce0ee58dff-8981283-images-thumbs&n=13"
+    },
+    {
+      "id": "6",
+      "title": "Копирайтинг",
+      "price": 20000,
+      "image": "https://avatars.mds.yandex.net/i?id=232120f27e904b9a43ccd4aa6d941cd3635191f4-8324697-images-thumbs&n=13"
+    },
+    {
+      "id": "7",
+      "title": "3D Моделирование",
+      "price": 45000,
+      "image": "https://avatars.mds.yandex.net/i?id=ec806c2691eeeb8fcf37218273a716ce0ee58dff-8981283-images-thumbs&n=13"
+    },
+    {
+      "id": "8",
+      "title": "SMM Продвижение",
+      "price": 35000,
+      "image": "https://avatars.mds.yandex.net/i?id=232120f27e904b9a43ccd4aa6d941cd3635191f4-8324697-images-thumbs&n=13"
+    }
+  ]
+}

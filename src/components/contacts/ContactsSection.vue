@@ -39,7 +39,6 @@ import { contacts } from '@/data/contacts'
 
 .contacts__description {
   font-size: clamp(0.875rem, 2.5vw, 1rem);
-  line-height: 1.6;
   margin-bottom: 2rem;
 }
 

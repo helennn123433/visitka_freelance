@@ -87,9 +87,8 @@ const handleResize = () => {
   }
 }
 
-function scrollToSection(id: string) {
+const scrollToSection = (id: string) => {
   activeSection.value = id
-  console.log('Setting activeSection to:', id)
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
 }
 
@@ -146,7 +145,6 @@ onUnmounted(() => {
 }
 
 .section {
-  // min-height: 100vh;
   margin: 1.5vw 1.5vw 0 1.5vw;
   box-sizing: border-box;
   scroll-margin-top: 5vh;
@@ -207,6 +205,12 @@ onUnmounted(() => {
     box-shadow: none;
   }
 
+  .section#info,
+  .section#email{
+    border: none;
+    border-radius: 0;
+    box-shadow:none;
+  }
 }
 
 @media (max-width: 400px) {

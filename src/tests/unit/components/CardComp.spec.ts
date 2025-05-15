@@ -1,11 +1,12 @@
 import { mount } from '@vue/test-utils';
+import { createTestingPinia } from '@pinia/testing';
 import CardComp from '@/components/services/CardComp.vue';
 
 describe('CardComp.vue', () => {
   const image = {
-    id: 1,
+    id: '1',
     title: 'Тестовая услуга',
-    price: '1000',
+    price: 1000,
     image: 'test.jpg'
   };
 
@@ -15,13 +16,27 @@ describe('CardComp.vue', () => {
     wrapper = mount(CardComp, {
       props: {
         image
+      },
+      global: {
+        plugins: [createTestingPinia({
+          stubActions: false,
+          createSpy: jest.fn, 
+          initialState: {
+            authStore: {
+              isAuthenticated: true
+            }
+          }
+        })]
       }
     });
   });
 
   afterEach(() => {
-    wrapper.unmount();
+    if (wrapper) {
+      wrapper.unmount();
+    }
   });
+
 
   it('рендерит заголовок и цену', () => {
     expect(wrapper.text()).toContain(`от ${image.price} Р/час`);
@@ -34,7 +49,3 @@ describe('CardComp.vue', () => {
     expect(img.attributes('src')).toBe(image.image);
   });
 });
-
-
-
-

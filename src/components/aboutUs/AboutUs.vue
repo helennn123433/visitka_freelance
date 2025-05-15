@@ -101,7 +101,7 @@ const stats = [
 .upperText {
   font-size: clamp(0.875rem, 2.5vw, 1rem);
   text-align: start;
-  line-height: 100%;
+  // line-height: 100%;
   letter-spacing: 0;
   font-weight: 500;
 }

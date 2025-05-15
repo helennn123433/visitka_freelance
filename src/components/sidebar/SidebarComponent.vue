@@ -84,13 +84,6 @@ const handleResize = () => {
   isMobile.value = window.innerWidth < 768
   Show.value = !!isMobile.value;
 }
-onMounted(() => {
-  Show.value = !!isMobile.value;
-  window.addEventListener('resize', handleResize)
-})
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
-})
 
 const props = defineProps<{ activeIcon: string }>()
 
@@ -98,10 +91,17 @@ const activeIcon = toRef(props, 'activeIcon')
 
 const emit = defineEmits(['icon-click', 'close'] as const)
 
-function toggle(section: string) {
-  console.log('Clicked section:', section)
+const toggle = (section: string) => {
   emit('icon-click', section)
 }
+
+onMounted(() => {
+  Show.value = !!isMobile.value;
+  window.addEventListener('resize', handleResize)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 </script>
 
 <style scoped>
@@ -171,7 +171,7 @@ function toggle(section: string) {
   max-width: 30vh;
   min-width: 8vh;
   background-color: white;
-  border-radius: 3vw;
+  border-radius: 32px;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
 }
 

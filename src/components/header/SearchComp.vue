@@ -28,7 +28,8 @@ const searchStore = useSearchingStore();
     width: 70%;
     margin-right: 1vw;
     input{
-      font-size: 1.3vw;
+      font-size: 14px;
+      font-weight: 400;
     }
   }
   .search-input {
@@ -46,26 +47,26 @@ const searchStore = useSearchingStore();
     position: absolute;
     left: 1.5vw;
     top: 50%;
-    width: 2vw;
+    width: 18px;
     transform: translateY(-50%);
     cursor: pointer;
   }
 
   @media(min-width: 1400px){
     .search-input {
-      padding: 20px 20px 20px 70px;
+      padding: 20px 20px 20px 52px;
     }
   }
 
   @media(min-width: 1700px){
     .search-input {
-      padding: 25px 25px 25px 90px;
+      padding: 25px 25px 25px 57px;
     }
   }
 
   @media(min-width: 2000px){
     .search-input {
-      padding: 30px 30px 30px 110px;
+      padding: 30px 30px 30px 63px;
     }
   }
 

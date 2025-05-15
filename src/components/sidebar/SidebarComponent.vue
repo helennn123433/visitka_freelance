@@ -297,6 +297,12 @@ onUnmounted(() => {
   }
 }
 
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .main{
+    margin: 0;
+  }
+}
+
 @media (max-width: 480px) {
   .img_plz {
     /*display: none;*/

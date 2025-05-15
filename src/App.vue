@@ -146,7 +146,7 @@ onUnmounted(() => {
 }
 
 .section {
-  min-height: 100vh;
+  // min-height: 100vh;
   margin: 1.5vw 1.5vw 0 1.5vw;
   box-sizing: border-box;
   scroll-margin-top: 5vh;

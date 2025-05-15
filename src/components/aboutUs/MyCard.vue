@@ -35,12 +35,13 @@ defineProps({
 
 @media (max-width: 480px) {
   .bigText {
-    font-size: 2.8rem;
-    margin-bottom: 0.8rem;
+    font-size: 36px;
+    text-align: left;
   }
   .lowText {
-    font-size: 1rem;
+    font-size: 14px;
     line-height: 1.3;
+    text-align: left;
   }
 }
 </style>

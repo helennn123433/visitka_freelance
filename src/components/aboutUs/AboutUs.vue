@@ -140,8 +140,15 @@ const stats = [
 
 @media (max-width: 480px) {
   .middleText {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+    padding: 10px;
+  }
+}
+
+@media screen and (min-width: 879px) and (max-width: 1075px) {
+  .middleText{
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
   }
 }
 </style>

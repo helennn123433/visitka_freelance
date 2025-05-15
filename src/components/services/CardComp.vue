@@ -49,11 +49,11 @@ import { useAuthStore } from "@/store/authStore";
 import DeleteCard from '@/components/services/DeleteCard.vue';
 import EditCard from "@/components/services/EditCard.vue";
 
-const authStore = useAuthStore()
-  
 const props = defineProps<{
-  image: { id: number; title: string; price: string; image: string; };
+  image: { id: string; title: string; price: number; image: string; };
 }>();
+
+const authStore = useAuthStore()
 
 const emit = defineEmits(['updated'])  
 

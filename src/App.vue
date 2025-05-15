@@ -249,4 +249,10 @@ onUnmounted(() => {
   backdrop-filter: blur(6px);
   z-index: 999;
 }
+
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+  .sidebar{
+    padding: 1.5vw;
+  }
+}
 </style>

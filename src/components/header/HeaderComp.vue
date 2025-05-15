@@ -60,4 +60,11 @@ import ButtonsComp from "@/components/header/ButtonsComp.vue";
     }
   }
 }
+
+  @media(max-width: 768px){
+    .header{
+      padding: 0 16px;
+      width: auto;
+    }
+  }
 </style>

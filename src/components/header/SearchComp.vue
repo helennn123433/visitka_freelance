@@ -72,17 +72,22 @@ const searchStore = useSearchingStore();
 
   @media(max-width: 1000px){
     .search-input {
-      padding: 12px 12px 12px 50px;
+      padding: 12px 12px 12px 40px;
     }
   }
 
   @media(max-width: 768px){
-    .header{
-      width: 100%;
-    }
     .search-container{
       width: 100%;
       margin: 0;
+      input{
+        font-size: 14px;
+        font-weight: 400;
+        height: 45px;
+      }
+    }
+    .search-icon{
+      width: 13px;
     }
   }
 
@@ -96,9 +101,6 @@ const searchStore = useSearchingStore();
     .search-container{
       width: 100%;
       margin-right: 0;
-      input{
-        font-size: 2vw;
-      }
     }
     .search-input {
       border-radius: 20px;

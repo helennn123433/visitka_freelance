@@ -129,9 +129,12 @@ const stats = [
 
 @media (max-width: 767px) {
     .container {
-      padding: 0;
+      padding: 16px;
       border: none;
       border-radius: 0;
+    }
+    .upperText{
+      font-weight: 400;
     }
   }
 

@@ -121,4 +121,19 @@ const checkAuth = () => {
   width: 40%;
   padding: 5px;
 }
+
+@media screen and (max-width: 767px) {
+  .auth-model{
+    &__card{
+      width: 40%;
+    }
+  }
+}
+@media screen and (max-width: 425px) {
+  .auth-model{
+    &__card{
+      width: 50%;
+    }
+  }
+}
 </style>

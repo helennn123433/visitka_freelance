@@ -166,7 +166,7 @@ function toggle(section: string) {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 30vw;
+  width: 256px;
   height: 93vh;
   max-width: 30vh;
   min-width: 8vh;
@@ -208,11 +208,12 @@ function toggle(section: string) {
   justify-content: center;
   align-items: center;
   width: 100%;
+  height: 48px;
   padding: 1.7vh 0.5vw;
   background-color: #0652ff;
   border: 0 solid white;
   color: #ffffff;
-  border-radius: 20px;
+  border-radius: 32px;
   text-align: center;
   cursor: pointer;
   white-space: nowrap;
@@ -228,7 +229,7 @@ function toggle(section: string) {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: 1.5vh;
+  padding-bottom: 0.5vh;
   gap: 1vh;
   margin: 1vh 1.3vh;
 }
@@ -236,7 +237,7 @@ function toggle(section: string) {
 .img_discount {
   width: 16px;
   height: 20px;
-  margin-right: 3px;
+  margin-right: 6px;
 }
 
 .btn {
@@ -246,7 +247,7 @@ function toggle(section: string) {
 
 @media (max-width: 1470px) {
   .btn_discount{
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 

@@ -171,7 +171,7 @@ function toggle(section: string) {
   max-width: 30vh;
   min-width: 8vh;
   background-color: white;
-  border-radius: 3vw;
+  border-radius: 32px;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
 }
 

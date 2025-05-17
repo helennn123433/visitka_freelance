@@ -44,7 +44,7 @@
         обсудить ваши идеи и узнать, как мы можем помочь их реализовать.
       </p>
     </div>
-    <my-button class="btn">
+    <my-button class="btn" @click="scrollToContacts">
       Задать вопрос
     </my-button>
   </div>
@@ -64,6 +64,12 @@ const stats = [
   { id: 3, upper: '35', lower: 'ПРОЕКТОВ' },
   { id: 4, upper: '46', lower: 'НАПРАВЛЕНИЙ' },
 ]
+
+const emit = defineEmits(['navigate'])
+
+const scrollToContacts = () => {
+  emit('navigate', 'email')
+}
 </script>
 
 <style lang="scss" scoped>

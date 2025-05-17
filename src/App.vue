@@ -35,7 +35,7 @@
           </div>
         </header>
         <header-comp />
-        <AboutUs />
+        <AboutUs @navigate="handleNavigation" />
       </section>
       <section
         id="list"
@@ -94,6 +94,10 @@ const scrollToSection = (id: string) => {
     behavior: 'smooth',
     block: 'start'
   })
+}
+
+const handleNavigation = (sectionId: string) => {
+  scrollToSection(sectionId)
 }
 
 const initObserver = async () => {

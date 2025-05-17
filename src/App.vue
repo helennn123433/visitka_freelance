@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useAuthStore } from "@/store/authStore";
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
 import AboutUs from '@/components/aboutUs/AboutUs.vue'
@@ -68,6 +68,7 @@ const authStore = useAuthStore()
 const sectionIds = ['info', 'list', 'email'] as const
 const activeSection = ref<string>(sectionIds[0])
 const wrapper = ref<HTMLElement>()
+const observer = ref<IntersectionObserver>()
 
 const isOpen = ref(false)//
 const isMobile = ref(window.innerWidth < 768)//
@@ -89,32 +90,49 @@ const handleResize = () => {
 
 const scrollToSection = (id: string) => {
   activeSection.value = id
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  document.getElementById(id)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  })
 }
 
-onMounted(() => {
-  window.addEventListener('resize', handleResize)
-  const observer = new IntersectionObserver(
+const initObserver = async () => {
+  await nextTick()
+
+  if (observer.value) {
+    observer.value.disconnect()
+  }
+
+  observer.value = new IntersectionObserver(
     (entries) => {
-      entries.forEach((entry) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
           activeSection.value = entry.target.id
         }
       })
     },
     {
-      root: null, // Следим за viewport
+      root: wrapper.value,
       rootMargin: '0px',
-      threshold: 0.5,
-    },
+      threshold: 0.4
+    }
   )
-  sectionIds.forEach((id) => {
+
+  sectionIds.forEach(id => {
     const el = document.getElementById(id)
-    if (el) observer.observe(el)
+    if (el) {
+      observer.value?.observe(el)
+    }
   })
+}
+
+onMounted(() => {
+  initObserver()
+  window.addEventListener('resize', handleResize)
 })
 
 onUnmounted(() => {
+  observer.value?.disconnect()
   window.removeEventListener('resize', handleResize)
 })
 </script>

@@ -59,7 +59,7 @@
       </div>
       <div class="btn_bottom">
         <ButtonsComp v-if="Show" />
-        <MyButton class="btn_discount">
+        <MyButton class="btn_discount" @click="handleDiscountClick">
           <img
             class="img_discount"
             :src="Icons.Light"
@@ -93,6 +93,11 @@ const emit = defineEmits(['icon-click', 'close'] as const)
 
 const toggle = (section: string) => {
   emit('icon-click', section)
+}
+
+const handleDiscountClick = () => {
+  emit('icon-click', 'email')
+  emit('close') // Закрываем сайдбар на мобильных устройствах 
 }
 
 onMounted(() => {

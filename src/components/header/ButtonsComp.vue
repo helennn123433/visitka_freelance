@@ -1,32 +1,41 @@
 <template>
-      <div class="header-buttons">
-        <img
-          :src="Icons.Account"
-          alt="Иконка телефона"
-          class="icon account-icon"
-          @click="authStore.changeAdminModel"
-        >
-        <img
-          :src="Icons.Phone"
-          alt="Иконка телефона"
-          class="icon phone-icon"
-        >
-        <img
-          :src="Icons.Telegram"
-          alt="Иконка телеграма"
-          class="icon"
-        >
-        <img
-          :src="Icons.Email"
-          alt="Иконка почты"
-          class="icon"
-        >
-      </div>
-  </template>
+  <div class="header-buttons">
+    <my-button
+      v-if="authStore.isAuthenticated"
+      class="auth-button"
+      @click="authStore.logout"
+    >
+      Выйти
+    </my-button>
+    <img
+      v-else
+      :src="Icons.Account"
+      alt="Иконка телефона"
+      class="icon account-icon"
+      @click="authStore.changeAdminModel"
+    >
+    <img
+      :src="Icons.Phone"
+      alt="Иконка телефона"
+      class="icon phone-icon"
+    >
+    <img
+      :src="Icons.Telegram"
+      alt="Иконка телеграма"
+      class="icon"
+    >
+    <img
+      :src="Icons.Email"
+      alt="Иконка почты"
+      class="icon"
+    >
+  </div>
+</template>
   
   <script setup lang="ts" >
     import { Icons } from "@/assets/img/Icons";
     import {useAuthStore} from "@/store/authStore";
+    import MyButton from "@/components/ui/MyButton.vue";
     const authStore = useAuthStore()
   </script>
   
@@ -49,6 +58,10 @@
         width: 2.5vw; 
       }
     }
+  }
+  .auth-button{
+    width: 90px;
+    height: 50px;
   }
 
   @media (max-width: 768px) {

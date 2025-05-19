@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
-import Contacts from '@/components/Contacts.vue'
-import ContactCard from '@/components/ContactCard.vue'
+import ContactsSection from '@/components/contacts/ContactsSection.vue'
+import ContactCard from '@/components/contacts/ContactCard.vue'
 
 jest.mock('@/data/contacts', () => ({
   contacts: [
@@ -23,7 +23,7 @@ describe('Contacts.vue', () => {
   let wrapper: ReturnType<typeof mount>
 
   beforeEach(() => {
-    wrapper = mount(Contacts)
+    wrapper = mount(ContactsSection)
   })
 
   it('корректно отображает заголовок и описание', () => {

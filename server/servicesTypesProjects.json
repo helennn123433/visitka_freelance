@@ -1,0 +1,571 @@
+{
+    "servicesTypesProjects": [
+        {
+            "id": 1,
+            "types":[
+                {
+                    "id": 101,
+                    "title": "Логотипы",
+                    "image": "https://avatars.mds.yandex.net/i?id=9c29de4d7c8431e0a99966cb2ab938a9e4b6fba3-8522161-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 101001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 101002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 101003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                },
+                {
+                    "id": 102,
+                    "title": "Фирменный стиль",
+                    "image": "https://i.ytimg.com/vi/I0JtD7hxdds/maxresdefault.jpg",
+                    "examples": [
+                        { "id": 102001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 102002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 102003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 103,
+                    "title": "Буклеты",
+                    "image": "https://avatars.mds.yandex.net/i?id=6adfc3b38f261cf6f55babcbdfca603596bb2fa5-4612626-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 103001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 103002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 103003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 104,
+                    "title": "Презентации",
+                    "image": "https://avatars.mds.yandex.net/i?id=8cf4526926eb2a43fba77298842822510fc5aa4d-7664017-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 104001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 104002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 104003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 105,
+                    "title": "ИИ",
+                    "image": "https://avatars.mds.yandex.net/i?id=ec806c2691eeeb8fcf37218273a716ce0ee58dff-8981283-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 105001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 105002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 105003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 106,
+                    "title": "Аналитика",
+                    "image": "https://avatars.mds.yandex.net/i?id=232120f27e904b9a43ccd4aa6d941cd3635191f4-8324697-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 106001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 106002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 106003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "types":[
+                {
+                    "id": 201,
+                    "title": "Логотипы",
+                    "image": "https://avatars.mds.yandex.net/i?id=9c29de4d7c8431e0a99966cb2ab938a9e4b6fba3-8522161-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 201001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 201002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 201003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 202,
+                    "title": "Фирменный стиль",
+                    "image": "https://i.ytimg.com/vi/I0JtD7hxdds/maxresdefault.jpg",
+                    "examples": [
+                        { "id": 202001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 202002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 202003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 203,
+                    "title": "Буклеты",
+                    "image": "https://avatars.mds.yandex.net/i?id=6adfc3b38f261cf6f55babcbdfca603596bb2fa5-4612626-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 203001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 203002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 203003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 204,
+                    "title": "Презентации",
+                    "image": "https://avatars.mds.yandex.net/i?id=8cf4526926eb2a43fba77298842822510fc5aa4d-7664017-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 204001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 204002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 204003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 205,
+                    "title": "ИИ",
+                    "image": "https://avatars.mds.yandex.net/i?id=ec806c2691eeeb8fcf37218273a716ce0ee58dff-8981283-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 205001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 205002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 205003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 206,
+                    "title": "Аналитика",
+                    "image": "https://avatars.mds.yandex.net/i?id=232120f27e904b9a43ccd4aa6d941cd3635191f4-8324697-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 206001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 206002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 206003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "types":[
+                {
+                    "id": 301,
+                    "title": "Логотипы",
+                    "image": "https://avatars.mds.yandex.net/i?id=9c29de4d7c8431e0a99966cb2ab938a9e4b6fba3-8522161-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 301001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 301002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 301003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 302,
+                    "title": "Фирменный стиль",
+                    "image": "https://i.ytimg.com/vi/I0JtD7hxdds/maxresdefault.jpg",
+                    "examples": [
+                        { "id": 302001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 302002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 302003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 303,
+                    "title": "Буклеты",
+                    "image": "https://avatars.mds.yandex.net/i?id=6adfc3b38f261cf6f55babcbdfca603596bb2fa5-4612626-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 303001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 303002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 303003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 304,
+                    "title": "Презентации",
+                    "image": "https://avatars.mds.yandex.net/i?id=8cf4526926eb2a43fba77298842822510fc5aa4d-7664017-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 304001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 304002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 304003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 305,
+                    "title": "ИИ",
+                    "image": "https://avatars.mds.yandex.net/i?id=ec806c2691eeeb8fcf37218273a716ce0ee58dff-8981283-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 305001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 305002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 305003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 306,
+                    "title": "Аналитика",
+                    "image": "https://avatars.mds.yandex.net/i?id=232120f27e904b9a43ccd4aa6d941cd3635191f4-8324697-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 306001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 306002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 306003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "types":[
+                {
+                    "id": 401,
+                    "title": "Логотипы",
+                    "image": "https://avatars.mds.yandex.net/i?id=9c29de4d7c8431e0a99966cb2ab938a9e4b6fba3-8522161-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 401001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 401002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 401003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 402,
+                    "title": "Фирменный стиль",
+                    "image": "https://i.ytimg.com/vi/I0JtD7hxdds/maxresdefault.jpg",
+                    "examples": [
+                        { "id": 402001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 402002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 402003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 403,
+                    "title": "Буклеты",
+                    "image": "https://avatars.mds.yandex.net/i?id=6adfc3b38f261cf6f55babcbdfca603596bb2fa5-4612626-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 403001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 403002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 403003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 404,
+                    "title": "Презентации",
+                    "image": "https://avatars.mds.yandex.net/i?id=8cf4526926eb2a43fba77298842822510fc5aa4d-7664017-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 404001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 404002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 404003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 405,
+                    "title": "ИИ",
+                    "image": "https://avatars.mds.yandex.net/i?id=ec806c2691eeeb8fcf37218273a716ce0ee58dff-8981283-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 405001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 405002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 405003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 406,
+                    "title": "Аналитика",
+                    "image": "https://avatars.mds.yandex.net/i?id=232120f27e904b9a43ccd4aa6d941cd3635191f4-8324697-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 406001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 406002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 406003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "types":[
+                {
+                    "id": 501,
+                    "title": "Логотипы",
+                    "image": "https://avatars.mds.yandex.net/i?id=9c29de4d7c8431e0a99966cb2ab938a9e4b6fba3-8522161-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 501001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 501002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 501003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 502,
+                    "title": "Фирменный стиль",
+                    "image": "https://i.ytimg.com/vi/I0JtD7hxdds/maxresdefault.jpg",
+                    "examples": [
+                        { "id": 502001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 502002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 502003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 503,
+                    "title": "Буклеты",
+                    "image": "https://avatars.mds.yandex.net/i?id=6adfc3b38f261cf6f55babcbdfca603596bb2fa5-4612626-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 503001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 503002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 503003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 504,
+                    "title": "Презентации",
+                    "image": "https://avatars.mds.yandex.net/i?id=8cf4526926eb2a43fba77298842822510fc5aa4d-7664017-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 504001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 504002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 504003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 505,
+                    "title": "ИИ",
+                    "image": "https://avatars.mds.yandex.net/i?id=ec806c2691eeeb8fcf37218273a716ce0ee58dff-8981283-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 505001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 505002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 505003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 506,
+                    "title": "Аналитика",
+                    "image": "https://avatars.mds.yandex.net/i?id=232120f27e904b9a43ccd4aa6d941cd3635191f4-8324697-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 506001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 506002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 506003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "types":[
+                {
+                    "id": 601,
+                    "title": "Логотипы",
+                    "image": "https://avatars.mds.yandex.net/i?id=9c29de4d7c8431e0a99966cb2ab938a9e4b6fba3-8522161-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 601001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 601002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 601003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 602,
+                    "title": "Фирменный стиль",
+                    "image": "https://i.ytimg.com/vi/I0JtD7hxdds/maxresdefault.jpg",
+                    "examples": [
+                        { "id": 602001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 602002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 602003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 603,
+                    "title": "Буклеты",
+                    "image": "https://avatars.mds.yandex.net/i?id=6adfc3b38f261cf6f55babcbdfca603596bb2fa5-4612626-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 603001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 603002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 603003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 604,
+                    "title": "Презентации",
+                    "image": "https://avatars.mds.yandex.net/i?id=8cf4526926eb2a43fba77298842822510fc5aa4d-7664017-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 604001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 604002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 604003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 605,
+                    "title": "ИИ",
+                    "image": "https://avatars.mds.yandex.net/i?id=ec806c2691eeeb8fcf37218273a716ce0ee58dff-8981283-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 605001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 605002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 605003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 606,
+                    "title": "Аналитика",
+                    "image": "https://avatars.mds.yandex.net/i?id=232120f27e904b9a43ccd4aa6d941cd3635191f4-8324697-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 606001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 606002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 606003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "types":[
+                {
+                    "id": 701,
+                    "title": "Логотипы",
+                    "image": "https://avatars.mds.yandex.net/i?id=9c29de4d7c8431e0a99966cb2ab938a9e4b6fba3-8522161-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 701001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 701002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 701003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 702,
+                    "title": "Фирменный стиль",
+                    "image": "https://i.ytimg.com/vi/I0JtD7hxdds/maxresdefault.jpg",
+                    "examples": [
+                        { "id": 702001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 702002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 702003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 703,
+                    "title": "Буклеты",
+                    "image": "https://avatars.mds.yandex.net/i?id=6adfc3b38f261cf6f55babcbdfca603596bb2fa5-4612626-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 703001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 703002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 703003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 704,
+                    "title": "Презентации",
+                    "image": "https://avatars.mds.yandex.net/i?id=8cf4526926eb2a43fba77298842822510fc5aa4d-7664017-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 704001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 704002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 704003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 705,
+                    "title": "ИИ",
+                    "image": "https://avatars.mds.yandex.net/i?id=ec806c2691eeeb8fcf37218273a716ce0ee58dff-8981283-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 705001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 705002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 705003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 706,
+                    "title": "Аналитика",
+                    "image": "https://avatars.mds.yandex.net/i?id=232120f27e904b9a43ccd4aa6d941cd3635191f4-8324697-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 706001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 706002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 706003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "types":[
+                {
+                    "id": 801,
+                    "title": "Логотипы",
+                    "image": "https://avatars.mds.yandex.net/i?id=9c29de4d7c8431e0a99966cb2ab938a9e4b6fba3-8522161-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 801001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 801002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 801003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 802,
+                    "title": "Фирменный стиль",
+                    "image": "https://i.ytimg.com/vi/I0JtD7hxdds/maxresdefault.jpg",
+                    "examples": [
+                        { "id": 802001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 802002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 802003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 803,
+                    "title": "Буклеты",
+                    "image": "https://avatars.mds.yandex.net/i?id=6adfc3b38f261cf6f55babcbdfca603596bb2fa5-4612626-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 803001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 803002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 803003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 804,
+                    "title": "Презентации",
+                    "image": "https://avatars.mds.yandex.net/i?id=8cf4526926eb2a43fba77298842822510fc5aa4d-7664017-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 804001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 804002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 804003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 805,
+                    "title": "ИИ",
+                    "image": "https://avatars.mds.yandex.net/i?id=ec806c2691eeeb8fcf37218273a716ce0ee58dff-8981283-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 805001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 805002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 805003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                },
+                {
+                    "id": 806,
+                    "title": "Аналитика",
+                    "image": "https://avatars.mds.yandex.net/i?id=232120f27e904b9a43ccd4aa6d941cd3635191f4-8324697-images-thumbs&n=13",
+                    "examples": [
+                        { "id": 806001, "image": "https://i.pinimg.com/originals/0c/a0/9f/0ca09ff5bc3796c4b97b8177052d05d5.jpg" },
+                        { "id": 806002, "image": "https://avatars.mds.yandex.net/i?id=729ad9e1c19823b1c45c8d260b9f2873_l-5235063-images-thumbs&n=13" },
+                        { "id": 806003, "image": "https://i.pinimg.com/736x/c0/57/98/c057982f59cbde628857443156004a4d.jpg" }    
+                    ]
+                
+                }
+            ]
+        }
+    ]
+}

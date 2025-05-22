@@ -1,10 +1,9 @@
 <template>
   <AuthModel v-if="authStore.openAdmin" />
-  <div
-    class="main__app"
-  >
+  <div class="main__app">
     <SidebarComponent
-      :activeIcon="activeSection"
+      ref="sidebar"
+      :active-icon="activeSection"
       class="sidebar"
       :class="{ 
         'mobile-open': isMobile && isOpen,
@@ -14,64 +13,66 @@
       @close="closeSidebar"
     />
 
-    <!--Размытие фона-->
+    <!-- Размытие фона -->
     <div
       v-if="isMobile && isOpen"
       class="overlay"
       @click="closeSidebar"
-    ></div>
+    />
 
-    <!-- В этом контейнере все «полноэкранные» разделы -->
-    <div class="all__staff" ref="wrapper">
-      <section id="info" class="section">
+    <div
+      ref="wrapper"
+      class="all__staff"
+    >
+      <section
+        id="heder"
+        class="section"
+      >
         <!-- Хедер для телефонного размера -->
         <header class="mobile-header">
-          <button @click="toggleSidebar" class="burger-btn">
+          <button
+            class="burger-btn"
+            @click="toggleSidebar"
+          >
             &#9776;
           </button>
           <!-- Логотип -->
           <div class="logo__main">
-            <img class="img_n31" src="@/assets/img/icons/H31.svg" alt="Logo_H31" />
+            <img
+              class="img_n31"
+              src="@/assets/img/icons/H31.svg"
+              alt="Logo_H31"
+            >
           </div>
         </header>
-        <header-comp />
-        <AboutUs @navigate="handleNavigation" />
-      </section>
-      <section
-        id="list"
-        class="section"
-      >
-        <HomeView />
-      </section>
-      <section
-        id="email"
-        class="section"
-      >
-        <ContactsSection />
+        <HeaderComp />
+        <router-view
+          v-slot="{ Component }"
+        >
+          <component
+            :is="Component"
+            ref="homePage"
+            @navigate="handleNavigation"
+          />
+        </router-view>
       </section>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from "@/store/authStore";
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
-import AboutUs from '@/components/aboutUs/AboutUs.vue'
-import HomeView from '@/components/services/HomeView.vue'
-import HeaderComp from '@/components/header/HeaderComp.vue'
-import ContactsSection from '@/components/contacts/ContactsSection.vue'
 import AuthModel from "@/components/AuthModel/AuthModel.vue";
+import HeaderComp from '@/components/header/HeaderComp.vue'
 
 const authStore = useAuthStore()
+const homePage = ref()
 
-const sectionIds = ['info', 'list', 'email'] as const
-const activeSection = ref<string>(sectionIds[0])
-const wrapper = ref<HTMLElement>()
-const observer = ref<IntersectionObserver>()
-
-const isOpen = ref(false)//
-const isMobile = ref(window.innerWidth < 768)//
+const isOpen = ref(false)
+const isMobile = ref(window.innerWidth < 768)
+const activeSection = ref('info')
 
 const toggleSidebar = () => {
   isOpen.value = !isOpen.value
@@ -84,76 +85,59 @@ const closeSidebar = () => {
 const handleResize = () => {
   isMobile.value = window.innerWidth < 768
   if (!isMobile.value) {
-    isOpen.value = false // скрываем overlay
+    isOpen.value = false
   }
 }
 
 const scrollToSection = (id: string) => {
   activeSection.value = id
-  document.getElementById(id)?.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  })
+  homePage.value?.scrollToSection(id)
 }
 
 const handleNavigation = (sectionId: string) => {
   scrollToSection(sectionId)
 }
 
-const initObserver = async () => {
-  await nextTick()
-
-  if (observer.value) {
-    observer.value.disconnect()
-  }
-
-  observer.value = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          activeSection.value = entry.target.id
-        }
-      })
-    },
-    {
-      root: wrapper.value,
-      rootMargin: '0px',
-      threshold: 0.4
-    }
-  )
-
-  sectionIds.forEach(id => {
-    const el = document.getElementById(id)
-    if (el) {
-      observer.value?.observe(el)
-    }
-  })
-}
-
 onMounted(() => {
-  initObserver()
   window.addEventListener('resize', handleResize)
 })
 
 onUnmounted(() => {
-  observer.value?.disconnect()
   window.removeEventListener('resize', handleResize)
+})
+
+defineExpose({
+  isOpen,
+  toggleSidebar,
+  closeSidebar
 })
 </script>
 
 <style lang="scss" scoped>
 @import './styles/colors.scss';
+
 .main__app {
   display: flex;
   height: 100vh;
   background-color: #eff0f2;
-  /*transition: margin-left 0.3s ease; */
 }
 
-@media (min-width: 768px) {
-  /*.main-content {
-    margin-left: 250px;
-  }*/
+.section {
+  margin: 1.5vw 1.5vw 0 1.5vw;
+  box-sizing: border-box;
+  scroll-margin-top: 5vh;
+}
+
+.section#heder {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5vw;
+  border: 2px solid #eff0f2;
+  border-radius: 3vw;
+  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  min-height: auto;
+  background: white;
 }
 
 .sidebar {
@@ -164,81 +148,6 @@ onUnmounted(() => {
 .all__staff {
   flex: 1;
   overflow-y: auto;
-}
-
-.section {
-  margin: 1.5vw 1.5vw 0 1.5vw;
-  box-sizing: border-box;
-  scroll-margin-top: 5vh;
-}
-
-.section#info,
-.section#email {
-  display: flex;
-  flex-direction: column;
-  /*padding: 1.5rem 2vw 1vw 1vw; */
-  padding: 1.5vw;
-  /*margin: 1.5vw 1.5vw 0 0.5vw;*/
-  border: 2px solid #eff0f2;
-  border-radius: 3vw;
-  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
-  box-sizing: border-box;
-  min-height: auto;
-  background: white;
-}
-
-
-/* Мобильные стили */
-@media (max-width: 767px) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    z-index: 1000;
-    transform: translateX(-130%);
-    width: 70vw !important;
-    max-width: 70vw !important;
-  }
-
-  .sidebar__main{
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  .sidebar.mobile-open {
-    transform: translateX(0);
-  }
-
-  .sidebar.mobile-hidden {
-    transform: translateX(-130%);
-  }
-
-  .main__app {
-    width: 100%;
-    padding:0;
-    margin: 0;
-    background-color: $white;
-  }
-  .section#info {
-    margin: 0;
-    border-radius: 0;
-    border: 0;
-    box-shadow: none;
-  }
-
-  .section#info,
-  .section#email{
-    border: none;
-    border-radius: 0;
-    box-shadow:none;
-  }
-}
-
-@media (max-width: 400px) {
-  .sidebar {
-    /*transform: translateX(-10%) !important;*/
-  }
 }
 
 /* Хедер только для мобилки */
@@ -264,8 +173,35 @@ onUnmounted(() => {
   cursor: pointer;
 }
 
-.logo__main{
+.logo__main {
   margin: 0 auto;
+}
+
+/* Мобильные стили */
+@media (max-width: 767px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1000;
+    transform: translateX(-130%);
+    width: 70vw !important;
+    max-width: 70vw !important;
+  }
+
+  .sidebar__main {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar.mobile-hidden {
+    transform: translateX(-130%);
+  }
 }
 
 .overlay {
@@ -277,7 +213,7 @@ onUnmounted(() => {
 }
 
 @media screen and (max-width: 1024px) and (min-width: 769px) {
-  .sidebar{
+  .sidebar {
     padding: 1.5vw;
   }
 }

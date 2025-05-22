@@ -23,6 +23,7 @@
         :key="image.id"
         :image="image"
         @updated="handleServiceUpdate"
+        @click="goToService(image)"
       />
     </div>
   </div>
@@ -30,14 +31,17 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
+import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/authStore";
 import { useSearchingStore } from "@/store/searchingStore";
 import CardComp from "@/components/services/CardComp.vue";
 import MyButton from "@/components/ui/MyButton.vue";
 import AddDialog from "@/components/services/addDialog.vue";
+import { type Image } from "@/interfaces/services/Image";
 
 const isDialogOpen = ref(false);
 
+const router = useRouter();
 const searchStore = useSearchingStore();
 const authStore = useAuthStore();
 
@@ -52,6 +56,14 @@ const toggleDialog = () => {
 
 const handleServiceUpdate = async () => {
   await searchStore.fetchServices();
+};
+
+const goToService = (service: Image) => {
+  router.push({
+    name: 'servicePage',
+    params: { id: service.id },
+    query: { title: service.title }
+  });
 };
 
 onMounted(() => {

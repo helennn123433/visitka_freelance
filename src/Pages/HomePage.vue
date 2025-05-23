@@ -108,7 +108,7 @@ defineExpose({
 }
 
 .section {
-  margin: 1.5vw 1.5vw 0 1.5vw;
+  margin-bottom: 1.5vw;
   box-sizing: border-box;
   scroll-margin-top: 5vh;
 }
@@ -118,12 +118,14 @@ defineExpose({
   display: flex;
   flex-direction: column;
   padding: 1.5vw;
-  border: 2px solid #eff0f2;
-  border-radius: 3vw;
-  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   min-height: auto;
   background: white;
+}
+
+.section#info{
+  border: 2px solid #eff0f2;
+  border-radius: 3vw;
 }
 
 /* Мобильные стили */

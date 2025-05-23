@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <div class="header">
+      <div>УСЛУГИ</div>
+    </div>
     <div
       v-if="authStore.isAuthenticated"
       class="container__header"
@@ -78,9 +81,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     background-color: $white;
-    border-radius: 3vw;
     padding: 1.5vw;
-    box-shadow: 0 4px 8px $grey;
 
     &__header{
       display: flex;
@@ -104,6 +105,18 @@ onMounted(() => {
     justify-content: space-between;
     align-content: space-between;
   }
+
+  .header {
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-start;
+  line-height: 100%;
+  width: 100%;
+  color: #0652ff;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 800;
+  padding-bottom: 16px;
+}
 
   @media (max-width: 767px) {
     .cards-field{

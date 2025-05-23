@@ -44,7 +44,10 @@
         обсудить ваши идеи и узнать, как мы можем помочь их реализовать.
       </p>
     </div>
-    <my-button class="btn" @click="scrollToContacts">
+    <my-button 
+      class="btn" 
+      @click="scrollToContacts"
+    >
       Задать вопрос
     </my-button>
   </div>
@@ -76,12 +79,8 @@ const scrollToContacts = () => {
 .container {
   display: flex;
   flex-direction: column;
-  padding: 1.5rem clamp(1rem, 5%, 3rem);
-  //padding: 1.5vw;
-  //margin: 0.5vw 0.5vw 0 1vw;
+  // padding: 1.5rem clamp(1rem, 5%, 3rem);
   gap: 16px;
-  border: 2px solid #eff0f2;
-  border-radius: 3vw;
   box-sizing: border-box;
   min-height: auto;
   text-align: center;

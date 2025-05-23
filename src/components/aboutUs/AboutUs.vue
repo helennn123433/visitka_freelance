@@ -1,4 +1,5 @@
 <template>
+  <EditModel v-if="editModal" />
   <div class="container">
     <div class="header">
       <div>О НАС</div>
@@ -10,12 +11,13 @@
           class="icon"
           :src="Icons.Pencil"
           alt="adminIcon"
+          @click="toggleEditModal"
         >
       </div>
     </div>
     <div class="upperText">
       <p>
-        Мы — молодая и амбициозная команда из 20 разработчиков, успешно работающая в сфере IT уже два года. За это время
+        Мы — молодая и амбициозная команда из {{ stats[1].upper }} разработчиков, успешно работающая в сфере IT уже два года. За это время
         мы реализовали множество проектов, охватывающих как мобильную разработку, так и веб-приложения, а также создали
         уникальные фирменные стили для различных компаний.
       </p>
@@ -44,7 +46,10 @@
         обсудить ваши идеи и узнать, как мы можем помочь их реализовать.
       </p>
     </div>
-    <my-button class="btn" @click="scrollToContacts">
+    <my-button
+      class="btn"
+      @click="scrollToContacts"
+    >
       Задать вопрос
     </my-button>
   </div>
@@ -53,10 +58,13 @@
 <script setup lang="ts">
 import MyButton from '@/components/ui/MyButton.vue'
 import MyCard from '@/components/aboutUs/MyCard.vue'
+import EditModel from "@/components/aboutUs/EditModel.vue";
 import { Icons } from "@/assets/img/Icons";
 import { useAuthStore } from "@/store/authStore";
+import { ref } from "vue";
 
 const authStore = useAuthStore()
+const editModal = ref<boolean>(false);
 
 const stats = [
   { id: 1, upper: '2', lower: 'ГОДА РАБОТЫ' },
@@ -70,6 +78,11 @@ const emit = defineEmits(['navigate'])
 const scrollToContacts = () => {
   emit('navigate', 'email')
 }
+
+const toggleEditModal = () => {
+  editModal.value = !editModal.value
+}
+
 </script>
 
 <style lang="scss" scoped>

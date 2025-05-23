@@ -1,5 +1,10 @@
 <template>
-  <EditModel v-if="editModal" />
+  <EditModel
+    v-if="editModal"
+    :stats="stats"
+    @update-state="handleStatsUpdate"
+    @close="editModal = false"
+  />
   <div class="container">
     <div class="header">
       <div>О НАС</div>
@@ -17,7 +22,8 @@
     </div>
     <div class="upperText">
       <p>
-        Мы — молодая и амбициозная команда из {{ stats[1].upper }} разработчиков, успешно работающая в сфере IT уже два года. За это время
+        Мы — молодая и амбициозная команда из {{ stats[1].upper }} разработчиков, успешно работающая в сфере IT уже два
+        года. За это время
         мы реализовали множество проектов, охватывающих как мобильную разработку, так и веб-приложения, а также создали
         уникальные фирменные стили для различных компаний.
       </p>
@@ -56,33 +62,37 @@
 </template>
 
 <script setup lang="ts">
-import MyButton from '@/components/ui/MyButton.vue'
-import MyCard from '@/components/aboutUs/MyCard.vue'
+import MyButton from "@/components/ui/MyButton.vue";
+import MyCard from "@/components/aboutUs/MyCard.vue";
 import EditModel from "@/components/aboutUs/EditModel.vue";
 import { Icons } from "@/assets/img/Icons";
 import { useAuthStore } from "@/store/authStore";
 import { ref } from "vue";
 
-const authStore = useAuthStore()
+const authStore = useAuthStore();
 const editModal = ref<boolean>(false);
 
-const stats = [
-  { id: 1, upper: '2', lower: 'ГОДА РАБОТЫ' },
-  { id: 2, upper: '20', lower: 'РАЗРАБОТЧИКОВ' },
-  { id: 3, upper: '35', lower: 'ПРОЕКТОВ' },
-  { id: 4, upper: '46', lower: 'НАПРАВЛЕНИЙ' },
-]
+let stats = [
+  { id: 1, upper: "2", lower: "ГОДА РАБОТЫ" },
+  { id: 2, upper: "20", lower: "РАЗРАБОТЧИКОВ" },
+  { id: 3, upper: "35", lower: "ПРОЕКТОВ" },
+  { id: 4, upper: "46", lower: "НАПРАВЛЕНИЙ" }
+];
 
-const emit = defineEmits(['navigate'])
-
-const scrollToContacts = () => {
-  emit('navigate', 'email')
-}
+const emit = defineEmits(["navigate"]);
 
 const toggleEditModal = () => {
-  editModal.value = !editModal.value
-}
+  editModal.value = !editModal.value;
+};
 
+const handleStatsUpdate = (updatedStats: typeof stats) => {
+  stats = updatedStats;
+  editModal.value = false;
+};
+
+const scrollToContacts = () => {
+  emit("navigate", "email");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -90,8 +100,6 @@ const toggleEditModal = () => {
   display: flex;
   flex-direction: column;
   padding: 1.5rem clamp(1rem, 5%, 3rem);
-  //padding: 1.5vw;
-  //margin: 0.5vw 0.5vw 0 1vw;
   gap: 16px;
   border: 2px solid #eff0f2;
   border-radius: 3vw;
@@ -112,6 +120,7 @@ const toggleEditModal = () => {
   font-weight: 800;
   margin-top: 1vh;
 }
+
 .icon {
   width: 30px;
   height: 30px;
@@ -120,7 +129,6 @@ const toggleEditModal = () => {
 .upperText {
   font-size: clamp(0.875rem, 2.5vw, 1rem);
   text-align: start;
-  // line-height: 100%;
   letter-spacing: 0;
   font-weight: 500;
 }
@@ -136,7 +144,7 @@ const toggleEditModal = () => {
 
 .btn {
   align-self: center;
-  padding: 1.5vh; 
+  padding: 1.5vh;
 }
 
 @media (max-width: 730px) {
@@ -147,15 +155,15 @@ const toggleEditModal = () => {
 }
 
 @media (max-width: 767px) {
-    .container {
-      padding: 16px;
-      border: none;
-      border-radius: 0;
-    }
-    .upperText{
-      font-weight: 400;
-    }
+  .container {
+    padding: 16px;
+    border: none;
+    border-radius: 0;
   }
+  .upperText {
+    font-weight: 400;
+  }
+}
 
 @media (max-width: 480px) {
   .middleText {
@@ -166,7 +174,7 @@ const toggleEditModal = () => {
 }
 
 @media screen and (min-width: 879px) and (max-width: 1075px) {
-  .middleText{
+  .middleText {
     grid-template-columns: repeat(2, minmax(150px, 1fr));
   }
 }

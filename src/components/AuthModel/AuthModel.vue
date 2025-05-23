@@ -38,10 +38,10 @@
 
 <script setup lang="ts">
 import MyButton from "@/components/ui/MyButton.vue";
-import {useAuthStore} from "@/store/authStore";
+import { useAuthStore } from "@/store/authStore";
 import { ref } from "vue";
 
-const authStore = useAuthStore()
+const authStore = useAuthStore();
 let login = ref<string>("");
 let password = ref<string>("");
 
@@ -49,16 +49,16 @@ const checkAuth = () => {
   if (login.value === "admin" || password.value === "admin") {
     authStore.login({ login: login.value, password: password.value });
     authStore.changeAdminModel();
-  } else if (login.value == "" || login.value == ""){
+  } else if (login.value == "" || login.value == "") {
     alert("введите данные"); // TODO внедрить уведобление
   } else {
-    alert("данные не верны") // TODO внедрить уведобление
+    alert("данные не верны"); // TODO внедрить уведобление
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.auth-model{
+.auth-model {
   position: fixed;
   top: 0;
   left: 0;
@@ -70,7 +70,7 @@ const checkAuth = () => {
   background: rgba(0, 0, 0, 0.5);
   z-index: 1002;
 
-  &__card{
+  &__card {
     display: flex;
     flex-direction: column;
     width: 20%;
@@ -79,7 +79,7 @@ const checkAuth = () => {
     box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
     padding: 10px;
 
-    &__title{
+    &__title {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -87,7 +87,7 @@ const checkAuth = () => {
       height: 100%;
     }
 
-    &__inputs{
+    &__inputs {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -96,7 +96,7 @@ const checkAuth = () => {
       height: 100%;
     }
 
-    &__btns{
+    &__btns {
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -107,7 +107,7 @@ const checkAuth = () => {
   }
 }
 
-.input{
+.input {
   width: 70%;
   height: 100%;
   margin: 5px;
@@ -118,22 +118,23 @@ const checkAuth = () => {
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
-.btn{
+.btn {
   height: 30%;
   width: 40%;
   padding: 5px;
 }
 
 @media screen and (max-width: 767px) {
-  .auth-model{
-    &__card{
+  .auth-model {
+    &__card {
       width: 40%;
     }
   }
 }
+
 @media screen and (max-width: 425px) {
-  .auth-model{
-    &__card{
+  .auth-model {
+    &__card {
       width: 50%;
     }
   }

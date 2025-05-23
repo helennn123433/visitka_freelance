@@ -5,7 +5,7 @@
         <h3>Авторизация</h3>
       </div>
       <div class="auth-model__card__inputs">
-        <input 
+        <input
           v-model="login"
           placeholder="логин"
           type="text"
@@ -19,7 +19,7 @@
         >
       </div>
       <div class="auth-model__card__btns">
-        <MyButton 
+        <MyButton
           class="btn"
           @click="authStore.changeAdminModel"
         >
@@ -45,14 +45,16 @@ const authStore = useAuthStore()
 let login = ref<string>("");
 let password = ref<string>("");
 
-//TODO может Логику if лучше потом вынести в стор
 const checkAuth = () => {
-  if(login.value === "admin" || password.value === "admin") {
-    authStore.login({login: login.value, password: password.value})
+  if (login.value === "admin" || password.value === "admin") {
+    authStore.login({ login: login.value, password: password.value });
     authStore.changeAdminModel();
+  } else if (login.value == "" || login.value == ""){
+    alert("введите данные"); // TODO внедрить уведобление
+  } else {
+    alert("данные не верны") // TODO внедрить уведобление
   }
-}
-
+};
 </script>
 
 <style lang="scss" scoped>

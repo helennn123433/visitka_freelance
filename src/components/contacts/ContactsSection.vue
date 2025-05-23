@@ -26,7 +26,6 @@ import { contacts } from '@/data/contacts'
 <style lang="scss" scoped>
 @import '../../styles/colors.scss';
 .contacts {
-  padding: 1vw;
   margin: 0;
   background-color: $white;
 }
@@ -40,6 +39,7 @@ import { contacts } from '@/data/contacts'
 .contacts__description {
   font-size: clamp(0.875rem, 2.5vw, 1rem);
   margin-bottom: 2rem;
+  font-weight: 500;
 }
 
 .contacts__list {

@@ -8,13 +8,13 @@
       id="info"
       class="section"
     >
-      <AboutUs @navigate="handleNavigation" />
+      <AboutUs />
     </section>
     <section
       id="list"
       class="section"
     >
-      <HomeView @loaded="handleLoaded"/>
+      <HomeView />
     </section>
     <section
       id="email"
@@ -35,12 +35,11 @@ defineProps({
   isSidebarOpen: Boolean
 })
 
-const emit = defineEmits(['navigate', 'section-change'])
+const emit = defineEmits([ 'section-change'])
 
 const sectionIds = ['info', 'list', 'email'] as const
 //const activeSection = ref<string>(sectionIds[0])
 const wrapper = ref<HTMLElement>()
-const sectionElements = ref<HTMLElement[]>([]);
 const observer = ref<IntersectionObserver>()
 
 const scrollToSection = (id: string) => {
@@ -50,41 +49,7 @@ const scrollToSection = (id: string) => {
   })
 }
 
-const handleNavigation = (sectionId: string) => {
-  scrollToSection(sectionId)
-  emit('navigate', sectionId)
-}
-
-const restartObserver = async () => {
-  await nextTick();
-  if (observer.value) observer.value.disconnect();
-  
-  observer.value = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.1) {
-          emit('section-change', entry.target.id);
-        }
-      });
-    },
-    {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.5 // Расширенные точки срабатывания
-    }
-  );
-
-  // Наблюдаем за актуальными элементами
-  sectionIds.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      observer.value?.observe(el);
-      sectionElements.value.push(el);
-    }
-  });
-};
-
-/*const initObserver = async () => {
+const initObserver = async () => {
   await nextTick()
 
   if (observer.value) {
@@ -114,26 +79,10 @@ const restartObserver = async () => {
   })
 }
 
-const handleLoaded = () => {
-  nextTick(() => {
-      initObserver()
-  })
-}*/
-const handleLoaded = () => {
-  restartObserver();
-  // Форсированная проверка через 100 мс
-  setTimeout(() => {
-    const listEl = document.getElementById('list');
-    if (listEl) {
-      const rect = listEl.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
-        emit('section-change', 'list');
-      }
-    }
-  }, 100);
-};
 
-onMounted(restartObserver)
+onMounted(() => {
+  initObserver()
+})
 
 onUnmounted(() => {
   observer.value?.disconnect()

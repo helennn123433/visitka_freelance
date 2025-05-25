@@ -47,7 +47,7 @@ const isDialogOpen = ref(false);
 const router = useRouter();
 const searchStore = useSearchingStore();
 const authStore = useAuthStore();
-const emit = defineEmits(['loaded']);
+const emit = defineEmits(['section-loaded']);
 
 
 const maxId = computed(() => {
@@ -62,13 +62,8 @@ const toggleDialog = () => {
 const handleServiceUpdate = async () => {
   await searchStore.fetchServices();
   await nextTick();
-  emit('loaded');
+  emit('section-loaded');
 };
-
-/*const confirmLoad = async () => {
-  await nextTick(); // убедимся, что DOM обновлён
-  emit('loaded');   // только теперь инициализируем observer
-};*/
 
 const goToService = (service: Image) => {
   router.push({
@@ -82,7 +77,7 @@ onMounted(async () => {
   await searchStore.fetchServices();
   await nextTick(); // дождитесь, пока DOM обновится
   console.log('загрузило')
-  emit('loaded');
+  emit('section-loaded');
 });
 </script>
 

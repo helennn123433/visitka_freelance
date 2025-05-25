@@ -8,7 +8,7 @@
       id="info"
       class="section"
     >
-      <AboutUs />
+      <AboutUs @navigate="handleNavigation"/>
     </section>
     <section
       id="list"
@@ -30,16 +30,15 @@ import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import AboutUs from '@/components/aboutUs/AboutUs.vue'
 import HomeView from '@/components/services/HomeView.vue'
 import ContactsSection from '@/components/contacts/ContactsSection.vue'
-import { emitter } from '@/event-bus';
+import { emitter } from '@/emits/event-bus';
 
 defineProps({
   isSidebarOpen: Boolean
 })
 
-const emit = defineEmits([ 'section-change'])
+const emit = defineEmits(['section-change', 'navigate'])
 
 const sectionIds = ['info', 'list', 'email'] as const
-//const activeSection = ref<string>(sectionIds[0])
 const wrapper = ref<HTMLElement>()
 const observer = ref<IntersectionObserver>()
 
@@ -48,78 +47,42 @@ const scrollToSection = (id: string) => {
   if (el) {
     el.scrollIntoView({
       behavior: 'smooth',
-      block: 'start' // Точное выравнивание
+      block: 'start' 
     });
   }
 }
 
 const initObserver = async () => {
   await nextTick()
-  console.log('Инициализация Observer...');
-
-  if (wrapper.value) {
-    const rect = wrapper.value.getBoundingClientRect();
-    console.log("Root container size:", {
-      width: rect.width,
-      height: rect.height,
-      top: rect.top,
-      left: rect.left
-    });
-  } else {
-    console.warn("Root container not found!");
-  }
 
   if (observer.value) {
-    console.log('Отключаем старый Observer');
     observer.value.disconnect()
   }
-  sectionIds.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      console.log(`Section ${id} size:`, { 
-        width: rect.width,
-        height: rect.height,
-        top: rect.top,
-        left: rect.left
-      });
-    } else {
-      console.warn(`Element #${id} not found!`);
-    }
-  });
+ 
   observer.value = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
-        const rect = entry.boundingClientRect;
-        console.log(`Intersection update for ${entry.target.id}:`, {
-          isIntersecting: entry.isIntersecting,
-          intersectionRatio: entry.intersectionRatio,
-          rect: { width: rect.width, height: rect.height }
-        });
-
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
           emit('section-change', entry.target.id)
         }
       })
     },
     {
     root: wrapper.value,
-    threshold: 0.5, // Срабатывает при 50% видимости
-    rootMargin: '0px' // Без смещения
+    threshold: 0.2, 
+    rootMargin: '0px'
     }
   )
 
   sectionIds.forEach(id => {
     const el = document.getElementById(id)
     if (el) {
-      console.log(`Наблюдаем за секцией ${id}`);
       observer.value?.observe(el)
     }
   })
 }
 
 const handleSectionLoaded = () => {
-  console.log('[HomePage] Событие section-loaded получено!');
   initObserver();
 };
 
@@ -133,6 +96,10 @@ onUnmounted(() => {
   emitter.off('section-loaded', handleSectionLoaded);
 })
 
+const handleNavigation = (sectionId: string) => {
+  scrollToSection(sectionId)
+}
+
 defineExpose({
   scrollToSection
 })
@@ -144,7 +111,8 @@ defineExpose({
 
 .all__staff {
   height: 100vh;
-  overflow-y: auto; /* Включаем скролл только внутри контейнера */
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory; 
 }
 
 .section {
@@ -167,7 +135,16 @@ defineExpose({
 .section#info{
   border: 2px solid #eff0f2;
   border-radius: 3vw;
+  margin-right: 10px;
 }
+
+
+.section#list{
+  min-height: 100vh;
+  height: auto; 
+  padding: 20px 0;
+}
+
 
 /* Мобильные стили */
 @media (max-width: 767px) {

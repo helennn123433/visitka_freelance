@@ -41,7 +41,7 @@ import CardComp from "@/components/services/CardComp.vue";
 import MyButton from "@/components/ui/MyButton.vue";
 import AddDialog from "@/components/services/addDialog.vue";
 import { type Image } from "@/interfaces/services/Image";
-import { emitter } from '@/event-bus';
+import { emitter } from '@/emits/event-bus';
 const isDialogOpen = ref(false);
 
 const router = useRouter();
@@ -75,8 +75,7 @@ const goToService = (service: Image) => {
 
 onMounted(async () => {
   await searchStore.fetchServices();
-  await nextTick(); // дождитесь, пока DOM обновится
-  console.log('[HomeView] Данные загружены, эмитим section-loaded');
+  await nextTick(); 
   emitter.emit('section-loaded');
 });
 </script>

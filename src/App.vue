@@ -75,7 +75,6 @@ const isMobile = ref(window.innerWidth < 768)
 const activeSection = ref('info')
 
 const handleSectionChange = (sectionId: string) => {
-  console.log('Active section changed to:', sectionId); 
   activeSection.value = sectionId
 }
 
@@ -147,14 +146,10 @@ defineExpose({
   z-index: 1000;
 }
 
-/*.all__staff {
-  
-  overflow-y: auto;
-}*/
-
 .all__content{
-  
   display: flex;
+  flex:1;
+  height: 100%;
 }
 
 /* Хедер только для мобилки */

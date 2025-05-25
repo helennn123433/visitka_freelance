@@ -53,6 +53,7 @@
             :is="Component"
             ref="homePage"
             @navigate="handleNavigation"
+            @section-change="handleSectionChange"
           />
         </router-view>
       </section>
@@ -73,6 +74,11 @@ const homePage = ref()
 const isOpen = ref(false)
 const isMobile = ref(window.innerWidth < 768)
 const activeSection = ref('info')
+
+const handleSectionChange = (sectionId: string) => {
+  console.log('Active section changed to:', sectionId); 
+  activeSection.value = sectionId
+}
 
 const toggleSidebar = () => {
   isOpen.value = !isOpen.value

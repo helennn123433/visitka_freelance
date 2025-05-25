@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, nextTick} from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/authStore";
 import { useSearchingStore } from "@/store/searchingStore";
@@ -47,6 +47,8 @@ const isDialogOpen = ref(false);
 const router = useRouter();
 const searchStore = useSearchingStore();
 const authStore = useAuthStore();
+const emit = defineEmits(['loaded']);
+
 
 const maxId = computed(() => {
   if (searchStore.images.length === 0) return 0;
@@ -59,7 +61,14 @@ const toggleDialog = () => {
 
 const handleServiceUpdate = async () => {
   await searchStore.fetchServices();
+  await nextTick();
+  emit('loaded');
 };
+
+/*const confirmLoad = async () => {
+  await nextTick(); // убедимся, что DOM обновлён
+  emit('loaded');   // только теперь инициализируем observer
+};*/
 
 const goToService = (service: Image) => {
   router.push({
@@ -69,8 +78,11 @@ const goToService = (service: Image) => {
   });
 };
 
-onMounted(() => {
-  searchStore.fetchServices();
+onMounted(async () => {
+  await searchStore.fetchServices();
+  await nextTick(); // дождитесь, пока DOM обновится
+  console.log('загрузило')
+  emit('loaded');
 });
 </script>
 

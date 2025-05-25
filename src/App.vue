@@ -22,7 +22,7 @@
 
     <div
       ref="wrapper"
-      class="all__staff"
+      class="all__content"
     >
       <section
         id="heder"
@@ -52,7 +52,6 @@
           <component
             :is="Component"
             ref="homePage"
-            @navigate="handleNavigation"
             @section-change="handleSectionChange"
           />
         </router-view>
@@ -100,10 +99,6 @@ const scrollToSection = (id: string) => {
   homePage.value?.scrollToSection(id)
 }
 
-const handleNavigation = (sectionId: string) => {
-  scrollToSection(sectionId)
-}
-
 onMounted(() => {
   window.addEventListener('resize', handleResize)
 })
@@ -126,6 +121,7 @@ defineExpose({
   display: flex;
   height: 100vh;
   background-color: #eff0f2;
+  overflow: hidden;
 }
 
 .section {
@@ -137,7 +133,7 @@ defineExpose({
 .section#heder {
   display: flex;
   flex-direction: column;
-  padding: 1.5vw;
+  padding: 1.3vw;
   border: 2px solid #eff0f2;
   border-radius: 3vw;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
@@ -151,9 +147,14 @@ defineExpose({
   z-index: 1000;
 }
 
-.all__staff {
-  flex: 1;
+/*.all__staff {
+  
   overflow-y: auto;
+}*/
+
+.all__content{
+  
+  display: flex;
 }
 
 /* Хедер только для мобилки */

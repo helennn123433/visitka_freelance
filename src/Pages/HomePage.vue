@@ -1,6 +1,6 @@
 <template>
   <!-- В этом контейнере все «полноэкранные» разделы -->
-  <div 
+  <div
     ref="wrapper"
     class="all__staff"
   >
@@ -30,6 +30,7 @@ import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import AboutUs from '@/components/aboutUs/AboutUs.vue'
 import HomeView from '@/components/services/HomeView.vue'
 import ContactsSection from '@/components/contacts/ContactsSection.vue'
+import { emitter } from '@/event-bus';
 
 defineProps({
   isSidebarOpen: Boolean
@@ -43,49 +44,93 @@ const wrapper = ref<HTMLElement>()
 const observer = ref<IntersectionObserver>()
 
 const scrollToSection = (id: string) => {
-  document.getElementById(id)?.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  })
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start' // Точное выравнивание
+    });
+  }
 }
 
 const initObserver = async () => {
   await nextTick()
+  console.log('Инициализация Observer...');
 
-  if (observer.value) {
-    observer.value.disconnect()
+  if (wrapper.value) {
+    const rect = wrapper.value.getBoundingClientRect();
+    console.log("Root container size:", {
+      width: rect.width,
+      height: rect.height,
+      top: rect.top,
+      left: rect.left
+    });
+  } else {
+    console.warn("Root container not found!");
   }
 
+  if (observer.value) {
+    console.log('Отключаем старый Observer');
+    observer.value.disconnect()
+  }
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      console.log(`Section ${id} size:`, { 
+        width: rect.width,
+        height: rect.height,
+        top: rect.top,
+        left: rect.left
+      });
+    } else {
+      console.warn(`Element #${id} not found!`);
+    }
+  });
   observer.value = new IntersectionObserver(
     (entries) => {
       entries.forEach(entry => {
+        const rect = entry.boundingClientRect;
+        console.log(`Intersection update for ${entry.target.id}:`, {
+          isIntersecting: entry.isIntersecting,
+          intersectionRatio: entry.intersectionRatio,
+          rect: { width: rect.width, height: rect.height }
+        });
+
         if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
           emit('section-change', entry.target.id)
         }
       })
     },
     {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.5
+    root: wrapper.value,
+    threshold: 0.5, // Срабатывает при 50% видимости
+    rootMargin: '0px' // Без смещения
     }
   )
 
   sectionIds.forEach(id => {
     const el = document.getElementById(id)
     if (el) {
+      console.log(`Наблюдаем за секцией ${id}`);
       observer.value?.observe(el)
     }
   })
 }
 
+const handleSectionLoaded = () => {
+  console.log('[HomePage] Событие section-loaded получено!');
+  initObserver();
+};
 
 onMounted(() => {
   initObserver()
+  emitter.on('section-loaded', handleSectionLoaded);
 })
 
 onUnmounted(() => {
   observer.value?.disconnect()
+  emitter.off('section-loaded', handleSectionLoaded);
 })
 
 defineExpose({
@@ -96,15 +141,17 @@ defineExpose({
 <style lang="scss" scoped>
 @import '@/styles/colors.scss';
 
+
 .all__staff {
-  flex: 1;
-  overflow-y: auto;
+  height: 100vh;
+  overflow-y: auto; /* Включаем скролл только внутри контейнера */
 }
 
 .section {
   margin-bottom: 1.5vw;
   box-sizing: border-box;
   scroll-margin-top: 5vh;
+  min-height: 100vh;
 }
 
 .section#info,

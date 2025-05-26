@@ -1,8 +1,20 @@
 <template>
   <div class="contacts">
-    <h2 class="contacts__title">
-      КОНТАКТЫ
-    </h2>
+    <div class="header">
+      <h2 class="contacts__title">
+        КОНТАКТЫ
+      </h2>
+      <div
+        v-if="authStore.isAuthenticated"
+        class="adminCard"
+      >
+        <img
+          class="icon"
+          :src="Icons.Pencil"
+          alt="adminIcon"
+        >
+      </div>
+    </div>
     <p class="contacts__description">
       Наша команда работает над проектами удаленно. Мы готовы обсуждать все вопросы онлайн, организовывать митинги, а
       также договариваться о личной встрече в Санкт-Петербурге. Для общения с заказчиками мы используем Telegram и
@@ -20,11 +32,27 @@
 
 <script setup lang="ts">
 import ContactCard from './ContactCard.vue'
+import { Icons } from "@/assets/img/Icons";
 import { contacts } from '@/data/contacts'
+import { useAuthStore } from "@/store/authStore";
+
+const authStore = useAuthStore()
 </script>
 
 <style lang="scss" scoped>
 @import '../../styles/colors.scss';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-start;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+}
+
 .contacts {
   margin: 0;
   background-color: $white;

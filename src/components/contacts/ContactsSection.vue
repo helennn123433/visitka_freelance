@@ -7,6 +7,7 @@
       <div
         v-if="authStore.isAuthenticated"
         class="adminCard"
+        @click="toggleEdit"
       >
         <img
           class="icon"
@@ -15,28 +16,59 @@
         >
       </div>
     </div>
-    <p class="contacts__description">
-      Наша команда работает над проектами удаленно. Мы готовы обсуждать все вопросы онлайн, организовывать митинги, а
-      также договариваться о личной встрече в Санкт-Петербурге. Для общения с заказчиками мы используем Telegram и
-      другие удобные виды связи.
-    </p>
+    <div class="contacts__description">
+      <template v-if="isEditing">
+        <textarea 
+          v-model="description"
+          class="contacts__description__input"
+          rows="4"
+        />
+      </template>
+      <template v-else>
+        <p>{{ description }}</p>
+      </template>
+    </div>
     <div class="contacts__list">
       <ContactCard
         v-for="contact in contacts"
         :key="contact.id"
         :contact="contact"
+        :is-editing="isEditing"
+        @contactUpdate="updateContact"
       />
     </div>
   </div> 
 </template>
 
 <script setup lang="ts">
-import ContactCard from './ContactCard.vue'
-import { Icons } from "@/assets/img/Icons";
-import { contacts } from '@/data/contacts'
-import { useAuthStore } from "@/store/authStore";
+  import { ref } from 'vue'
+  import ContactCard from './ContactCard.vue'
+  import { Contact } from '@/interfaces/contacts/Contact'
+  import { Icons } from "@/assets/img/Icons";
+  import { contacts } from '@/data/contacts'
+  import { useAuthStore } from "@/store/authStore";
 
-const authStore = useAuthStore()
+  const authStore = useAuthStore()
+
+  const isEditing = ref(false)
+  const description = ref(`Наша команда работает над проектами удаленно. Мы готовы обсуждать все вопросы онлайн, организовывать митинги, а
+        также договариваться о личной встрече в Санкт-Петербурге. Для общения с заказчиками мы используем Telegram и
+        другие удобные виды связи.`)
+
+  function toggleEdit() {
+    isEditing.value = !isEditing.value
+    //потом добавим сохранение
+  }
+
+  function updateContact(updatedContact: Contact){
+    const index = contacts.findIndex(c => c.id === updatedContact.id)
+    if (index !== -1){
+      contacts[index] = {
+        ...contacts[index],
+        ...updatedContact
+      }
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -51,6 +83,7 @@ const authStore = useAuthStore()
 .icon {
   width: 30px;
   height: 30px;
+  cursor: pointer;
 }
 
 .contacts {
@@ -68,6 +101,14 @@ const authStore = useAuthStore()
   font-size: clamp(0.875rem, 2.5vw, 1rem);
   margin-bottom: 2rem;
   font-weight: 500;
+}
+
+.contacts__description__input {
+  width: 100%;
+  font: inherit;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .contacts__list {

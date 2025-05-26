@@ -6,22 +6,65 @@
       class="contact-card__icon"
     >
     <h3 class="contact-card__title">
-      <a href="#">
-        {{ contact.title }}
-      </a>
+      <template v-if="isEditing">
+        <input
+          v-model="editableTitle"
+          @input="emitUpdate"
+          class="contact-card__input"
+        />
+      </template>
+      <template v-else>
+        <a href="#">
+          {{ contact.title }}
+        </a>
+      </template>
     </h3>
     <p class="contact-card__subtitle">
-      {{ contact.subtitle }}
+      <template v-if="isEditing">
+        <input
+          v-model="editableSubtitle"
+          @input="emitUpdate"
+          class="contact-card__input"
+        />
+      </template>
+      <template v-else>
+        {{ contact.subtitle }}
+      </template>
     </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Contact } from '@/interfaces/contacts/Contact'
+  import { ref, watch, defineProps, defineEmits } from 'vue'
+  import { Contact } from '@/interfaces/contacts/Contact'
 
-defineProps<{
-  contact: Contact
-}>()
+  const props = defineProps<{
+    contact: Contact,
+    isEditing: boolean
+  }>()
+
+  /* eslint-disable */
+  const emits = defineEmits<{
+    (e: 'contactUpdate', payload: Contact): void
+  }>()
+
+
+  const editableTitle = ref(props.contact.title)
+  const editableSubtitle = ref(props.contact.subtitle)
+
+  watch(() => props.contact, (newContact) => {
+    editableTitle.value = newContact.title
+    editableSubtitle.value = newContact.subtitle
+  }, { deep: true })
+
+  function emitUpdate() {
+    emits('contactUpdate', {
+      id: props.contact.id,
+      icon: props.contact.icon,
+      title: editableTitle.value,
+      subtitle: editableSubtitle.value
+    })
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -31,6 +74,14 @@ a {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+}
+
+.contact-card__input {
+  width: 100%;
+  font: inherit;
+  padding: 4px 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .contact-card {

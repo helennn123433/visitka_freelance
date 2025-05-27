@@ -5,7 +5,7 @@
         КОНТАКТЫ
       </h2>
       <div
-        v-if="authStore.isAuthenticated"
+        v-if="authStore.isAuthenticated && !isEditing"
         class="adminCard"
         @click="toggleEdit"
       >
@@ -15,6 +15,21 @@
           alt="adminIcon"
         >
       </div>
+      <div
+        v-if="isEditing"  
+      >
+      <button class="ok" @click="saveEdit">
+        OK
+      </button>
+        
+        <!--<img
+          class="icon"
+          :src="Icons.Pencil"
+          alt="adminIcon"
+        >-->
+      </div>
+      
+
     </div>
     <div class="contacts__description">
       <template v-if="isEditing">
@@ -41,34 +56,57 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue'
+  import { ref, onMounted } from 'vue'
   import ContactCard from './ContactCard.vue'
   import { Contact } from '@/interfaces/contacts/Contact'
-  import { Icons } from "@/assets/img/Icons";
-  import { contacts } from '@/data/contacts'
-  import { useAuthStore } from "@/store/authStore";
+  import { Icons } from "@/assets/img/Icons"
+  import { useAuthStore } from "@/store/authStore"
 
   const authStore = useAuthStore()
 
   const isEditing = ref(false)
-  const description = ref(`Наша команда работает над проектами удаленно. Мы готовы обсуждать все вопросы онлайн, организовывать митинги, а
-        также договариваться о личной встрече в Санкт-Петербурге. Для общения с заказчиками мы используем Telegram и
-        другие удобные виды связи.`)
+  const description = ref('')
+  const contacts = ref<Contact[]>([])
+
+  onMounted(async () => {
+    const res = await fetch('http://localhost:3000/api/data')
+    const data = await res.json()
+    description.value = data.description
+    contacts.value = data.contacts
+    console.log(description.value)
+    console.log(contacts.value)
+  })
 
   function toggleEdit() {
     isEditing.value = !isEditing.value
-    //потом добавим сохранение
   }
 
   function updateContact(updatedContact: Contact){
-    const index = contacts.findIndex(c => c.id === updatedContact.id)
+    const index = contacts.value.findIndex(c => c.id === updatedContact.id)
     if (index !== -1){
-      contacts[index] = {
-        ...contacts[index],
+      contacts.value[index] = {
+        ...contacts.value[index],
         ...updatedContact
       }
     }
   }
+
+
+  async function saveEdit() {
+    await fetch('http://localhost:3000/api/data', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        description: description.value,
+        contacts: contacts.value,
+      }),
+    })
+
+    toggleEdit()
+  }
+
 </script>
 
 <style lang="scss" scoped>
@@ -84,6 +122,17 @@
   width: 30px;
   height: 30px;
   cursor: pointer;
+}
+
+.ok{
+  background: none;
+  border: none;
+  color: black;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 10px;
 }
 
 .contacts {

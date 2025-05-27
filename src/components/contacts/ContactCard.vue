@@ -1,7 +1,7 @@
 <template>
   <div class="contact-card">
     <img
-      :src="contact.icon"
+      :src="Icons[contact.icon as keyof typeof Icons]"
       :alt="contact.title"
       class="contact-card__icon"
     >
@@ -37,9 +37,12 @@
 <script setup lang="ts">
   import { ref, watch, defineProps, defineEmits } from 'vue'
   import { Contact } from '@/interfaces/contacts/Contact'
+  import { Icons } from "@/assets/img/Icons"
+  //тип ключей:
+  //type IconKey = keyof typeof Icons
 
   const props = defineProps<{
-    contact: Contact,
+    contact: Contact
     isEditing: boolean
   }>()
 

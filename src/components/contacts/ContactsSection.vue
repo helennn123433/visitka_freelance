@@ -1,30 +1,130 @@
 <template>
   <div class="contacts">
-    <h2 class="contacts__title">
-      КОНТАКТЫ
-    </h2>
-    <p class="contacts__description">
-      Наша команда работает над проектами удаленно. Мы готовы обсуждать все вопросы онлайн, организовывать митинги, а
-      также договариваться о личной встрече в Санкт-Петербурге. Для общения с заказчиками мы используем Telegram и
-      другие удобные виды связи.
-    </p>
+    <div class="header">
+      <h2 class="contacts__title">
+        КОНТАКТЫ
+      </h2>
+      <div
+        v-if="authStore.isAuthenticated && !isEditing"
+        class="adminCard"
+        @click="toggleEdit"
+      >
+        <img
+          class="icon"
+          :src="Icons.Pencil"
+          alt="adminIcon"
+        >
+      </div>
+      <div
+        v-if="isEditing"  
+      >
+      <button class="ok" @click="saveEdit">
+        OK
+      </button>
+      </div>
+    </div>
+    <div class="contacts__description">
+      <template v-if="isEditing">
+        <textarea 
+          v-model="description"
+          class="contacts__description__input"
+          rows="4"
+        />
+      </template>
+      <template v-else>
+        <p>{{ description }}</p>
+      </template>
+    </div>
     <div class="contacts__list">
       <ContactCard
         v-for="contact in contacts"
         :key="contact.id"
         :contact="contact"
+        :is-editing="isEditing"
+        @contactUpdate="updateContact"
       />
     </div>
   </div> 
 </template>
 
 <script setup lang="ts">
-import ContactCard from './ContactCard.vue'
-import { contacts } from '@/data/contacts'
+  import { ref, onMounted } from 'vue'
+  import ContactCard from './ContactCard.vue'
+  import { Contact } from '@/interfaces/contacts/Contact'
+  import { Icons } from "@/assets/img/Icons"
+  import { useAuthStore } from "@/store/authStore"
+
+  const authStore = useAuthStore()
+
+  const isEditing = ref(false)
+  const description = ref('')
+  const contacts = ref<Contact[]>([])
+
+  onMounted(async () => {
+    const res = await fetch('/api/contacts')
+    const data = await res.json()
+    description.value = data.description
+    contacts.value = data.contacts
+  })
+
+  function toggleEdit() {
+    isEditing.value = !isEditing.value
+  }
+
+  function updateContact(updatedContact: Contact){
+    const index = contacts.value.findIndex(c => c.id === updatedContact.id)
+    if (index !== -1){
+      contacts.value[index] = {
+        ...contacts.value[index],
+        ...updatedContact
+      }
+    }
+  }
+
+
+  async function saveEdit() {
+    await fetch('/api/contacts', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        description: description.value,
+        contacts: contacts.value,
+      }),
+    })
+
+    toggleEdit()
+  }
+
 </script>
 
 <style lang="scss" scoped>
 @import '../../styles/colors.scss';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-start;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.ok{
+  background: none;
+  border: none;
+  color: black;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 10px;
+}
+
 .contacts {
   margin: 0;
   background-color: $white;
@@ -40,6 +140,14 @@ import { contacts } from '@/data/contacts'
   font-size: clamp(0.875rem, 2.5vw, 1rem);
   margin-bottom: 2rem;
   font-weight: 500;
+}
+
+.contacts__description__input {
+  width: 100%;
+  font: inherit;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .contacts__list {

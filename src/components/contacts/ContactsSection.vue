@@ -21,15 +21,7 @@
       <button class="ok" @click="saveEdit">
         OK
       </button>
-        
-        <!--<img
-          class="icon"
-          :src="Icons.Pencil"
-          alt="adminIcon"
-        >-->
       </div>
-      
-
     </div>
     <div class="contacts__description">
       <template v-if="isEditing">
@@ -69,12 +61,10 @@
   const contacts = ref<Contact[]>([])
 
   onMounted(async () => {
-    const res = await fetch('http://localhost:3000/api/data')
+    const res = await fetch('/api/contacts')
     const data = await res.json()
     description.value = data.description
     contacts.value = data.contacts
-    console.log(description.value)
-    console.log(contacts.value)
   })
 
   function toggleEdit() {
@@ -93,7 +83,7 @@
 
 
   async function saveEdit() {
-    await fetch('http://localhost:3000/api/data', {
+    await fetch('/api/contacts', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

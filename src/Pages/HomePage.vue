@@ -41,37 +41,73 @@ const emit = defineEmits(['section-change', 'navigate'])
 const sectionIds = ['info', 'list', 'email'] as const
 const wrapper = ref<HTMLElement>()
 const observer = ref<IntersectionObserver>()
+const isMobile = ref(window.innerWidth <= 800)
+const isProgrammaticScroll = ref(false)
+const scrollTimeout = ref<number | null>(null)
 
 const scrollToSection = (id: string) => {
-  const el = document.getElementById(id);
+
+  isProgrammaticScroll.value = true
+
+  emit('section-change', id)
+  
+  const el = document.getElementById(id)
   if (el) {
+    if (observer.value) {
+      observer.value.disconnect()
+    }
+    
     el.scrollIntoView({
       behavior: 'smooth',
-      block: 'start' 
-    });
+      block: 'start'
+    })
+    
+    if (scrollTimeout.value) {
+      clearTimeout(scrollTimeout.value)
+    }
+    
+    scrollTimeout.value = setTimeout(() => {
+      isProgrammaticScroll.value = false
+      initObserver()
+    }, 1000) as unknown as number
   }
 }
 
+
 const initObserver = async () => {
   await nextTick()
-
+  
   if (observer.value) {
     observer.value.disconnect()
   }
- 
+
+  const config = {
+    root: null, 
+    threshold: isMobile.value ? 0.01 : 0.2,
+    rootMargin: isMobile.value ? '-100px 0px 0px 0px' : '-50px 0px 0px 0px'
+  }
   observer.value = new IntersectionObserver(
     (entries) => {
+      if (isProgrammaticScroll.value) return;
+      let mostVisibleEntry: IntersectionObserverEntry | null = null;
       entries.forEach(entry => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
-          emit('section-change', entry.target.id)
+        if (entry.isIntersecting) {
+          if (!isMobile.value && entry.intersectionRatio < 0.2) return;
+
+          if (!mostVisibleEntry || entry.intersectionRatio > mostVisibleEntry.intersectionRatio) {
+            mostVisibleEntry = entry
+          }
         }
       })
+      
+       if (mostVisibleEntry) {
+        const minRatio = isMobile.value ? 0.01 : 0.2
+        if (mostVisibleEntry.intersectionRatio >= minRatio) {
+          emit('section-change', mostVisibleEntry.target.id)
+        }
+      }
     },
-    {
-    root: wrapper.value,
-    threshold: 0.2, 
-    rootMargin: '0px'
-    }
+    config
   )
 
   sectionIds.forEach(id => {
@@ -86,14 +122,25 @@ const handleSectionLoaded = () => {
   initObserver();
 };
 
+const handleResize = () => {
+  const newIsMobile = window.innerWidth <= 800
+  if (isMobile.value !== newIsMobile) {
+    isMobile.value = newIsMobile
+    initObserver()
+  }
+}
+
 onMounted(() => {
+  window.addEventListener('resize', handleResize)
   initObserver()
   emitter.on('section-loaded', handleSectionLoaded);
 })
 
 onUnmounted(() => {
-  observer.value?.disconnect()
+  window.removeEventListener('resize', handleResize)
+  if (observer.value) observer.value.disconnect()
   emitter.off('section-loaded', handleSectionLoaded);
+  if (scrollTimeout.value) clearTimeout(scrollTimeout.value)
 })
 
 const handleNavigation = (sectionId: string) => {

@@ -26,7 +26,18 @@ const loadContacts = () => {
   }
 }
 
+const loadAboutUs = () => {
+  try {
+    const data = fs.readFileSync(path.join(__dirname, 'aboutUs.json'), 'utf-8')
+    return JSON.parse(data)
+  } catch (error) {
+    console.error('Ошибка загрузки contacts.json:', error)
+    return { description1: '', contacts: [] } // не все description, но думаю в обработке ошибки понятно что не так
+  }
+}
+
 let contactsData = loadContacts()
+let aboutUsData = loadAboutUs()
 
 const servicesData = loadJsonFile('services.json')
 const examplesData = loadJsonFile('examples.json')
@@ -64,6 +75,28 @@ server.put('/contacts', (req, res) => {
 
     const newData = { description, contacts }
     fs.writeFileSync(path.join(__dirname, 'contacts.json'), JSON.stringify(newData, null, 2), 'utf-8')
+    contactsData = newData
+    res.status(200).json({ success: true })
+  } catch (error) {
+    console.error('Ошибка записи:', error)
+    res.status(500).json({ error: 'Ошибка сервера' })
+  }
+})
+
+server.get('/aboutUs', (req, res) => {
+  res.json(aboutUsData)
+})
+
+server.put('/aboutUs', (req, res) => {
+  try {
+    const { description1, description2, description3, description4, stats } = req.body
+
+    if (!description1 || !description2 || !description3 || !description4 || !stats) {
+      return res.status(400).json({ error: 'Неверный формат данных' })
+    }
+
+    const newData = { description1, description2, description3, description4, stats }
+    fs.writeFileSync(path.join(__dirname, 'aboutUs.json'), JSON.stringify(newData, null, 2), 'utf-8')
     contactsData = newData
     res.status(200).json({ success: true })
   } catch (error) {

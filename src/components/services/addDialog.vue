@@ -40,9 +40,16 @@
       </div>
     </div>
   </div>
+  <NotificationComp 
+    v-if="showNotification"
+    :visible="showNotification"
+    :error-message="notificationMessage"
+    @close="closeNotification"
+  />
 </template>
 <script setup lang="ts">
 import MyButton from "@/components/ui/MyButton.vue";
+import NotificationComp from "../notifications/NotificationComp.vue";
 import axios from "axios";
 import { ref } from "vue";
 
@@ -59,24 +66,61 @@ const form = ref({
   image: ""
 });
 
+const showNotification = ref(false);
+const notificationMessage = ref('');
+
 const emit = defineEmits(['toggle-dialog', 'service-added']);
+
+const closeNotification = () => {
+  showNotification.value = false;
+};
+
+const showSuccessNotification = () => {
+  notificationMessage.value = '';
+  showNotification.value = true;
+};
+
+const showErrorNotification = (message: string) => {
+  notificationMessage.value = message;
+  showNotification.value = true;
+};
 
 const addService = async () => {
   try {
+    // Валидация формы перед отправкой
+    if (!form.value.title.trim()) {
+      showErrorNotification('Название услуги обязательно');
+      return;
+    }
+    
+    if (form.value.price <= 0) {
+      showErrorNotification('Цена должна быть положительным числом');
+      return;
+    }
+
+    try {
+      new URL(form.value.image);
+    } catch {
+      showErrorNotification('Некорректный URL изображения');
+      return;
+    }
+
     const newService = {
       id: String(Number(props.nextId)),
       title: form.value.title,
       price: Number(form.value.price) || 0,
       image: form.value.image
     };
+    
     await axios.post('http://localhost:3004/services', newService);
     form.value = { title: "", price: 0, image: "" };
     emit('service-added');
     emit('toggle-dialog');
+    showSuccessNotification();
 
   } catch(err) {
     console.error('Ошибка добавления:', err);
-    alert('Ошибка при добавлении услуги');
+    showErrorNotification('Ошибка при добавлении услуги');
   }
 };
 </script>

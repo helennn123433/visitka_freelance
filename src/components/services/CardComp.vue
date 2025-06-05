@@ -39,6 +39,13 @@
       @confirm="handleDeleteConfirm"
       @cancel="closeDeleteModal"
     />
+
+    <NotificationComp 
+      v-if="showNotification"
+      :visible="showNotification"
+      :error-message="notificationMessage"
+      @close="closeNotification"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -48,6 +55,7 @@ import { Icons } from "@/assets/img/Icons";
 import { useAuthStore } from "@/store/authStore";
 import DeleteCard from '@/components/services/DeleteCard.vue';
 import EditCard from "@/components/services/EditCard.vue";
+import NotificationComp from '../notifications/NotificationComp.vue';
 import type { Image } from '@/interfaces/services/Image';
 
 const props = defineProps<{
@@ -59,6 +67,23 @@ const hasPrice = computed(() => {
   if (props.showPrice === false) return false;
   return 'price' in props.image && typeof props.image.price === 'number';
 });
+
+const showNotification = ref(false);
+const notificationMessage = ref('');
+
+const closeNotification = () => {
+  showNotification.value = false;
+};
+
+const showSuccessNotification = () => {
+  notificationMessage.value = '';
+  showNotification.value = true;
+};
+
+const showErrorNotification = (message: string) => {
+  notificationMessage.value = message;
+  showNotification.value = true;
+};
 
 const authStore = useAuthStore()
 
@@ -87,35 +112,38 @@ const handleDeleteConfirm = async () => {
   try {
     const response = await axios.delete(
       `http://localhost:3004/services/${props.image.id}`
-    )
+    );
 
     if (response.status === 200) {
-      emit('updated')
-      closeDeleteModal()
+      emit('updated');
+      closeDeleteModal();
+      showSuccessNotification();
     }
   } catch (error: unknown) {
     if (error instanceof Error) {
-      alert('Ошибка при удалении услуги: ' + error.message)
+      showErrorNotification('Ошибка при удалении услуги: ' + error.message);
     } else {
-      alert('Неизвестная ошибка при удалении услуги')
-    }  
+      showErrorNotification('Неизвестная ошибка при удалении услуги');
+    }
   }
-}
+};
+
 const handleSave = async (updatedData: Image) => {
   try {
     const response = await axios.put(
       `http://localhost:3004/services/${updatedData.id}`,
-      { ...updatedData}
-    )
+      { ...updatedData }
+    );
 
     if (response.status === 200) {
-      emit('updated')
-      closeEditModal()
+      emit('updated');
+      closeEditModal();
+      showSuccessNotification();
     }
   } catch (error) {
-    alert('Ошибка при сохранении изменений')
+    showErrorNotification('Ошибка при сохранении изменений');
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 @import '../../styles/colors.scss';

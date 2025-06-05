@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, nextTick} from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/authStore";
 import { useSearchingStore } from "@/store/searchingStore";
@@ -47,12 +47,14 @@ import CardComp from "@/components/services/CardComp.vue";
 import MyButton from "@/components/ui/MyButton.vue";
 import AddDialog from "@/components/services/addDialog.vue";
 import { type Image } from "@/interfaces/services/Image";
-
+import { emitter } from '@/emits/event-bus';
 const isDialogOpen = ref(false);
 
 const router = useRouter();
 const searchStore = useSearchingStore();
 const authStore = useAuthStore();
+const emit = defineEmits(['section-loaded']);
+
 
 const maxId = computed(() => {
   if (searchStore.images.length === 0) return 0;
@@ -65,6 +67,8 @@ const toggleDialog = () => {
 
 const handleServiceUpdate = async () => {
   await searchStore.fetchServices();
+  await nextTick();
+  emit('section-loaded');
 };
 
 const goToService = (service: Image) => {
@@ -75,8 +79,10 @@ const goToService = (service: Image) => {
   });
 };
 
-onMounted(() => {
-  searchStore.fetchServices();
+onMounted(async () => {
+  await searchStore.fetchServices();
+  await nextTick(); 
+  emitter.emit('section-loaded');
 });
 </script>
 

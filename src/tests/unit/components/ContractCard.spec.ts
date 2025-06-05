@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import ContactCard from '@/components/ContactCard.vue'
+import ContactCard from '@/components/contacts/ContactCard.vue'
 
 describe('ContactCard.vue', () => {
   const mockContact = {

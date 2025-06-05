@@ -17,17 +17,23 @@
     <img
       :src="Icons.Phone"
       alt="Иконка телефона"
+      title="Позвонить"
       class="icon phone-icon"
+      @click="handlePhoneClick" 
     >
     <img
       :src="Icons.Telegram"
       alt="Иконка телеграма"
       class="icon"
+      title="Написать в Telegram"
+      @click="handleTelegramClick"
     >
     <img
       :src="Icons.Email"
       alt="Иконка почты"
       class="icon"
+      title="Написать email"
+      @click="handleEmailClick"
     >
   </div>
 </template>
@@ -37,6 +43,18 @@
     import {useAuthStore} from "@/store/authStore";
     import MyButton from "@/components/ui/MyButton.vue";
     const authStore = useAuthStore()
+
+    const handlePhoneClick = () => {
+      window.location.href = 'tel:+79650778987'; // Формат номера для звонка
+    };
+
+    const handleTelegramClick = () => {
+      window.open('https://t.me/frtarget', '_blank'); // Открытие Telegram в новой вкладке
+    };
+
+    const handleEmailClick = () => {
+      window.location.href = 'mailto:alexpysenkov@gmail.com'; // Формат для почтового клиента
+    };
   </script>
   
   <style lang="scss" scoped>

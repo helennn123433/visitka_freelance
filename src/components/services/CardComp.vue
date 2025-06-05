@@ -1,5 +1,5 @@
 <template>
-  <div class="card" id=image.id>
+  <div class="card" :id=image.id.toString()>
     <div
       v-if="authStore.isAuthenticated"
       class="adminCard"
@@ -21,16 +21,16 @@
       :src="image.image"
       class="image"
     >
-    <div class="price">
-      {{ `от ${image.price} Р/час` }}
+    <div v-if="hasPrice" class="price">
+      {{ `от ${'price' in image ? image.price : ''} Р/час` }}
     </div>
     <div class="title">
       {{ image.title }}
     </div>
 
     <EditCard
-      v-if="isEditModalOpen"
-      :current-data="image"
+      v-if="isEditModalOpen && hasPrice"
+      :current-data="image as CardImageWithPrice"
       @close="closeEditModal"
       @save="handleSave"
     />
@@ -43,15 +43,33 @@
 </template>
 <script setup lang="ts">
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Icons } from "@/assets/img/Icons";
 import { useAuthStore } from "@/store/authStore";
 import DeleteCard from '@/components/services/DeleteCard.vue';
 import EditCard from "@/components/services/EditCard.vue";
 
+interface BaseCardImage {
+  id: number;
+  title: string;
+  image: string;
+}
+
+interface CardImageWithPrice extends BaseCardImage {
+  price: number;
+}
+
+type CardImage = BaseCardImage | CardImageWithPrice;
+
 const props = defineProps<{
-  image: { id: string; title: string; price: number; image: string; };
+  image: CardImage;
+  showPrice?: boolean;
 }>();
+
+const hasPrice = computed(() => {
+  if (props.showPrice === false) return false;
+  return 'price' in props.image && typeof props.image.price === 'number';
+});
 
 const authStore = useAuthStore()
 
@@ -86,11 +104,15 @@ const handleDeleteConfirm = async () => {
       emit('updated')
       closeDeleteModal()
     }
-  } catch (error) {
-    alert('Ошибка при удалении услуги: ' + error.message)
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      alert('Ошибка при удалении услуги: ' + error.message)
+    } else {
+      alert('Неизвестная ошибка при удалении услуги')
+    }  
   }
 }
-const handleSave = async (updatedData: image) => {
+const handleSave = async (updatedData: BaseCardImage | CardImageWithPrice) => {
   try {
     const response = await axios.put(
       `http://localhost:3004/services/${updatedData.id}`,

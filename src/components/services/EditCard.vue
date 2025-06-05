@@ -51,7 +51,7 @@ import { ref, watch } from 'vue';
 import MyButton from '@/components/ui/MyButton.vue';
 
 const props = defineProps<{
-  currentData: {id: string; title: string; price: number; image: string;}
+  currentData: {id: number; title: string; price: number; image: string;}
 }>();
 
 const emit = defineEmits(['close', 'save']);

@@ -7,7 +7,7 @@ export interface ServiceType {
   id: number;
   title: string;
   image: string;
-  examples: Example[];
+  examples?: Example[];
 }
 
 export interface Service {

@@ -24,7 +24,13 @@
       <CardComp
         v-for="image in searchStore.filteredImages"
         :key="image.id"
-        :image="image"
+        :image="{ 
+          id: image.id, 
+          title: image.title, 
+          image: image.image,
+          price: image.price
+        }"
+        :show-price="true"
         @updated="handleServiceUpdate"
         @click="goToService(image)"
       />

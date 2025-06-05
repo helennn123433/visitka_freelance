@@ -39,7 +39,7 @@ import type { Service, ServiceType } from '@/interfaces/servicesTypes/servicesTy
 
 const route = useRoute();
 const title = route.query.title as string;
-const serviceId = ref(Number(route.params.id));
+const serviceId = ref<number>(Number(route.params.id));
 const isLoading = ref(true);
 
 const servicesData = ref<Service[]>([]);

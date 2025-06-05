@@ -30,7 +30,7 @@
 
     <EditCard
       v-if="isEditModalOpen && hasPrice"
-      :current-data="image as CardImageWithPrice"
+      :current-data="image"
       @close="closeEditModal"
       @save="handleSave"
     />
@@ -48,21 +48,10 @@ import { Icons } from "@/assets/img/Icons";
 import { useAuthStore } from "@/store/authStore";
 import DeleteCard from '@/components/services/DeleteCard.vue';
 import EditCard from "@/components/services/EditCard.vue";
-
-interface BaseCardImage {
-  id: number;
-  title: string;
-  image: string;
-}
-
-interface CardImageWithPrice extends BaseCardImage {
-  price: number;
-}
-
-type CardImage = BaseCardImage | CardImageWithPrice;
+import type { Image } from '@/interfaces/services/Image';
 
 const props = defineProps<{
-  image: CardImage;
+  image: Image; // Используем Image вместо CardImage
   showPrice?: boolean;
 }>();
 
@@ -112,7 +101,7 @@ const handleDeleteConfirm = async () => {
     }  
   }
 }
-const handleSave = async (updatedData: BaseCardImage | CardImageWithPrice) => {
+const handleSave = async (updatedData: Image) => {
   try {
     const response = await axios.put(
       `http://localhost:3004/services/${updatedData.id}`,

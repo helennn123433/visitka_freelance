@@ -111,8 +111,7 @@ const addService = async () => {
       price: Number(form.value.price) || 0,
       image: form.value.image
     };
-    
-    await axios.post('http://localhost:3004/services', newService);
+    await axios.post('/api/addServices', newService);
     form.value = { title: "", price: 0, image: "" };
     emit('service-added');
     emit('toggle-dialog');

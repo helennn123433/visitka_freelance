@@ -8,13 +8,13 @@
         class="settings-icon"
         :src="Icons.Gear"
         alt="шестерёнка"
-        @click="openEditModal"
+        @click.stop="openEditModal"
       >
       <img 
         class="delete-icon"
         :src="Icons.Trash"
         alt="мусорка"
-        @click="openDeleteModal"
+        @click.stop="openDeleteModal"
       >
     </div>
     <img
@@ -108,12 +108,12 @@ const closeEditModal = () => {
   isEditModalOpen.value = false
 }
 
-const handleDeleteConfirm = async () => { 
+const handleDeleteConfirm = async (e) => {
+  e?.stopPropagation()
   try {
     const response = await axios.delete(
-      `http://localhost:3004/services/${props.image.id}`
-    );
-
+      `/api/services/${props.image.id}`
+    )
     if (response.status === 200) {
       emit('updated');
       closeDeleteModal();
@@ -126,14 +126,13 @@ const handleDeleteConfirm = async () => {
       showErrorNotification('Неизвестная ошибка при удалении услуги');
     }
   }
-};
 
-const handleSave = async (updatedData: Image) => {
+const handleSave = async (updatedData: image) => {
   try {
     const response = await axios.put(
-      `http://localhost:3004/services/${updatedData.id}`,
-      { ...updatedData }
-    );
+      `/api/services/${updatedData.id}`,
+      { ...updatedData}
+    )
 
     if (response.status === 200) {
       emit('updated');

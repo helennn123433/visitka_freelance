@@ -1,62 +1,66 @@
 <template>
-    <div class="modal-overlay">
-      <div class="modal">
-        <h2>Редактирование карточки</h2>
-        
-        <form @submit.prevent="handleSubmit">
-          <div class="form-group">
-            <label>Название:</label>
-            <input 
-              v-model="formData.title" 
-              type="text"
-              :class="{ 'invalid': errors.title }"
-            >
-            <span v-if="errors.title" class="error">{{ errors.title }}</span>
-          </div>
-  
-          <div class="form-group">
-            <label>Цена:</label>
-            <input 
-              v-model.number="formData.price" 
-              type="number"
-              :class="{ 'invalid': errors.price }"
-            >
-            <span v-if="errors.price" class="error">{{ errors.price }}</span>
-          </div>
-  
-          <div class="form-group">
-            <label>Изображение (URL):</label>
-            <input 
-              v-model="formData.image" 
-              :class="{ 'invalid': errors.image }"
-            >
-            <span v-if="errors.image" class="error">{{ errors.image }}</span>
-          </div>
-  
-          <div class="button-group">
-            <MyButton type="button" @click="$emit('close')">
-              Отмена
-            </MyButton>
-            <MyButton type="submit">
-              Сохранить
-            </MyButton>
-          </div>
-        </form>
-      </div>
+  <div class="modal-overlay" @click.self="closeModal">
+    <div class="modal">
+      <h2>Редактирование карточки</h2>
+      
+      <form @submit.prevent="handleSubmit">
+        <div class="form-group">
+          <label>Название:</label>
+          <input 
+            v-model="formData.title" 
+            type="text"
+            :class="{ 'invalid': errors.title }"
+            @click.stop
+          >
+          <span v-if="errors.title" class="error">{{ errors.title }}</span>
+        </div>
+
+        <div class="form-group">
+          <label>Цена:</label>
+          <input 
+            v-model.number="formData.price" 
+            type="number"
+            :class="{ 'invalid': errors.price }"
+            @click.stop
+          >
+          <span v-if="errors.price" class="error">{{ errors.price }}</span>
+        </div>
+
+        <div class="form-group">
+          <label>Изображение (URL):</label>
+          <input 
+            v-model="formData.image" 
+            :class="{ 'invalid': errors.image }"
+            @click.stop
+          >
+          <span v-if="errors.image" class="error">{{ errors.image }}</span>
+        </div>
+
+        <div class="button-group">
+          <MyButton type="button" @click.stop="closeModal">
+            Отмена
+          </MyButton>
+          <MyButton type="submit" @click.stop>
+            Сохранить
+          </MyButton>
+        </div>
+      </form>
     </div>
-  </template>
-  
+  </div>
+</template>
+
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import MyButton from '@/components/ui/MyButton.vue';
+import type { Image } from '@/interfaces/services/Image';
 
 const props = defineProps<{
-  currentData: {id: number; title: string; price: number; image: string;}
+  currentData: Image
 }>();
 
 const emit = defineEmits(['close', 'save']);
 
-const formData = ref({ ...props.currentData });
+const formData = ref<Image>({ ...props.currentData });
 
 const errors = ref({
   title: '',
@@ -94,7 +98,13 @@ watch(() => props.currentData, (newVal) => {
   formData.value = { ...newVal };
 });
 
-const handleSubmit = () => {
+const closeModal = (e?: Event) => {
+  e?.stopPropagation();
+  emit('close');
+};
+
+const handleSubmit = (e?: Event) => {
+  e?.stopPropagation();
   if (!validateForm()) return;
 
   const dataToSave = {

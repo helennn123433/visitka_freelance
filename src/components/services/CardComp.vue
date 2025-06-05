@@ -1,5 +1,5 @@
 <template>
-  <div class="card" id=image.id>
+  <div class="card" :id=image.id.toString()>
     <div
       v-if="authStore.isAuthenticated"
       class="adminCard"
@@ -21,15 +21,15 @@
       :src="image.image"
       class="image"
     >
-    <div class="price">
-      {{ `от ${image.price} Р/час` }}
+    <div v-if="hasPrice" class="price">
+      {{ `от ${'price' in image ? image.price : ''} Р/час` }}
     </div>
     <div class="title">
       {{ image.title }}
     </div>
 
     <EditCard
-      v-if="isEditModalOpen"
+      v-if="isEditModalOpen && hasPrice"
       :current-data="image"
       @close="closeEditModal"
       @save="handleSave"
@@ -39,19 +39,51 @@
       @confirm="handleDeleteConfirm"
       @cancel="closeDeleteModal"
     />
+
+    <NotificationComp 
+      v-if="showNotification"
+      :visible="showNotification"
+      :error-message="notificationMessage"
+      @close="closeNotification"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import axios from 'axios';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Icons } from "@/assets/img/Icons";
 import { useAuthStore } from "@/store/authStore";
 import DeleteCard from '@/components/services/DeleteCard.vue';
 import EditCard from "@/components/services/EditCard.vue";
+import NotificationComp from '../notifications/NotificationComp.vue';
+import type { Image } from '@/interfaces/services/Image';
 
 const props = defineProps<{
-  image: { id: string; title: string; price: number; image: string; };
+  image: Image; // Используем Image вместо CardImage
+  showPrice?: boolean;
 }>();
+
+const hasPrice = computed(() => {
+  if (props.showPrice === false) return false;
+  return 'price' in props.image && typeof props.image.price === 'number';
+});
+
+const showNotification = ref(false);
+const notificationMessage = ref('');
+
+const closeNotification = () => {
+  showNotification.value = false;
+};
+
+const showSuccessNotification = () => {
+  notificationMessage.value = '';
+  showNotification.value = true;
+};
+
+const showErrorNotification = (message: string) => {
+  notificationMessage.value = message;
+  showNotification.value = true;
+};
 
 const authStore = useAuthStore()
 
@@ -83,13 +115,17 @@ const handleDeleteConfirm = async (e) => {
       `/api/services/${props.image.id}`
     )
     if (response.status === 200) {
-      emit('updated')
-      closeDeleteModal()
+      emit('updated');
+      closeDeleteModal();
+      showSuccessNotification();
     }
-  } catch (error) {
-    alert('Ошибка при удалении услуги: ' + error.message)
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      showErrorNotification('Ошибка при удалении услуги: ' + error.message);
+    } else {
+      showErrorNotification('Неизвестная ошибка при удалении услуги');
+    }
   }
-}
 
 const handleSave = async (updatedData: image) => {
   try {
@@ -99,13 +135,14 @@ const handleSave = async (updatedData: image) => {
     )
 
     if (response.status === 200) {
-      emit('updated')
-      closeEditModal()
+      emit('updated');
+      closeEditModal();
+      showSuccessNotification();
     }
   } catch (error) {
-    alert('Ошибка при сохранении изменений')
+    showErrorNotification('Ошибка при сохранении изменений');
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 @import '../../styles/colors.scss';

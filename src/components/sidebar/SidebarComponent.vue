@@ -59,7 +59,10 @@
       </div>
       <div class="btn_bottom">
         <ButtonsComp v-if="Show" />
-        <MyButton class="btn_discount" @click="handleDiscountClick">
+        <MyButton
+          class="btn_discount"
+          @click="handleDiscountClick"
+        >
           <img
             class="img_discount"
             :src="Icons.Light"

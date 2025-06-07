@@ -18,9 +18,12 @@
       <div
         v-if="isEditing"  
       >
-      <button class="ok" @click="saveEdit">
-        OK
-      </button>
+        <button
+          class="ok"
+          @click="saveEdit"
+        >
+          OK
+        </button>
       </div>
     </div>
     <div class="contacts__description">
@@ -41,7 +44,7 @@
         :key="contact.id"
         :contact="contact"
         :is-editing="isEditing"
-        @contactUpdate="updateContact"
+        @contact-update="updateContact"
       />
     </div>
   </div> 
@@ -100,7 +103,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/colors.scss';
+@use '../../styles/colors.scss';
 
 .header {
   display: flex;
@@ -127,12 +130,12 @@
 
 .contacts {
   margin: 0;
-  background-color: $white;
+  background-color: colors.$white;
 }
 
 .contacts__title {
   font-size: clamp(1.5rem, 5vw, 2.5rem);
-  color: $blue;
+  color: colors.$blue;
   margin-top: 0;
 }
 

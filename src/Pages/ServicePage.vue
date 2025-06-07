@@ -87,7 +87,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/colors.scss';
+@use '@/styles/colors.scss';
 
 .card {
   width: 100%;
@@ -105,7 +105,7 @@ onMounted(() => {
 .servicePage {
   display: flex;
   flex-direction: column;
-  background-color: $white;
+  background-color: colors.$white;
   padding: 1.5vw;
   width: 100%;
   box-sizing: border-box;

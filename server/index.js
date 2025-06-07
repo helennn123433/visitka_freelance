@@ -26,6 +26,16 @@ const loadContacts = () => {
   }
 }
 
+const loadAboutUs = () => {
+  try {
+    const data = fs.readFileSync(path.join(__dirname, 'aboutUs.json'), 'utf-8')
+    return JSON.parse(data)
+  } catch (error) {
+    console.error('Ошибка загрузки contacts.json:', error)
+    return { description: [], contacts: [] }
+  }
+}
+   
 const saveServices = (data) => {
   try {
     fs.writeFileSync(
@@ -39,6 +49,7 @@ const saveServices = (data) => {
 }
 
 let contactsData = loadContacts()
+let aboutUsData = loadAboutUs()
 
 const servicesData = loadJsonFile('services.json')
 const examplesData = loadJsonFile('examples.json')
@@ -150,6 +161,28 @@ server.put('/contacts', (req, res) => {
   }
 })
 
+server.get('/aboutUs', (req, res) => {
+  res.json(aboutUsData)
+})
+
+server.put('/aboutUs', (req, res) => {
+  try {
+    const { description, stats } = req.body
+
+    if (!description || !stats) {
+      return res.status(400).json({ error: 'Неверный формат данных' })
+    }
+
+    const newData = { description, stats }
+    fs.writeFileSync(path.join(__dirname, 'aboutUs.json'), JSON.stringify(newData, null, 2), 'utf-8')
+    contactsData = newData
+    res.status(200).json({ success: true })
+  } catch (error) {
+    console.error('Ошибка записи:', error)
+    res.status(500).json({ error: 'Ошибка сервера' })
+  }
+})
+
 server.use((req, res, next) => {
   if (req.method === 'PUT' || req.method === 'POST' || req.method === 'DELETE') {
     setTimeout(() => { contactsData = loadContacts() }, 100)
@@ -169,6 +202,8 @@ server.listen(3004, () => {
   console.log('GET /servicestypes')
   console.log('GET /contacts')
   console.log('PUT /contacts')
+  console.log('GET /aboutUs')
+  console.log('PUT /aboutUs')
 
   
   console.log('\nЗагруженные данные:')

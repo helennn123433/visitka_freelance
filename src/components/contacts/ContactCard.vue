@@ -7,10 +7,11 @@
     >
     <h3 class="contact-card__title">
       <template v-if="isEditing">
-        <input
+        <textarea
           v-model="editableTitle"
           @input="emitUpdate"
           class="contact-card__input"
+          rows="3"
         />
       </template>
       <template v-else>
@@ -21,10 +22,11 @@
     </h3>
     <p class="contact-card__subtitle">
       <template v-if="isEditing">
-        <input
+        <textarea
           v-model="editableSubtitle"
           @input="emitUpdate"
           class="contact-card__input"
+          rows="3"
         />
       </template>
       <template v-else>
@@ -84,7 +86,10 @@ a {
   font: inherit;
   padding: 4px 6px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
+  border: none;       
+  outline: none;     
+  box-sizing: border-box;
 }
 
 .contact-card {

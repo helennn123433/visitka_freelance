@@ -32,7 +32,7 @@ const loadAboutUs = () => {
     return JSON.parse(data)
   } catch (error) {
     console.error('Ошибка загрузки contacts.json:', error)
-    return { description1: '', contacts: [] } // не все description, но думаю в обработке ошибки понятно что не так
+    return { description: [], contacts: [] }
   }
 }
 
@@ -89,13 +89,13 @@ server.get('/aboutUs', (req, res) => {
 
 server.put('/aboutUs', (req, res) => {
   try {
-    const { description1, description2, description3, description4, stats } = req.body
+    const { description, stats } = req.body
 
-    if (!description1 || !description2 || !description3 || !description4 || !stats) {
+    if (!description || !stats) {
       return res.status(400).json({ error: 'Неверный формат данных' })
     }
 
-    const newData = { description1, description2, description3, description4, stats }
+    const newData = { description, stats }
     fs.writeFileSync(path.join(__dirname, 'aboutUs.json'), JSON.stringify(newData, null, 2), 'utf-8')
     contactsData = newData
     res.status(200).json({ success: true })
@@ -121,6 +121,8 @@ server.listen(3004, () => {
   console.log('GET /servicestypes')
   console.log('GET /contacts')
   console.log('PUT /contacts')
+  console.log('GET /aboutUs')
+  console.log('PUT /aboutUs')
 
   
   console.log('\nЗагруженные данные:')

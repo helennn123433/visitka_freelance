@@ -1,11 +1,15 @@
 <template>
-  <button class="about__us__btn">
+  <button :type="props.type ?? 'button'" class="about__us__btn">
     <slot></slot>
   </button>
 </template>
 
-<script setup lang="ts"></script>
-
+<script setup lang="ts">
+  import { defineProps } from "vue";
+  const props = defineProps<{
+  type?: 'button' | 'submit' | 'reset'
+}>()
+</script>
 <style lang="scss" scoped>
 .about__us__btn {
   display: flex;

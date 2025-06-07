@@ -114,7 +114,7 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-@import './styles/colors.scss';
+@use './styles/colors.scss';
 
 .main__app {
   display: flex;
@@ -171,7 +171,7 @@ defineExpose({
   font-size: 1.5rem;
   background: none;
   border: none;
-  color: $blue;
+  color: colors.$blue;
   cursor: pointer;
 }
 
@@ -179,7 +179,6 @@ defineExpose({
   margin: 0 auto;
 }
 
-/* Мобильные стили */
 @media (max-width: 767px) {
   .sidebar {
     position: fixed;

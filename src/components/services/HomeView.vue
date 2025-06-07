@@ -87,71 +87,71 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-  @import '../../styles/colors.scss';
+@use '../../styles/colors.scss';
 
-  .container {
-    display: flex;
-    flex-direction: column;
-    background-color: $white;
-    padding: 1.5vw;
-
-    &__header{
-      display: flex;
-      justify-content: end;
-    }
-
-    &__btn{
-      width: 150px;
-      height: 40px;
-      margin: 0 10px 10px 0;
-    }
-  }
-  .cards-field{
-    flex-grow: 1;
-    min-height: 0;
-    overflow: hidden;
-    overflow-y: auto;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5vw;
-    justify-content: space-between;
-    align-content: space-between;
-  }
-
-  .header {
+.container {
   display: flex;
+  flex-direction: column;
+  background-color: colors.$white;
+  padding: 1.5vw;
+
+  &__header{
+    display: flex;
+    justify-content: end;
+  }
+
+  &__btn{
+    width: 150px;
+    height: 40px;
+    margin: 0 10px 10px 0;
+  }
+}
+.cards-field{
+  flex-grow: 1;
+  min-height: 0;
+  overflow: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5vw;
   justify-content: space-between;
-  align-self: flex-start;
-  line-height: 100%;
-  width: 100%;
-  color: #0652ff;
-  font-size: clamp(1.5rem, 5vw, 2.5rem);
-  font-weight: 800;
-  padding-bottom: 16px;
+  align-content: space-between;
 }
 
-  @media (max-width: 767px) {
-    .cards-field{
-      gap: 0;
-      justify-content: center;
-    }
-    .container {
-      border-radius: 0;
-      box-shadow: none;
-    }
-  }
+.header {
+display: flex;
+justify-content: space-between;
+align-self: flex-start;
+line-height: 100%;
+width: 100%;
+color: #0652ff;
+font-size: clamp(1.5rem, 5vw, 2.5rem);
+font-weight: 800;
+padding-bottom: 16px;
+}
 
-  @media(max-width: 450px){
-    .header{
-      flex-direction: column;
-      gap: 3vw;
-      margin-bottom: 3vw;;
-      .header-buttons{
-        margin-right:0;
-      }
-      img{
-        width: 3vw;
-      }
+@media (max-width: 767px) {
+  .cards-field{
+    gap: 0;
+    justify-content: center;
+  }
+  .container {
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media(max-width: 450px){
+  .header{
+    flex-direction: column;
+    gap: 3vw;
+    margin-bottom: 3vw;;
+    .header-buttons{
+      margin-right:0;
+    }
+    img{
+      width: 3vw;
     }
   }
+}
 </style>

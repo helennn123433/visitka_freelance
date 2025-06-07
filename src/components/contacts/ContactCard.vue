@@ -9,9 +9,9 @@
       <template v-if="isEditing">
         <input
           v-model="editableTitle"
-          @input="emitUpdate"
           class="contact-card__input"
-        />
+          @input="emitUpdate"
+        >
       </template>
       <template v-else>
         <a href="#">
@@ -23,9 +23,9 @@
       <template v-if="isEditing">
         <input
           v-model="editableSubtitle"
-          @input="emitUpdate"
           class="contact-card__input"
-        />
+          @input="emitUpdate"
+        >
       </template>
       <template v-else>
         {{ contact.subtitle }}
@@ -48,7 +48,7 @@
 
   /* eslint-disable */
   const emits = defineEmits<{
-    (e: 'contactUpdate', payload: Contact): void
+    (e: 'contact-update', payload: Contact): void
   }>()
 
 
@@ -61,7 +61,7 @@
   }, { deep: true })
 
   function emitUpdate() {
-    emits('contactUpdate', {
+    emits('contact-update', {
       id: props.contact.id,
       icon: props.contact.icon,
       title: editableTitle.value,
@@ -71,7 +71,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/colors.scss';
+@use '../../styles/colors.scss';
 
 a {
   text-decoration: none;
@@ -88,16 +88,16 @@ a {
 }
 
 .contact-card {
-  background-color: $light-grey;
+  background-color: colors.$light-grey;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
   &__title {
-    color: $black;
+    color: colors.$black;
     margin: 0;
   }
   &__subtitle {
-    color: $grey;
+    color: colors.$grey;
     margin-bottom: 0;
   }
 	

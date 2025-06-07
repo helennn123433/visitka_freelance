@@ -47,7 +47,7 @@
         </MyButton>
         <MyButton
           class="btn"
-          type="submit"
+          :type="'submit'"
         >
           Вход
         </MyButton>

@@ -5,13 +5,13 @@
       <div class="modal-buttons">
         <MyButton
           class="delete-btn"
-          @click="$emit('confirm')"
+          @click="confirm($event)"
         >
           Подтвердить
         </MyButton>
         <MyButton
           class="cancel-btn"
-          @click="$emit('cancel')"
+          @click="cancel($event)"
         >
           Отмена
         </MyButton>
@@ -20,11 +20,24 @@
   </div>
 </template>
   
-  <script setup lang="ts">
-  import MyButton from '@/components/ui/MyButton.vue'; 
-  
-  defineEmits(['confirm', 'cancel']);
-  </script>
+<script setup lang="ts">
+import MyButton from '@/components/ui/MyButton.vue';
+import { defineEmits } from 'vue';
+
+const emit = defineEmits(['confirm', 'cancel']);
+
+const confirm = (e: MouseEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+  emit('confirm');
+};
+
+const cancel = (e: MouseEvent) => {
+  e.preventDefault();
+  e.stopPropagation();
+  emit('cancel');
+};
+</script>
   
   <style scoped>
   .modal-overlay {

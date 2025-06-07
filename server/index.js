@@ -35,6 +35,18 @@ const loadAboutUs = () => {
     return { description: [], contacts: [] }
   }
 }
+   
+const saveServices = (data) => {
+  try {
+    fs.writeFileSync(
+      path.join(__dirname, 'services.json'),
+      JSON.stringify({ services: data }, null, 2),
+      'utf-8'
+    )
+  } catch (error) {
+    console.error('Ошибка сохранения services.json:', error)
+  }
+}
 
 let contactsData = loadContacts()
 let aboutUsData = loadAboutUs()
@@ -48,6 +60,72 @@ const servicesTypesProjectsData = loadJsonFile('servicesTypesProjects.json')
 server.get('/services', (req, res) => {
   res.jsonp(servicesData.services || [])
 })
+
+server.post('/addServices', (req, res) => {
+  try {
+    const newService = req.body
+    if (!newService.title) {
+      return res.status(400).json({ error: 'Название услуги обязательно' })
+    }
+
+    servicesData.services = servicesData.services || []
+    servicesData.services.push(newService)
+    
+    saveServices(servicesData.services)
+    
+    res.status(201).json(newService)
+  } catch (error) {
+    console.error('Ошибка добавления услуги:', error)
+    res.status(500).json({ error: 'Ошибка сервера' })
+  }
+})
+
+server.delete('/services/:id', (req, res) => {
+  try {
+    const id = req.params.id;
+    
+    if (!servicesData.services) {
+      return res.status(404).json({ error: 'Список услуг пуст' });
+    }
+
+    const initialLength = servicesData.services.length;
+    servicesData.services = servicesData.services.filter(service => service.id !== id);
+    
+    if (servicesData.services.length === initialLength) {
+      return res.status(404).json({ error: 'Услуга не найдена' });
+    }
+
+    saveServices(servicesData.services);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error('Ошибка удаления услуги:', error);
+    res.status(500).json({ error: 'Ошибка сервера' });
+  }
+});
+
+server.put('/services/:id', (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedService = req.body;
+    
+    if (!servicesData.services) {
+      return res.status(404).json({ error: 'Список услуг пуст' });
+    }
+
+    const index = servicesData.services.findIndex(service => service.id === id);
+    
+    if (index === -1) {
+      return res.status(404).json({ error: 'Услуга не найдена' });
+    }
+
+    servicesData.services[index] = { ...servicesData.services[index], ...updatedService };
+    saveServices(servicesData.services);
+    res.status(200).json(servicesData.services[index]);
+  } catch (error) {
+    console.error('Ошибка обновления услуги:', error);
+    res.status(500).json({ error: 'Ошибка сервера' });
+  }
+});
 
 server.get('/examples', (req, res) => {
   res.jsonp(examplesData.examples || [])
@@ -116,6 +194,9 @@ server.listen(3004, () => {
   console.log('Сервер запущен на http://localhost:3004')
   console.log('Доступные маршруты:')
   console.log('GET /services')
+  console.log('POST /addServices')
+  console.log('PUT /services/:id')
+  console.log('DELETE /services/:id')
   console.log('GET /examples')
   console.log('GET /subservices')
   console.log('GET /servicestypes')

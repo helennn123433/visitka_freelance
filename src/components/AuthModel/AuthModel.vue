@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-model">
+  <form @submit.prevent="checkAuth" class="auth-model">
     <div class="auth-model__card">
       <div class="auth-model__card__title">
         <h3>Авторизация</h3>
@@ -27,13 +27,13 @@
         </MyButton>
         <MyButton
           class="btn"
-          @click="checkAuth"
+          :type="'submit'"
         >
           Вход
         </MyButton>
       </div>
     </div>
-  </div>
+  </form>
 </template>
 
 <script setup lang="ts">

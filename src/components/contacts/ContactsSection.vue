@@ -168,7 +168,10 @@
   font: inherit;
   padding: 8px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
+  border: none;   
+  outline: none;  
+  box-sizing: border-box;  
 }
 
 .contacts__list {

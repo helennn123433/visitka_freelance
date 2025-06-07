@@ -73,24 +73,27 @@
     contacts.value = data.contacts
   })
 
-  function toggleEdit() {
-    flagError.value = 0
+  const toggleEdit = () => {
+    flagError.value = 0;
+
     contacts.value.forEach((input) => {
-      if(input.title == '' || input.subtitle == ''){
-        flagError.value = 1
-        return true
+      if (input.title === '' || input.subtitle === '') {
+        flagError.value = 1;
+        return;
       }
     });
-    if(description.value == ''){
-      flagError.value = 1
+
+    if (description.value === '') {
+      flagError.value = 1;
     }
-    if(flagError.value == 1) {
-      showError.value = true
-    }else{
-      isEditing.value = !isEditing.value
+
+    if (flagError.value === 1) {
+      showError.value = true;
+    } else {
+      isEditing.value = !isEditing.value;
     }
-    
-  }
+  };
+
 
   function updateContact(updatedContact: Contact){
     const index = contacts.value.findIndex(c => c.id === updatedContact.id)

@@ -59,7 +59,7 @@ const form = ref({
   image: ""
 });
 
-const emit = defineEmits(['toggle-dialog', 'service-added']);
+const emit = defineEmits(['toggle-dialog', 'service-added', 'success', 'error']);
 
 const addService = async () => {
   try {
@@ -73,10 +73,17 @@ const addService = async () => {
     form.value = { title: "", price: 0, image: "" };
     emit('service-added');
     emit('toggle-dialog');
-
-  } catch(err) {
-    console.error('Ошибка добавления:', err);
-    alert('Ошибка при добавлении услуги');
+    emit('success');
+  } catch(err: any) {
+    let errorMsg = 'Неизвестная ошибка'
+    if (err.response) {
+      // Форматируем сообщение об ошибке с кодом
+      errorMsg = `Ошибка ${err.response.status}: ${err.response.data?.error || err.message}`;
+    } else if (err.message) {
+      errorMsg = err.message;
+    }
+    emit('toggle-dialog');
+    emit('error', errorMsg);
   }
 };
 </script>

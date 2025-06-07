@@ -55,7 +55,7 @@ const props = defineProps<{
 
 const authStore = useAuthStore()
 
-const emit = defineEmits(['updated'])  
+const emit = defineEmits(['updated', 'success', 'error']); 
 
 const isDeleteModalOpen = ref(false)
 const isEditModalOpen = ref(false)
@@ -85,9 +85,18 @@ const handleDeleteConfirm = async (e) => {
     if (response.status === 200) {
       emit('updated')
       closeDeleteModal()
+      emit('success');
     }
-  } catch (error) {
-    alert('Ошибка при удалении услуги: ' + error.message)
+  } catch (error: any) {
+    let errorMsg = 'Неизвестная ошибка';
+    
+    if (error.response) {
+      errorMsg = `Ошибка ${error.response.status}: ${error.response.data?.error || error.message}`;
+    } else if (error.message) {
+      errorMsg = error.message;
+    }
+    closeDeleteModal()
+    emit('error', errorMsg); 
   }
 }
 
@@ -101,9 +110,19 @@ const handleSave = async (updatedData: image) => {
     if (response.status === 200) {
       emit('updated')
       closeEditModal()
+      emit('success');
     }
-  } catch (error) {
-    alert('Ошибка при сохранении изменений')
+  } catch (error: any) {
+     let errorMsg = 'Неизвестная ошибка';
+    
+    if (error.response) {
+      errorMsg = `Ошибка ${error.response.status}: ${error.response.data?.error || error.message}`;
+    } else if (error.message) {
+      errorMsg = error.message;
+    }
+    
+    closeEditModal()
+    emit('error', errorMsg);
   }
 }
 </script>

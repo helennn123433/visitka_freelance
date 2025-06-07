@@ -36,9 +36,10 @@
     />
     <DeleteCard
       v-if="isDeleteModalOpen"
-      @confirm="handleDeleteConfirm"
+      
       @cancel="closeDeleteModal"
     />
+    <!--@confirm="handleDeleteConfirm"-->
 
     <NotificationComp 
       v-if="showNotification"
@@ -108,7 +109,7 @@ const closeEditModal = () => {
   isEditModalOpen.value = false
 }
 
-const handleDeleteConfirm = async (e) => {
+/*const handleDeleteConfirm = async (e) => {
   e?.stopPropagation()
   try {
     const response = await axios.delete(
@@ -126,8 +127,8 @@ const handleDeleteConfirm = async (e) => {
       showErrorNotification('Неизвестная ошибка при удалении услуги');
     }
   }
-
-const handleSave = async (updatedData: image) => {
+}*/
+const handleSave = async (updatedData: Image) => {
   try {
     const response = await axios.put(
       `/api/services/${updatedData.id}`,

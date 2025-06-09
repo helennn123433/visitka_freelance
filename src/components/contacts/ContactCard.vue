@@ -5,7 +5,7 @@
       :alt="contact.title"
       class="contact-card__icon"
     >
-    <h3 class="contact-card__title">
+    <h3 class="contact-card__title" @click="handleTitleClick">
       <template v-if="isEditing">
         <input
           v-model="editableTitle"
@@ -14,9 +14,7 @@
         >
       </template>
       <template v-else>
-        <a href="#">
-          {{ contact.title }}
-        </a>
+        <span class="title">{{ contact.title }}</span>
       </template>
     </h3>
     <p class="contact-card__subtitle">
@@ -35,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch, defineProps, defineEmits } from 'vue'
+  import { ref, watch, defineProps, defineEmits, computed } from 'vue'
   import { Contact } from '@/interfaces/contacts/Contact'
   import { Icons } from "@/assets/img/Icons"
   //тип ключей:
@@ -55,6 +53,42 @@
   const editableTitle = ref(props.contact.title)
   const editableSubtitle = ref(props.contact.subtitle)
 
+  const contactType = computed(() => {
+    const icon = props.contact.icon.toLowerCase()
+    if (icon.includes('phone')) return 'phone'
+    if (icon.includes('mail')) return 'email'
+    if (icon.includes('telegram')) return 'telegram'
+    if (icon.includes('whatsapp')) return 'whatsapp' // Добавлен WhatsApp
+    return null
+  })
+
+  const handleTitleClick = () => {
+    if (props.isEditing) return // Не обрабатываем клик в режиме редактирования
+    
+    const value = props.contact.title.trim()
+    
+    switch (contactType.value) {
+      case 'phone':
+        window.location.href = `tel:${value}`
+        break
+      case 'email':
+        window.location.href = `mailto:${value}`
+        break
+      case 'telegram':
+        // Удаляем @ если он есть в начале
+        const username = value.startsWith('@') ? value.slice(1) : value
+        window.open(`https://t.me/${username}`, '_blank')
+        break
+      case 'whatsapp': // Обработка WhatsApp
+        // Удаляем все нецифровые символы
+        const phoneNumber = value.replace(/\D/g, '')
+        window.open(`https://wa.me/${phoneNumber}`, '_blank')
+        break
+      default:
+        console.warn('Unknown contact type:', props.contact.icon)
+    }
+  }
+
   watch(() => props.contact, (newContact) => {
     editableTitle.value = newContact.title
     editableSubtitle.value = newContact.subtitle
@@ -73,18 +107,16 @@
 <style lang="scss" scoped>
 @use '../../styles/colors.scss';
 
-a {
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-}
-
 .contact-card__input {
   width: 100%;
   font: inherit;
   padding: 4px 6px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.title{
+  cursor: pointer;
 }
 
 .contact-card {

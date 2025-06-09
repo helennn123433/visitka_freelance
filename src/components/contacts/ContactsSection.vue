@@ -47,6 +47,8 @@
         @contact-update="updateContact"
       />
     </div>
+
+    <NotificationComp :visible="showError" :errorMessage="textError" @close="showError = false" />
   </div> 
 </template>
 
@@ -55,11 +57,15 @@
   import ContactCard from './ContactCard.vue'
   import { Contact } from '@/interfaces/contacts/Contact'
   import { Icons } from "@/assets/img/Icons"
+  import NotificationComp from '../notifications/NotificationComp.vue';
   import { useAuthStore } from "@/store/authStore"
 
   const authStore = useAuthStore()
 
   const isEditing = ref(false)
+  const flagError = ref(0)
+  const textError = ref('Нельзя оставлять пустые поля!')
+  const showError = ref(false)
   const description = ref('')
   const contacts = ref<Contact[]>([])
 
@@ -70,9 +76,27 @@
     contacts.value = data.contacts
   })
 
-  function toggleEdit() {
-    isEditing.value = !isEditing.value
-  }
+  const toggleEdit = () => {
+    flagError.value = 0;
+
+    contacts.value.forEach((input) => {
+      if (input.title === '' || input.subtitle === '') {
+        flagError.value = 1;
+        return;
+      }
+    });
+
+    if (description.value === '') {
+      flagError.value = 1;
+    }
+
+    if (flagError.value === 1) {
+      showError.value = true;
+    } else {
+      isEditing.value = !isEditing.value;
+    }
+  };
+
 
   function updateContact(updatedContact: Contact){
     const index = contacts.value.findIndex(c => c.id === updatedContact.id)

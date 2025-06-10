@@ -19,6 +19,8 @@
       :next-id="(maxId + 1).toString()"
       @toggle-dialog="toggleDialog"
       @service-added="handleServiceUpdate"
+      @success="showSuccess"
+      @error="showError"
     />
     <div class="cards-field">
       <CardComp
@@ -32,14 +34,21 @@
         }"
         :show-price="true"
         @updated="handleServiceUpdate"
+        @success="showSuccess"
+        @error="showError"
         @click="goToService(image)"
       />
     </div>
+    <NotificationComp 
+      :visible="notificationVisible"
+      :errorMessage="notificationError"
+      @close="notificationVisible = false"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, nextTick} from "vue";
+import { ref, onMounted, computed, nextTick, onUnmounted} from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/authStore";
 import { useSearchingStore } from "@/store/searchingStore";
@@ -48,13 +57,37 @@ import MyButton from "@/components/ui/MyButton.vue";
 import AddDialog from "@/components/services/addDialog.vue";
 import { type Image } from "@/interfaces/services/Image";
 import { emitter } from '@/emits/event-bus';
+import NotificationComp from '@/components/notifications/NotificationComp.vue';
+
 const isDialogOpen = ref(false);
 
 const router = useRouter();
 const searchStore = useSearchingStore();
 const authStore = useAuthStore();
 const emit = defineEmits(['section-loaded']);
+const notificationVisible = ref(false);
+const notificationError = ref<string | null>(null);
+let notificationTimeout: number | null = null;
 
+const showSuccess = () => {
+  notificationError.value = null;
+  notificationVisible.value = true;
+  
+  if (notificationTimeout) clearTimeout(notificationTimeout);
+  notificationTimeout = setTimeout(() => {
+    notificationVisible.value = false;
+  }, 2000);
+};
+
+const showError = (message: string) => {
+  notificationError.value = message;
+  notificationVisible.value = true;
+  
+  if (notificationTimeout) clearTimeout(notificationTimeout);
+  notificationTimeout = setTimeout(() => {
+    notificationVisible.value = false;
+  }, 5000);
+};
 
 const maxId = computed(() => {
   if (searchStore.images.length === 0) return 0;
@@ -83,6 +116,12 @@ onMounted(async () => {
   await searchStore.fetchServices();
   await nextTick(); 
   emitter.emit('section-loaded');
+});
+
+onUnmounted(() => {
+  if (notificationTimeout) {
+    clearTimeout(notificationTimeout);
+  }
 });
 </script>
 

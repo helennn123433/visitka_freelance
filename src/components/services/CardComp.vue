@@ -82,19 +82,9 @@ const closeNotification = () => {
   showNotification.value = false;
 };
 
-const showSuccessNotification = () => {
-  notificationMessage.value = '';
-  showNotification.value = true;
-};
-
-const showErrorNotification = (message: string) => {
-  notificationMessage.value = message;
-  showNotification.value = true;
-};
-
 const authStore = useAuthStore()
 
-const emit = defineEmits(['updated'])  
+const emit = defineEmits(['updated', 'success', 'error']); 
 
 const isDeleteModalOpen = ref(false)
 const isEditModalOpen = ref(false)
@@ -122,16 +112,20 @@ const handleDeleteConfirm = async (e:Event) => {
       `/api/services/${props.image.id}`
     )
     if (response.status === 200) {
-      emit('updated');
-      closeDeleteModal();
-      showSuccessNotification();
+      emit('updated')
+      closeDeleteModal()
+      emit('success');
     }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      showErrorNotification('Ошибка при удалении услуги: ' + error.message);
-    } else {
-      showErrorNotification('Неизвестная ошибка при удалении услуги');
+  } catch (error: any) {
+    let errorMsg = 'Неизвестная ошибка';
+    
+    if (error.response) {
+      errorMsg = `Ошибка ${error.response.status}: ${error.response.data?.error || error.message}`;
+    } else if (error.message) {
+      errorMsg = error.message;
     }
+    closeDeleteModal()
+    emit('error', errorMsg); 
   }
 }
 
@@ -143,12 +137,21 @@ const handleSave = async (updatedData: Image) => {
     )
 
     if (response.status === 200) {
-      emit('updated');
-      closeEditModal();
-      showSuccessNotification();
+      emit('updated')
+      closeEditModal()
+      emit('success');
     }
-  } catch (error) {
-    showErrorNotification('Ошибка при сохранении изменений');
+  } catch (error: any) {
+     let errorMsg = 'Неизвестная ошибка';
+    
+    if (error.response) {
+      errorMsg = `Ошибка ${error.response.status}: ${error.response.data?.error || error.message}`;
+    } else if (error.message) {
+      errorMsg = error.message;
+    }
+    
+    closeEditModal()
+    emit('error', errorMsg);
   }
 };
 </script>

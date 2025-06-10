@@ -12,6 +12,12 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/Pages/ServicePage.vue'),
     props: true,
   },
+  {
+    path: '/serviceType',
+    name: 'serviceTypePage',
+    component: () => import('@/Pages/ServiceTypePage.vue'),
+    props: true,
+  },
 ];
 
 const router = createRouter({

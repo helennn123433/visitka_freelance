@@ -40,9 +40,16 @@
       </div>
     </div>
   </div>
+  <NotificationComp 
+    v-if="showNotification"
+    :visible="showNotification"
+    :error-message="notificationMessage"
+    @close="closeNotification"
+  />
 </template>
 <script setup lang="ts">
 import MyButton from "@/components/ui/MyButton.vue";
+import NotificationComp from "../notifications/NotificationComp.vue";
 import axios from "axios";
 import { ref } from "vue";
 
@@ -59,10 +66,31 @@ const form = ref({
   image: ""
 });
 
+const showNotification = ref(false);
+const notificationMessage = ref('');
+
 const emit = defineEmits(['toggle-dialog', 'service-added', 'success', 'error']);
 
 const addService = async () => {
   try {
+    // Валидация формы перед отправкой
+    if (!form.value.title.trim()) {
+      showErrorNotification('Название услуги обязательно');
+      return;
+    }
+    
+    if (form.value.price <= 0) {
+      showErrorNotification('Цена должна быть положительным числом');
+      return;
+    }
+
+    try {
+      new URL(form.value.image);
+    } catch {
+      showErrorNotification('Некорректный URL изображения');
+      return;
+    }
+
     const newService = {
       id: String(Number(props.nextId)),
       title: form.value.title,

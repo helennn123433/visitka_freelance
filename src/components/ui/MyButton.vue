@@ -1,8 +1,6 @@
 <template>
-  <button 
-    :type="props.type ?? 'button'"
-    class="about__us__btn">
-    <slot></slot>
+  <button class="about__us__btn">
+    <slot />
   </button>
 </template>
 

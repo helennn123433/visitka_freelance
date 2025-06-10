@@ -64,7 +64,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from "@/store/authStore";
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
-import AuthModel from "@/components/AuthModel/AuthModel.vue";
+import AuthModel from "@/components/authModel/AuthModel.vue";
 import HeaderComp from '@/components/header/HeaderComp.vue'
 
 const authStore = useAuthStore()
@@ -114,7 +114,7 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-@import './styles/colors.scss';
+@use './styles/colors.scss';
 
 .main__app {
   display: flex;
@@ -137,7 +137,7 @@ defineExpose({
   border-radius: 3vw;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
-  min-height: auto;
+  max-height: 93vh;
   background: white;
 }
 
@@ -171,7 +171,7 @@ defineExpose({
   font-size: 1.5rem;
   background: none;
   border: none;
-  color: $blue;
+  color: colors.$blue;
   cursor: pointer;
 }
 
@@ -179,7 +179,6 @@ defineExpose({
   margin: 0 auto;
 }
 
-/* Мобильные стили */
 @media (max-width: 767px) {
   .sidebar {
     position: fixed;

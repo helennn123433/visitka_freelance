@@ -11,12 +11,32 @@
           type="text"
           class="input"
         >
-        <input
-          v-model="password"
-          type="password"
-          placeholder="пароль"
-          class="input"
-        >
+        <div class="password-wrapper">
+          <input
+            :type="passwordFieldType"
+            v-model="password"
+            placeholder="пароль"
+            class="input password"
+          >
+          <span
+            class="switch-visibility"
+            @click="switchVisibility"
+          >
+            <span v-if="passwordFieldType === 'password'">
+            <img
+              class="icon"
+              src="../../assets/img/icons/eye.svg"
+              alt="eyeIcon"
+            >
+            </span>
+            <span v-else>
+            <img
+              class="icon"
+              src="../../assets/img/icons/eye-blocked.svg"
+              alt="closedEyeIcon"
+            ></span>
+          </span>
+        </div>
       </div>
       <div class="auth-model__card__btns">
         <MyButton
@@ -41,6 +61,8 @@ import MyButton from "@/components/ui/MyButton.vue";
 import {useAuthStore} from "@/store/authStore";
 import { ref } from "vue";
 
+const passwordFieldType = ref('password')
+
 const authStore = useAuthStore()
 let login = ref<string>("");
 let password = ref<string>("");
@@ -55,6 +77,10 @@ const checkAuth = () => {
     alert("данные не верны") // TODO внедрить уведобление
   }
 };
+const switchVisibility = () => {
+  passwordFieldType.value =
+    passwordFieldType.value === 'password' ? 'text' : 'password'
+}
 </script>
 
 <style lang="scss" scoped>
@@ -107,15 +133,52 @@ const checkAuth = () => {
   }
 }
 
-.input{
-  width: 70%;
+.icon{
+  height: 20px;
+}
+
+.input {
+  width: 100%;
   height: 100%;
-  margin: 5px;
   padding: 10px;
   font-size: 16px;
   border: none;
   border-radius: 32px;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+}
+
+.auth-model__card__inputs > input,
+.password-wrapper {
+  width: 70%;
+  margin: 5px;
+}
+
+.password-wrapper {
+  position: relative;
+  width: 70%; 
+}
+
+.input.password {
+  width: 100%;
+  padding-right: 40px; /* добавляем место под глаз */
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 32px;
+  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.switch-visibility {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+  user-select: none;
 }
 
 .btn{

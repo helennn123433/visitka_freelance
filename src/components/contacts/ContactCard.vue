@@ -10,6 +10,8 @@
         <textarea
           v-model="editableTitle"
           class="contact-card__input"
+          @input="emitUpdate"
+          rows="3"
         />
       </template>
       <template v-else>
@@ -22,7 +24,8 @@
           v-model="editableSubtitle"
           class="contact-card__input"
           @input="emitUpdate"
-        >
+          rows="3"
+        />
       </template>
       <template v-else>
         {{ contact.subtitle }}
@@ -106,6 +109,12 @@
 <style lang="scss" scoped>
 @use '../../styles/colors.scss';
 
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
 .contact-card__input {
   width: 100%;
   font: inherit;
@@ -116,9 +125,6 @@
   outline: none;     
   box-sizing: border-box;
 }
-
-
-
 
 .title{
   cursor: pointer;

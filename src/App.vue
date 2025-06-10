@@ -137,7 +137,7 @@ defineExpose({
   border-radius: 3vw;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
-  min-height: auto;
+  max-height: 93vh;
   background: white;
 }
 

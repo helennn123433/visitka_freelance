@@ -71,6 +71,15 @@ const notificationMessage = ref('');
 
 const emit = defineEmits(['toggle-dialog', 'service-added', 'success', 'error']);
 
+const closeNotification = () => {
+  showNotification.value = false;
+};
+
+const showErrorNotification = (message: string) => {
+  notificationMessage.value = message;
+  showNotification.value = true;
+};
+
 const addService = async () => {
   try {
     // Валидация формы перед отправкой

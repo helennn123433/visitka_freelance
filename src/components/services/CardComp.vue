@@ -82,16 +82,6 @@ const closeNotification = () => {
   showNotification.value = false;
 };
 
-const showSuccessNotification = () => {
-  notificationMessage.value = '';
-  showNotification.value = true;
-};
-
-const showErrorNotification = (message: string) => {
-  notificationMessage.value = message;
-  showNotification.value = true;
-};
-
 const authStore = useAuthStore()
 
 const emit = defineEmits(['updated', 'success', 'error']); 

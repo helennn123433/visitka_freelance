@@ -7,42 +7,69 @@
         class="adminCard"
       >
         <img
+          v-if="isEditing"
+          class="icon"
+          :src="Icons.Telegram"
+          alt="adminIcon"
+          @click="saveEdit"
+        >
+        <img
+          v-else
           class="icon"
           :src="Icons.Pencil"
           alt="adminIcon"
+          @click="toggleEdit"
         >
       </div>
     </div>
     <div class="upperText">
-      <p>
-        Мы — молодая и амбициозная команда из 20 разработчиков, успешно работающая в сфере IT уже два года. За это время
-        мы реализовали множество проектов, охватывающих как мобильную разработку, так и веб-приложения, а также создали
-        уникальные фирменные стили для различных компаний.
-      </p>
-      <p>
-        Мы гордимся тем, что в нашем составе — выпускники и студенты последних курсов ведущих технических вузов
-        Санкт-Петербурга. Ранее мы работали исключительно над закрытыми проектами для государственных корпораций, что
-        позволило нам накопить неоценимый опыт и понять высокие стандарты качества. Теперь мы уверенно выходим на
-        гражданские проекты, стремясь применить свои знания и навыки в более широком спектре задач.
-      </p>
+      <template v-if="isEditing">
+        <textarea
+          v-model="description[0]"
+          class="textarea"
+        />
+      </template>
+      <template v-else>
+        <p>{{ description[0] }}</p>
+      </template>
+      <template v-if="isEditing">
+        <textarea
+          v-model="description[1]"
+          class="textarea"
+        />
+      </template>
+      <template v-else>
+        <p>{{ description[1] }}</p>
+      </template>
     </div>
     <div class="middleText">
       <my-card
         v-for="stat in stats"
         :key="stat.id"
-        :upper="stat.upper"
-        :lower="stat.lower"
+        :stat="stat"
+        :is-editing="isEditing"
+        @statusUpdate="updateStatus"
       />
     </div>
     <div class="upperText">
-      <p>
-        Наша команда постоянно совершенствует свои навыки, следит за последними тенденциями в технологиях и стремится к
-        инновациям. Мы уделяем особое внимание качеству кода, пользовательскому опыту и безопасности наших решений.
-      </p>
-      <p>
-        Мы верим, что наш опыт и энтузиазм помогут вам достичь новых высот в вашем бизнесе. Свяжитесь с нами, чтобы
-        обсудить ваши идеи и узнать, как мы можем помочь их реализовать.
-      </p>
+      <template v-if="isEditing">
+        <textarea
+          v-model="description[2]"
+          class="textarea"
+        />
+      </template>
+      <template v-else>
+        <p>{{ description[2] }}</p>
+      </template>
+      <template v-if="isEditing">
+        <textarea
+          v-model="description[3]"
+          class="textarea"
+        />
+      </template>
+      <template v-else>
+        <p>{{ description[3] }}</p>
+      </template>
     </div>
     <my-button 
       class="btn" 
@@ -56,30 +83,64 @@
 <script setup lang="ts">
 import MyButton from '@/components/ui/MyButton.vue'
 import MyCard from '@/components/aboutUs/MyCard.vue'
+import { Stats} from "@/interfaces/aboutUs/Stats";
 import { Icons } from "@/assets/img/Icons";
 import { useAuthStore } from "@/store/authStore";
+import { onMounted, ref } from "vue";
 
 const authStore = useAuthStore()
 
-const stats = [
-  { id: 1, upper: '2', lower: 'ГОДА РАБОТЫ' },
-  { id: 2, upper: '20', lower: 'РАЗРАБОТЧИКОВ' },
-  { id: 3, upper: '35', lower: 'ПРОЕКТОВ' },
-  { id: 4, upper: '46', lower: 'НАПРАВЛЕНИЙ' },
-]
+let isEditing = ref<boolean>(false);
+const description = ref([])
+const stats = ref([])
+
+onMounted(async () => {
+  const res = await fetch('/api/aboutUs')
+  const data = await res.json()
+  description.value = data.description
+  stats.value = data.stats
+})
 
 const emit = defineEmits(['navigate'])
+
+const toggleEdit = () => {
+  isEditing.value = !isEditing.value;
+}
+
+const saveEdit = async () => {
+  await fetch('/api/aboutUs', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      description: description.value,
+      stats: stats.value,
+    })
+  })
+  toggleEdit()
+}
 
 const scrollToContacts = () => {
   emit('navigate', 'email')
 }
+
+const updateStatus = (updatedStatus: Stats) => {
+  const index =stats.value.findIndex(c => c.id === updatedStatus.id)
+  if (index !==-1){
+    stats.value[index] = {
+      ...stats.value[index],
+      ...updatedStatus
+    }
+  }
+}
+
 </script>
 
 <style lang="scss" scoped>
 .container {
   display: flex;
   flex-direction: column;
-  // padding: 1.5rem clamp(1rem, 5%, 3rem);
   gap: 16px;
   box-sizing: border-box;
   min-height: auto;
@@ -104,9 +165,10 @@ const scrollToContacts = () => {
 }
 
 .upperText {
+  display: flex;
+  flex-direction: column;
   font-size: clamp(0.875rem, 2.5vw, 1rem);
   text-align: start;
-  // line-height: 100%;
   letter-spacing: 0;
   font-weight: 500;
 }
@@ -123,6 +185,9 @@ const scrollToContacts = () => {
 .btn {
   align-self: center;
   padding: 1.5vh; 
+}
+.textarea{
+  height: 50px;
 }
 
 @media (max-width: 730px) {

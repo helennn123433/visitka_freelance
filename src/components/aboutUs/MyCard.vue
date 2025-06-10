@@ -1,19 +1,57 @@
 <template>
   <div class="card">
-    <div class="bigText">
-      {{ upper }}
+    <div v-if="isEditing">
+      <input
+        v-model="editableUpper"
+        @input="emitUpdate"
+      >
     </div>
-    <div class="lowText">
-      {{ lower }}
+    <div
+      v-else
+      class="bigText"
+    >
+      {{ props.stat.upper }}
+    </div>
+    <div v-if="isEditing">
+      <input
+        v-model="editableLower"
+        @input="emitUpdate"
+      >
+    </div>
+    <div
+      v-else
+      class="lowText"
+    >
+      {{ props.stat.lower }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps({
-  upper: { type: [String, Number], required: true },
-  lower: { type: String, required: true }
-});
+import { defineProps, ref } from "vue";
+import { Stats } from "@/interfaces/aboutUs/Stats";
+
+const props = defineProps<{
+  stat: Stats,
+  isEditing: boolean
+}>()
+
+/* eslint-disable */
+const emits = defineEmits<{
+  (e: 'statusUpdate', payload: Stats): void
+}>()
+
+const editableUpper =ref(props.stat.upper)
+const editableLower = ref(props.stat.lower)
+
+const emitUpdate = () => {
+  emits('statusUpdate', {
+    id: props.stat.id,
+    upper: editableUpper.value,
+    lower: editableLower.value
+  })
+}
+
 </script>
 
 <style lang="scss" scoped>

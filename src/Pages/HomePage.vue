@@ -8,7 +8,7 @@
       id="info"
       class="section"
     >
-      <AboutUs @navigate="handleNavigation"/>
+      <AboutUs @navigate="handleNavigation" />
     </section>
     <section
       id="list"
@@ -153,8 +153,7 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/colors.scss';
-
+@use '@/styles/colors.scss';
 
 .all__staff {
   height: 100vh;
@@ -185,21 +184,18 @@ defineExpose({
   margin-right: 10px;
 }
 
-
 .section#list{
   min-height: 100vh;
   height: auto; 
   padding: 20px 0;
 }
 
-
-/* Мобильные стили */
 @media (max-width: 767px) {
   .main__app {
     width: 100%;
     padding:0;
     margin: 0;
-    background-color: $white;
+    background-color: colors.$white;
   }
   .section#info {
     margin: 0;

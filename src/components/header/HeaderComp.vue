@@ -1,8 +1,8 @@
 <template>
-    <div class="header">
-      <SearchComp />
-      <ButtonsComp v-if="Show"></ButtonsComp>
-    </div>
+  <div class="header">
+    <SearchComp />
+    <ButtonsComp v-if="Show" />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -31,8 +31,6 @@ import ButtonsComp from "@/components/header/ButtonsComp.vue";
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/colors.scss';
-
 .header{
     width:100%;
     display: flex;

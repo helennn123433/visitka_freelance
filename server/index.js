@@ -31,7 +31,7 @@ const loadAboutUs = () => {
     const data = fs.readFileSync(path.join(__dirname, 'aboutUs.json'), 'utf-8')
     return JSON.parse(data)
   } catch (error) {
-    console.error('Ошибка загрузки contacts.json:', error)
+    console.error('Ошибка загрузки aboutUs.json:', error)
     return { description: [], contacts: [] }
   }
 }
@@ -169,14 +169,15 @@ server.put('/aboutUs', (req, res) => {
   try {
     const { description, stats } = req.body
 
-    if (!description || !stats) {
-      return res.status(400).json({ error: 'Неверный формат данных' })
+    const currentData = loadAboutUs()
+    const newData = {
+      description: description || currentData.description,
+      stats: stats || currentData.stats
     }
 
-    const newData = { description, stats }
     fs.writeFileSync(path.join(__dirname, 'aboutUs.json'), JSON.stringify(newData, null, 2), 'utf-8')
-    contactsData = newData
-    res.status(200).json({ success: true })
+    aboutUsData = newData
+    res.status(200).json(newData)
   } catch (error) {
     console.error('Ошибка записи:', error)
     res.status(500).json({ error: 'Ошибка сервера' })

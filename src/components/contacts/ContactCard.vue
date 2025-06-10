@@ -5,29 +5,24 @@
       :alt="contact.title"
       class="contact-card__icon"
     >
-    <h3 class="contact-card__title">
+    <h3 class="contact-card__title" @click="handleTitleClick">
       <template v-if="isEditing">
         <textarea
           v-model="editableTitle"
-          @input="emitUpdate"
           class="contact-card__input"
-          rows="3"
         />
       </template>
       <template v-else>
-        <a href="#">
-          {{ contact.title }}
-        </a>
+        <span class="title">{{ contact.title }}</span>
       </template>
     </h3>
     <p class="contact-card__subtitle">
       <template v-if="isEditing">
         <textarea
           v-model="editableSubtitle"
-          @input="emitUpdate"
           class="contact-card__input"
-          rows="3"
-        />
+          @input="emitUpdate"
+        >
       </template>
       <template v-else>
         {{ contact.subtitle }}
@@ -37,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch, defineProps, defineEmits } from 'vue'
+  import { ref, watch, defineProps, defineEmits, computed } from 'vue'
   import { Contact } from '@/interfaces/contacts/Contact'
   import { Icons } from "@/assets/img/Icons"
   //тип ключей:
@@ -50,12 +45,48 @@
 
   /* eslint-disable */
   const emits = defineEmits<{
-    (e: 'contactUpdate', payload: Contact): void
+    (e: 'contact-update', payload: Contact): void
   }>()
 
 
   const editableTitle = ref(props.contact.title)
   const editableSubtitle = ref(props.contact.subtitle)
+
+  const contactType = computed(() => {
+    const icon = props.contact.icon.toLowerCase()
+    if (icon.includes('phone')) return 'phone'
+    if (icon.includes('mail')) return 'email'
+    if (icon.includes('telegram')) return 'telegram'
+    if (icon.includes('whatsapp')) return 'whatsapp' // Добавлен WhatsApp
+    return null
+  })
+
+  const handleTitleClick = () => {
+    if (props.isEditing) return // Не обрабатываем клик в режиме редактирования
+    
+    const value = props.contact.title.trim()
+    
+    switch (contactType.value) {
+      case 'phone':
+        window.location.href = `tel:${value}`
+        break
+      case 'email':
+        window.location.href = `mailto:${value}`
+        break
+      case 'telegram':
+        // Удаляем @ если он есть в начале
+        const username = value.startsWith('@') ? value.slice(1) : value
+        window.open(`https://t.me/${username}`, '_blank')
+        break
+      case 'whatsapp': // Обработка WhatsApp
+        // Удаляем все нецифровые символы
+        const phoneNumber = value.replace(/\D/g, '')
+        window.open(`https://wa.me/${phoneNumber}`, '_blank')
+        break
+      default:
+        console.warn('Unknown contact type:', props.contact.icon)
+    }
+  }
 
   watch(() => props.contact, (newContact) => {
     editableTitle.value = newContact.title
@@ -63,7 +94,7 @@
   }, { deep: true })
 
   function emitUpdate() {
-    emits('contactUpdate', {
+    emits('contact-update', {
       id: props.contact.id,
       icon: props.contact.icon,
       title: editableTitle.value,
@@ -73,13 +104,7 @@
 </script>
 
 <style lang="scss" scoped>
-@import '../../styles/colors.scss';
-
-a {
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-}
+@use '../../styles/colors.scss';
 
 .contact-card__input {
   width: 100%;
@@ -92,17 +117,24 @@ a {
   box-sizing: border-box;
 }
 
+
+
+
+.title{
+  cursor: pointer;
+}
+
 .contact-card {
-  background-color: $light-grey;
+  background-color: colors.$light-grey;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
   &__title {
-    color: $black;
+    color: colors.$black;
     margin: 0;
   }
   &__subtitle {
-    color: $grey;
+    color: colors.$grey;
     margin-bottom: 0;
   }
 	

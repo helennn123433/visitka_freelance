@@ -64,7 +64,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useAuthStore } from "@/store/authStore";
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
-import AuthModel from "@/components/AuthModel/AuthModel.vue";
+import AuthModel from "@/components/authModel/AuthModel.vue";
 import HeaderComp from '@/components/header/HeaderComp.vue'
 
 const authStore = useAuthStore()

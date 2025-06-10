@@ -7,11 +7,12 @@
     >
     <h3 class="contact-card__title" @click="handleTitleClick">
       <template v-if="isEditing">
-        <input
+        <textarea
           v-model="editableTitle"
           class="contact-card__input"
           @input="emitUpdate"
-        >
+          rows="3"
+        />
       </template>
       <template v-else>
         <span class="title">{{ contact.title }}</span>
@@ -19,11 +20,12 @@
     </h3>
     <p class="contact-card__subtitle">
       <template v-if="isEditing">
-        <input
+        <textarea
           v-model="editableSubtitle"
           class="contact-card__input"
           @input="emitUpdate"
-        >
+          rows="3"
+        />
       </template>
       <template v-else>
         {{ contact.subtitle }}
@@ -107,12 +109,21 @@
 <style lang="scss" scoped>
 @use '../../styles/colors.scss';
 
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
 .contact-card__input {
   width: 100%;
   font: inherit;
   padding: 4px 6px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
+  border: none;       
+  outline: none;     
+  box-sizing: border-box;
 }
 
 .title{

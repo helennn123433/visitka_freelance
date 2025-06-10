@@ -5,10 +5,6 @@
 </template>
 
 <script setup lang="ts">
-  import { defineProps } from "vue";
-  const props = defineProps<{
-  type?: 'button' | 'submit' | 'reset'
-}>()
 </script>
 
 <style lang="scss" scoped>

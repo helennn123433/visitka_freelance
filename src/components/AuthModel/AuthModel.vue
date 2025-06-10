@@ -57,8 +57,9 @@
 </template>
 
 <script setup lang="ts">
-import MyButton from "@/components/ui/MyButton.vue";
-import {useAuthStore} from "@/store/authStore";
+
+import MyButton from "../ui/MyButton.vue";
+import {useAuthStore} from "../../store/authStore";
 import { ref } from "vue";
 
 const passwordFieldType = ref('password')

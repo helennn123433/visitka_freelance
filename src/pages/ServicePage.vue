@@ -179,7 +179,7 @@ onMounted(() => {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .cards-grid {
     gap: 0;
     flex-direction: column;

@@ -82,9 +82,9 @@ import MyButton from '@/components/ui/MyButton.vue'
 import ButtonsComp from "@/components/header/ButtonsComp.vue";
 
 const Show = ref(true)
-const isMobile = ref(window.innerWidth < 768)
+const isMobile = ref(window.innerWidth < 769)
 const handleResize = () => {
-  isMobile.value = window.innerWidth < 768
+  isMobile.value = window.innerWidth < 769
   Show.value = !!isMobile.value;
 }
 
@@ -147,7 +147,7 @@ onUnmounted(() => {
   z-index: 1001;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .close-btn {
     display: none; /* убираем крестик на компе */
   }

@@ -11,9 +11,9 @@ import SearchComp from '@/components/header/SearchComp.vue'
 
 import ButtonsComp from "@/components/header/ButtonsComp.vue";
   const Show = ref(true)
-  const isMobile = ref(window.innerWidth < 768)
+  const isMobile = ref(window.innerWidth < 769)
   const handleResize = () => {
-    isMobile.value = window.innerWidth < 768
+    isMobile.value = window.innerWidth < 769
     if (isMobile.value) {
       Show.value = false // скрываем значки
     }else Show.value = true

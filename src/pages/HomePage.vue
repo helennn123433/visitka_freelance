@@ -190,7 +190,7 @@ defineExpose({
   padding: 20px 0;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .main__app {
     width: 100%;
     padding:0;

@@ -197,7 +197,7 @@ const updateStatus = (updatedStatus: Stats) => {
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .container {
       padding: 16px;
       border: none;

@@ -8,13 +8,6 @@
       Выйти
     </my-button>
     <img
-      v-else
-      :src="Icons.Account"
-      alt="Иконка телефона"
-      class="icon account-icon"
-      @click="authStore.changeAdminModel"
-    >
-    <img
       :src="Icons.Phone"
       alt="Иконка телефона"
       title="Позвонить"
@@ -81,6 +74,9 @@
   width: 90px;
   height: 50px;
 }
+.auth-button:hover{
+  background-color: #082f8b;
+}
 
 @media (max-width: 768px) {
   .header-buttons {
@@ -94,6 +90,10 @@
             width: 30px;
           }
       }
+  }
+  .auth-button{
+    width: 70px;
+    height: 30px;
   }
 }
 </style>

@@ -2,6 +2,7 @@
   <AuthModel v-if="authStore.openAdmin" />
   <div class="main__app">
     <SidebarComponent
+      v-show="shouldShowCommonComponents"
       ref="sidebar"
       :active-icon="activeSection"
       class="sidebar"
@@ -29,7 +30,10 @@
         class="section"
       >
         <!-- Хедер для телефонного размера -->
-        <header class="mobile-header">
+        <header
+          v-show="shouldShowCommonComponents"
+          class="mobile-header"
+        >
           <button
             class="burger-btn"
             @click="toggleSidebar"
@@ -45,7 +49,7 @@
             >
           </div>
         </header>
-        <HeaderComp />
+        <HeaderComp v-show="shouldShowCommonComponents" />
         <router-view
           v-slot="{ Component }"
         >
@@ -61,18 +65,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useAuthStore } from "@/store/authStore";
+import { useRoute } from "vue-router";
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
-import AuthModel from "@/components/authModel/AuthModel.vue";
+import AuthModel from "@/components/AuthModel/AuthModel.vue";
 import HeaderComp from '@/components/header/HeaderComp.vue'
 
 const authStore = useAuthStore()
 const homePage = ref()
+const route = useRoute();
 
 const isOpen = ref(false)
 const isMobile = ref(window.innerWidth < 768)
 const activeSection = ref('info')
+
+const shouldShowCommonComponents = computed(() => {
+  return route.meta.showCommonComponents ?? true;
+});
 
 const handleSectionChange = (sectionId: string) => {
   activeSection.value = sectionId

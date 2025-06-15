@@ -1,8 +1,10 @@
 <template>
-  <form
-    class="auth-model"
-    @submit.prevent="checkAuth"
-  >
+  <div class="auth-model">
+    <NotificationComp
+      :visible="showNotification"
+      :error-message="notificationMessage"
+      @close="showNotification = false"
+    />
     <div class="auth-model__card">
       <div class="auth-model__card__title">
         <h3>Авторизация</h3>
@@ -45,43 +47,59 @@
       <div class="auth-model__card__btns">
         <MyButton
           class="btn"
-          @click="authStore.changeAdminModel"
+          @click="backToHome"
         >
           Назад
         </MyButton>
         <MyButton
           class="btn"
           :type="'submit'"
+          @click="checkInputAndConfirm"
         >
           Вход
         </MyButton>
       </div>
     </div>
-  </form>
+  </div>
 </template>
 
 <script setup lang="ts">
 import MyButton from '@/components/ui/MyButton.vue'
+import NotificationComp from "@/components/notifications/NotificationComp.vue";
 import { Icons } from "@/assets/img/Icons";
 import {useAuthStore} from "@/store/authStore";
 import { ref } from "vue";
+import router from "@/router";
 
 const passwordFieldType = ref('password')
 
 const authStore = useAuthStore()
 let login = ref<string>("");
 let password = ref<string>("");
+const showNotification = ref(false)
+const notificationMessage = ref('')
 
-const checkAuth = () => {
-  if (login.value === "admin" || password.value === "admin") {
+const backToHome = () => {
+  router.push('/')
+}
+
+const showError = (message: string) => {
+  notificationMessage.value = message
+  showNotification.value = true
+  setTimeout(() => showNotification.value = false, 5000)
+}
+
+const checkInputAndConfirm = () => {
+  if (login.value === "admin" && password.value === "admin") {
     authStore.login({ login: login.value, password: password.value });
-    authStore.changeAdminModel();
-  } else if (login.value == "" || login.value == ""){
-    alert("введите данные"); // TODO внедрить уведобление
+    router.push('/')
+  } else if (login.value === "" || password.value === "") {
+    showError("Введите данные для авторизации")
   } else {
-    alert("данные не верны") // TODO внедрить уведобление
+    showError("Неверные логин или пароль")
   }
-};
+}
+
 const switchVisibility = () => {
   passwordFieldType.value =
     passwordFieldType.value === 'password' ? 'text' : 'password'
@@ -90,16 +108,11 @@ const switchVisibility = () => {
 
 <style lang="scss" scoped>
 .auth-model{
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  width: 94vw;
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1002;
+  align-items: start;
 
   &__card{
     display: flex;
@@ -109,6 +122,7 @@ const switchVisibility = () => {
     border-radius: 32px;
     box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
     padding: 10px;
+    margin-top: 50px;
 
     &__title{
       display: flex;
@@ -137,11 +151,9 @@ const switchVisibility = () => {
     }
   }
 }
-
 .icon{
   height: 20px;
 }
-
 .input {
   width: 100%;
   height: 100%;
@@ -161,7 +173,7 @@ const switchVisibility = () => {
 
 .password-wrapper {
   position: relative;
-  width: 70%; 
+  width: 70%;
 }
 
 .input.password {

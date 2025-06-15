@@ -1,5 +1,4 @@
 <template>
-  <AuthModel v-if="authStore.openAdmin" />
   <div class="main__app">
     <SidebarComponent
       v-show="shouldShowCommonComponents"
@@ -66,13 +65,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from "vue";
-import { useAuthStore } from "@/store/authStore";
 import { useRoute } from "vue-router";
 import SidebarComponent from '@/components/sidebar/SidebarComponent.vue'
-import AuthModel from "@/components/AuthModel/AuthModel.vue";
 import HeaderComp from '@/components/header/HeaderComp.vue'
 
-const authStore = useAuthStore()
 const homePage = ref()
 const route = useRoute();
 

@@ -5,18 +5,26 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'home',
     component: () => import('@/pages/HomePage.vue'),
+    meta: { showCommonComponents: true },
   },
   {
     path: '/service/:id',
-    name: 'servicePage',
+    name: 'service',
     component: () => import('@/pages/ServicePage.vue'),
     props: true,
+    meta: { showCommonComponents: true },
   },
   {
     path: '/serviceType',
-    name: 'serviceTypePage',
+    name: 'serviceType',
     component: () => import('@/pages/ServiceTypePage.vue'),
-    props: true,
+    meta: { showCommonComponents: true },
+  },
+  {
+    path: '/authentication',
+    name: 'authentication',
+    component: () => import('@/pages/AuthenticationPage.vue'),
+    meta: { showCommonComponents: false },
   },
 ];
 

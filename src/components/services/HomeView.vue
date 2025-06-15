@@ -144,6 +144,9 @@ onUnmounted(() => {
     height: 40px;
     margin: 0 10px 10px 0;
   }
+  &__btn:hover{
+    background-color: #082f8b;
+  }
 }
 .cards-field{
   flex-grow: 1;

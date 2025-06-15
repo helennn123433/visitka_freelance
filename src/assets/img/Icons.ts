@@ -18,6 +18,9 @@ import WhatsAppBlue from "@/assets/img/icons/whatsApp.svg"
 import Pencil from "@/assets/img/icons/pencil.svg"
 import Gear from "@/assets/img/icons/gear.svg"
 import Trash from "@/assets/img/icons/trash.svg"
+import Eye from "@/assets/img/icons/eye.svg"
+import EyeBlock from "@/assets/img/icons/eye-blocked.svg"
+import ContentSave from "@/assets/img/icons/content-save-outline.svg"
 
 export const Icons = {
   Account,
@@ -39,5 +42,8 @@ export const Icons = {
   WhatsAppBlue,
   Pencil,
   Gear,
-  Trash
+  Trash,
+  Eye,
+  EyeBlock,
+  ContentSave,
 };

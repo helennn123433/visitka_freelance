@@ -13,10 +13,6 @@ export const useAuthStore = defineStore('authStore', () => {
     user.value = credentials
   }
 
-  const changeAdminModel = () => {
-    openAdmin.value = !openAdmin.value
-  }
-
   const logout = () => {
     user.value = null
   }
@@ -25,7 +21,6 @@ export const useAuthStore = defineStore('authStore', () => {
     openAdmin,
     user,
     isAuthenticated,
-    changeAdminModel,
     login,
     logout
   }

@@ -9,7 +9,7 @@
         <img
           v-if="isEditing"
           class="icon"
-          :src="Icons.Telegram"
+          :src="Icons.ContentSave"
           alt="adminIcon"
           @click="saveEdit"
         >

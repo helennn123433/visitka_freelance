@@ -73,7 +73,7 @@ const homePage = ref()
 const route = useRoute();
 
 const isOpen = ref(false)
-const isMobile = ref(window.innerWidth < 768)
+const isMobile = ref(window.innerWidth < 769)
 const activeSection = ref('info')
 
 const shouldShowCommonComponents = computed(() => {
@@ -93,7 +93,7 @@ const closeSidebar = () => {
 }
 
 const handleResize = () => {
-  isMobile.value = window.innerWidth < 768
+  isMobile.value = window.innerWidth < 769
   if (!isMobile.value) {
     isOpen.value = false
   }
@@ -166,7 +166,7 @@ defineExpose({
   padding: 1rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .mobile-header {
     display: none;
   }
@@ -185,7 +185,7 @@ defineExpose({
   margin: 0 auto;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .sidebar {
     position: fixed;
     top: 0;

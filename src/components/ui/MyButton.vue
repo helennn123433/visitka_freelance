@@ -4,9 +4,6 @@
   </button>
 </template>
 
-<script setup lang="ts">
-</script>
-
 <style lang="scss" scoped>
 .about__us__btn {
   display: flex;

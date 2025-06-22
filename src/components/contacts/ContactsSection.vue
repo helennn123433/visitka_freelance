@@ -48,7 +48,11 @@
       />
     </div>
 
-    <NotificationComp :visible="showError" :errorMessage="textError" @close="showError = false" />
+    <NotificationComp 
+      :visible="showError" 
+      :error-message="textError" 
+      @close="showError = false" 
+    />
   </div> 
 </template>
 

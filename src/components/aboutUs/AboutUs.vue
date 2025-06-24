@@ -48,7 +48,7 @@
         :key="stat.id"
         :stat="stat"
         :is-editing="isEditing"
-        @statusUpdate="updateStatus"
+        @status-update="updateStatus"
       />
     </div>
     <div class="upperText">

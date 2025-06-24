@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import MyButton from "@/components/ui/MyButton.vue";
 import NotificationComp from "../notifications/NotificationComp.vue";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { ref } from "vue";
 
 const props = defineProps({
@@ -111,14 +111,16 @@ const addService = async () => {
     emit('service-added');
     emit('toggle-dialog');
     emit('success');
-  } catch(err: any) {
+  } catch(err: unknown) {
     let errorMsg = 'Неизвестная ошибка'
-    if (err.response) {
-      // Форматируем сообщение об ошибке с кодом
-      errorMsg = `Ошибка ${err.response.status}: ${err.response.data?.error || err.message}`;
-    } else if (err.message) {
+    if (isAxiosError(err)) {
+      errorMsg = `Ошибка ${err.response?.status || 'нет кода'}: ${err.response?.data?.error || err.message}`;
+    } else if (err instanceof Error) {
       errorMsg = err.message;
+    } else if (typeof err === 'string') {
+      errorMsg = err;
     }
+
     emit('toggle-dialog');
     emit('error', errorMsg);
   }

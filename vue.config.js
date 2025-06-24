@@ -11,5 +11,12 @@ module.exports = defineConfig({
         logLevel: 'debug' // для отладки
       }
     }
+  },
+
+  pages: {
+    index: {
+      entry: 'src/main.ts',
+      title: '№ 31'
+    }
   }
 });

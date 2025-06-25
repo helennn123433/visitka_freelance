@@ -106,7 +106,7 @@ const handleServiceUpdate = async () => {
 
 const goToService = (service: Image) => {
   router.push({
-    name: 'servicePage',
+    name: 'service',
     params: { id: service.id },
     query: { title: service.title }
   });

@@ -5,9 +5,9 @@
       <div class="breadCrumps__separator">»</div>
       <div class="breadCrumps__serviceType">{{ title.toUpperCase() }}</div>
     </div>
-    <div class="header">
-      <div>{{ title.toUpperCase() }}</div>
-    </div>
+    <MyHeader class="header">
+      <span>{{ title.toUpperCase() }}</span>
+    </MyHeader>
     <div class="content">
       <div class="cards-field">
         <div 
@@ -15,16 +15,15 @@
           class="cards-grid"
         >
           <CardComp 
-            v-for="service in services" 
+            v-for="service in displayedServices" 
             :key="service.id" 
             :image="service"
             :show-price="false"
-            @updated="fetchServices"
-            @click="goToServiceType()"
+            @click="goToServiceType(service)"
           />
         </div>
         <div v-else>
-          <p v-if="isLoading">
+          <p v-if="searchStore.isLoading">
             Загрузка...
           </p>
           <p v-else>
@@ -37,65 +36,49 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import axios from 'axios';
 import CardComp from '@/components/services/CardComp.vue';
-import type { Service, ServiceType } from '@/interfaces/servicesTypes/servicesTypes';
+import type { ServiceType } from '@/interfaces/servicesTypes/servicesTypes';
+import MyHeader from '@/components/ui/MyHeader.vue';
+import { useSearchingStore } from '@/store/searchingStore';
 
 const route = useRoute();
 const router = useRouter();
 const title = route.query.title as string;
 const serviceId = ref<number>(Number(route.params.id));
-const isLoading = ref(true);
+const searchStore = useSearchingStore();
 
-const servicesData = ref<Service[]>([]);
-const currentServiceType = ref<ServiceType | null>(null);
-const services = ref<Array<{id: number; title: string; image: string}>>([]);
+const services = computed(() => {
+  return searchStore.getServicesByType(serviceId.value);
+});
 
-const fetchServices = async () => {
-  try {
-    isLoading.value = true;
-    const response = await axios.get('/api/servicestypes');
-    servicesData.value = response.data || [];
-    
-    const foundService = servicesData.value.find(
-      service => service.id === serviceId.value
-    );
-    
-    if (foundService) {
-      services.value = foundService.types.map(type => ({
-        id: type.id,
-        title: type.title,
-        image: type.image,
-      }));
-      
-      currentServiceType.value = foundService.types[0] || null;
-    } else {
-      services.value = [];
-      currentServiceType.value = null;
-    }
-  } catch (error) {
-    console.error('Ошибка:', error);
-    services.value = [];
-  } finally {
-    isLoading.value = false;
+const displayedServices = computed(() => {
+  if (!searchStore.searchInput.trim()) {
+    return services.value;
   }
-};
+  return searchStore.filteredServices.filter(service => 
+    Math.floor(service.id / 100) === serviceId.value
+  );
+});
 
-const goToServiceType = () =>{
+const goToServiceType = (serviceType: ServiceType) => {
   router.push({
-    name: 'serviceTypePage',
-  })
-}
+    name: 'serviceType',
+    query: {
+      firstTitle: title, 
+      title: serviceType.title, 
+      parentId: serviceId.value
+    }
+  });
+};
 
 watch(() => route.params.id, (newId) => {
   serviceId.value = Number(newId);
-  fetchServices();
 }, { immediate: true });
 
 onMounted(() => {
-  fetchServices();
+  searchStore.fetchServiceTypes();
 });
 </script>
 
@@ -120,21 +103,10 @@ onMounted(() => {
   flex-direction: column;
   background-color: colors.$white;
   padding: 1.5vw;
+  padding-top: 1vw;
   width: 100%;
   box-sizing: border-box;
   overflow: scroll;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-self: flex-start;
-  line-height: 100%;
-  width: 100%;
-  color: #0652ff;
-  font-size: clamp(1.5rem, 5vw, 2.5rem);
-  font-weight: 800;
-  padding-bottom: 16px;
 }
 
 .content {
@@ -161,7 +133,7 @@ onMounted(() => {
   padding-bottom: 16px;
   font-size: 16px;
   font-weight: 500;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 
   &__services{
     color: #898989;
@@ -199,7 +171,7 @@ onMounted(() => {
   }
 
   .breadCrumps{
-    font-size: 10px;
+    font-size: 14px;
   }
 }
 </style>

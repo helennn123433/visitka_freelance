@@ -80,6 +80,7 @@ import { toRef, ref, onMounted, onUnmounted } from 'vue'
 import { Icons } from "@/assets/img/Icons"
 import MyButton from '@/components/ui/MyButton.vue'
 import ButtonsComp from "@/components/header/ButtonsComp.vue";
+import router from '@/router';
 
 const Show = ref(true)
 const isMobile = ref(window.innerWidth < 769)
@@ -94,13 +95,34 @@ const activeIcon = toRef(props, 'activeIcon')
 
 const emit = defineEmits(['icon-click', 'close'] as const)
 
-const toggle = (section: string) => {
-  emit('icon-click', section)
+const toggle = async (section: string) => {
+  if (router.currentRoute.value.name === 'home') {
+    emit('icon-click', section);
+    emit('close')
+    return;
+  }
+
+  await router.push({ name: 'home' });
+  
+  setTimeout(() => {
+    emit('icon-click', section);
+    emit('close')
+  }, 100);
 }
 
-const handleDiscountClick = () => {
-  emit('icon-click', 'email')
-  emit('close') // Закрываем сайдбар на мобильных устройствах 
+const handleDiscountClick = async () => {
+  if (router.currentRoute.value.name === 'home') {
+    emit('icon-click', 'email')
+    emit('close') // Закрываем сайдбар на мобильных устройствах 
+    return;
+  }
+
+  await router.push({ name: 'home' });
+
+  setTimeout(() => {
+    emit('icon-click', 'email')
+    emit('close')
+  }, 100);
 }
 
 onMounted(() => {

@@ -145,6 +145,7 @@ defineExpose({
   box-sizing: border-box;
   max-height: 93vh;
   background: white;
+  width: 100%;
 }
 
 .sidebar {

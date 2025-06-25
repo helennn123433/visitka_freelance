@@ -48,7 +48,7 @@ export const useSearchingStore = defineStore('searchingStore', () => {
       const response = await axios.get('/api/services');
       images.value = response.data;
     } catch (error) {
-      console.error('Ошибка загрузки изображений:', error);
+      console.error('Ошибка загрузки услуг:', error);
     }
   };
 
@@ -58,7 +58,7 @@ export const useSearchingStore = defineStore('searchingStore', () => {
       const response = await axios.get('/api/servicestypes');
       servicesData.value = response.data || [];
     } catch (error) {
-      console.error('Ошибка загрузки сервисов:', error);
+      console.error('Ошибка загрузки типов услуг:', error);
     } finally {
       isLoading.value = false;
     }

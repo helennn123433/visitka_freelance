@@ -86,13 +86,19 @@ import MyCard from '@/components/aboutUs/MyCard.vue'
 import { Stats} from "@/interfaces/aboutUs/Stats";
 import { Icons } from "@/assets/img/Icons";
 import { useAuthStore } from "@/store/authStore";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const authStore = useAuthStore()
 
 let isEditing = ref<boolean>(false);
 const description = ref([])
 const stats = ref([])
+
+watch(() => authStore.isAuthenticated, (isAuthenticated) => {
+  if (!isAuthenticated) {
+    saveEdit();
+  }
+});
 
 onMounted(async () => {
   const res = await fetch('/api/aboutUs')
@@ -118,7 +124,7 @@ const saveEdit = async () => {
       stats: stats.value,
     })
   })
-  toggleEdit()
+  isEditing.value = false;
 }
 
 const scrollToContacts = () => {

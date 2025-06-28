@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, watch } from 'vue'
   import ContactCard from './ContactCard.vue'
   import { Contact } from '@/interfaces/contacts/Contact'
   import { Icons } from "@/assets/img/Icons"
@@ -72,6 +72,12 @@
   const showError = ref(false)
   const description = ref('')
   const contacts = ref<Contact[]>([])
+
+  watch(() => authStore.isAuthenticated, (isAuthenticated) => {
+    if (!isAuthenticated) {
+      saveEdit();
+    }
+  });
 
   onMounted(async () => {
     const res = await fetch('/api/contacts')
@@ -124,8 +130,7 @@
         contacts: contacts.value,
       }),
     })
-
-    toggleEdit()
+    isEditing.value = false;
   }
 
 </script>

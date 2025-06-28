@@ -159,9 +159,17 @@ const updateStatus = (updatedStatus: Stats) => {
   font-weight: 800;
   margin-top: 1vh;
 }
+
 .icon {
   width: 30px;
   height: 30px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.icon:hover {
+  transform: scale(1.2);
+  filter: invert(25%) sepia(98%) saturate(2158%) hue-rotate(220deg) brightness(103%) contrast(104%);
 }
 
 .upperText {

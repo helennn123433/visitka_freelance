@@ -117,14 +117,17 @@ const handleDeleteConfirm = async (e:Event) => {
       closeDeleteModal()
       emit('success');
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     let errorMsg = 'Неизвестная ошибка';
     
-    if (error.response) {
-      errorMsg = `Ошибка ${error.response.status}: ${error.response.data?.error || error.message}`;
-    } else if (error.message) {
+    if (isAxiosError(error)) {
+      errorMsg = `Ошибка ${error.response?.status || 'нет кода'}: ${error.response?.data?.error || error.message}`;
+    } else if (error instanceof Error) {
       errorMsg = error.message;
+    } else if (typeof error === 'string') {
+      errorMsg = error;
     }
+
     closeDeleteModal()
     emit('error', errorMsg); 
   }
@@ -142,13 +145,15 @@ const handleSave = async (updatedData: Image) => {
       closeEditModal()
       emit('success');
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
      let errorMsg = 'Неизвестная ошибка';
     
-    if (error.response) {
-      errorMsg = `Ошибка ${error.response.status}: ${error.response.data?.error || error.message}`;
-    } else if (error.message) {
+    if (isAxiosError(error)) {
+      errorMsg = `Ошибка ${error.response?.status || 'нет кода'}: ${error.response?.data?.error || error.message}`;
+    } else if (error instanceof Error) {
       errorMsg = error.message;
+    } else if (typeof error === 'string') {
+      errorMsg = error;
     }
     
     closeEditModal()

@@ -17,7 +17,7 @@
         />
         <button
           class="close-btn"
-          @click="$emit('close')"
+          @click="handleClose"
         >
           ×
         </button>
@@ -26,7 +26,9 @@
   </div>
 </template>
 <script  setup lang="ts">
-import { defineProps, computed } from 'vue';
+import { defineProps, computed, defineEmits } from 'vue';
+
+const emit = defineEmits(['close']);
 
 const props = defineProps<{
     visible: boolean
@@ -44,6 +46,10 @@ const textClass = computed(() =>
 const imgClass = computed(() =>
     props.errorMessage ? 'error-img' : 'allright-img'
 )
+
+const handleClose = () => {
+  emit('close');
+};
 </script>
 
 <style  lang="scss" scoped>

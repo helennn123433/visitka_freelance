@@ -1,9 +1,18 @@
 <template>
   <div class="servicePage">
     <div class="breadCrumps">
-      <router-link to="/" class="breadCrumps__services">УСЛУГИ</router-link>
-      <div class="breadCrumps__separator">»</div>
-      <div class="breadCrumps__serviceType">{{ title.toUpperCase() }}</div>
+      <router-link 
+        to="/" 
+        class="breadCrumps__services"
+      >
+        УСЛУГИ
+      </router-link>
+      <div class="breadCrumps__separator">
+        »
+      </div>
+      <div class="breadCrumps__serviceType">
+        {{ title.toUpperCase() }}
+      </div>
     </div>
     <MyHeader class="header">
       <span>{{ title.toUpperCase() }}</span>

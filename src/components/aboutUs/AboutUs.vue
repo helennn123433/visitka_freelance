@@ -48,7 +48,7 @@
         :key="stat.id"
         :stat="stat"
         :is-editing="isEditing"
-        @statusUpdate="updateStatus"
+        @status-update="updateStatus"
       />
     </div>
     <div class="upperText">
@@ -94,6 +94,12 @@ let isEditing = ref<boolean>(false);
 const description = ref([])
 const stats = ref([])
 
+watch(() => authStore.isAuthenticated, (isAuthenticated) => {
+  if (!isAuthenticated) {
+    saveEdit();
+  }
+});
+
 onMounted(async () => {
   const res = await fetch('/api/aboutUs')
   const data = await res.json()
@@ -118,7 +124,7 @@ const saveEdit = async () => {
       stats: stats.value,
     })
   })
-  toggleEdit()
+  isEditing.value = false;
 }
 
 const scrollToContacts = () => {
@@ -159,9 +165,17 @@ const updateStatus = (updatedStatus: Stats) => {
   font-weight: 800;
   margin-top: 1vh;
 }
+
 .icon {
   width: 30px;
   height: 30px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.icon:hover {
+  transform: scale(1.2);
+  filter: invert(25%) sepia(98%) saturate(2158%) hue-rotate(220deg) brightness(103%) contrast(104%);
 }
 
 .upperText {

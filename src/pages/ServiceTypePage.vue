@@ -134,7 +134,7 @@ watch(() => route.query.title, () => {
   display: flex;
   flex-wrap: wrap;
   gap: 1.5vw;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   padding: 10px;
 }

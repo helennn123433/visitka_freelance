@@ -1,11 +1,11 @@
 <template>
-  <div class="about__us__header">
+  <div class="about-us-header">
     <slot />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.about__us__header {
+.about-us-header {
   display: flex;
   justify-content: space-between;
   align-self: flex-start;

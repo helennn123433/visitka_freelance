@@ -93,7 +93,7 @@ const props = defineProps<{ activeIcon: string }>()
 
 const activeIcon = toRef(props, 'activeIcon')
 
-const emit = defineEmits(['icon-click', 'close'] as const)
+const emit = defineEmits(['icon-click', 'close'])
 
 const toggle = async (section: string) => {
   if (router.currentRoute.value.name === 'home') {

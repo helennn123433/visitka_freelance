@@ -8,7 +8,7 @@ export const useSearchingStore = defineStore('searchingStore', () => {
   const images = ref<Image[]>([]);
   const servicesData = ref<Service[]>([]);
   const searchInput = ref<string>("");
-  const isLoading = ref(false);
+  const isLoading = ref<boolean>(false);
 
   const filteredImages = computed(() => {
     if (!searchInput.value.trim()) return images.value;

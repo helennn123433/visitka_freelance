@@ -18,12 +18,12 @@
       <div
         v-if="isEditing"  
       >
-        <button
-          class="ok"
+        <img
+          class="icon"
+          :src="Icons.ContentSave"
+          alt="adminIcon"
           @click="saveEdit"
         >
-          OK
-        </button>
       </div>
     </div>
     <div class="contacts__description">
@@ -48,7 +48,11 @@
       />
     </div>
 
-    <NotificationComp :visible="showError" :errorMessage="textError" @close="showError = false" />
+    <NotificationComp 
+      :visible="showError" 
+      :error-message="textError" 
+      @close="showError = false" 
+    />
   </div> 
 </template>
 
@@ -68,6 +72,12 @@
   const showError = ref(false)
   const description = ref('')
   const contacts = ref<Contact[]>([])
+
+  watch(() => authStore.isAuthenticated, (isAuthenticated) => {
+    if (!isAuthenticated) {
+      saveEdit();
+    }
+  });
 
   onMounted(async () => {
     const res = await fetch('/api/contacts')
@@ -120,8 +130,7 @@
         contacts: contacts.value,
       }),
     })
-
-    toggleEdit()
+    isEditing.value = false;
   }
 
 </script>
@@ -139,17 +148,12 @@
   width: 30px;
   height: 30px;
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.ok{
-  background: none;
-  border: none;
-  color: black;
-  font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 0;
-  margin: 10px;
+.icon:hover {
+  transform: scale(1.2);
+  filter: invert(25%) sepia(98%) saturate(2158%) hue-rotate(220deg) brightness(103%) contrast(104%);
 }
 
 .contacts {

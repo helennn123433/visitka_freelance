@@ -41,7 +41,7 @@
     </div>
     <NotificationComp 
       :visible="notificationVisible"
-      :errorMessage="notificationError"
+      :error-message="notificationError"
       @close="notificationVisible = false"
     />
   </div>

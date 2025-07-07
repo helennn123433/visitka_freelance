@@ -5,13 +5,16 @@
       :alt="contact.title"
       class="contact-card__icon"
     >
-    <h3 class="contact-card__title" @click="handleTitleClick">
+    <h3 
+      class="contact-card__title" 
+      @click="handleTitleClick"
+    >
       <template v-if="isEditing">
         <textarea
           v-model="editableTitle"
           class="contact-card__input"
-          @input="emitUpdate"
           rows="3"
+          @input="emitUpdate"
         />
       </template>
       <template v-else>
@@ -23,8 +26,8 @@
         <textarea
           v-model="editableSubtitle"
           class="contact-card__input"
-          @input="emitUpdate"
           rows="3"
+          @input="emitUpdate"
         />
       </template>
       <template v-else>

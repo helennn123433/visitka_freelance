@@ -81,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { useAuthStore } from "@/store/authStore";
 import { Stats} from "@/interfaces/aboutUs/Stats";
 import MyButton from '@/components/ui/MyButton.vue'

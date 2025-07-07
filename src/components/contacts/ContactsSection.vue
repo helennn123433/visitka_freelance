@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted} from 'vue'
+  import { ref, onMounted, watch} from 'vue'
   import { useAuthStore } from "@/store/authStore"
   import { Contact } from '@/interfaces/contacts/Contact'
   import ContactCard from './ContactCard.vue'

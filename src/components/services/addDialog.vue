@@ -47,11 +47,12 @@
     @close="closeNotification"
   />
 </template>
+
 <script setup lang="ts">
+import { ref } from "vue";
+import axios from "axios";
 import MyButton from "@/components/ui/MyButton.vue";
 import NotificationComp from "../notifications/NotificationComp.vue";
-import axios from "axios";
-import { ref } from "vue";
 
 const props = defineProps({
   nextId: {

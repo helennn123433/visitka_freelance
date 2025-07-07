@@ -1,11 +1,27 @@
 <template>
   <div class="serviceTypePage">
     <div class="breadCrumps">
-      <router-link to="/" class="breadCrumps__services">УСЛУГИ</router-link>
-      <div class="breadCrumps__separator">»</div>
-      <div @click="$router.back()" class="breadCrumps__services">{{ firstTitle.toUpperCase() }}</div>
-      <div class="breadCrumps__separator">»</div>
-      <div class="breadCrumps__serviceType">{{ title.toUpperCase() }}</div>
+      <router-link 
+        to="/" 
+        class="breadCrumps__services"
+      >
+        УСЛУГИ
+      </router-link>
+      <div class="breadCrumps__separator">
+        »
+      </div>
+      <div 
+        class="breadCrumps__services"
+        @click="router.back()"
+      >
+        {{ firstTitle.toUpperCase() }}
+      </div>
+      <div class="breadCrumps__separator">
+        »
+      </div>
+      <div class="breadCrumps__serviceType">
+        {{ title.toUpperCase() }}
+      </div>
     </div>
     <MyHeader class="header">
       <span>{{ title.toUpperCase() }}</span>
@@ -21,7 +37,11 @@
             :key="example.id" 
             class="card"
           >
-            <img :src="example.image" :alt="'Example ' + example.id" class="image">
+            <img 
+              :src="example.image" 
+              :alt="'Example ' + example.id"
+              class="image"
+            >
           </div>
         </div>
         <div v-else>
@@ -39,12 +59,13 @@
 
 <script setup lang='ts'>
 import { ref, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
 import axios from 'axios';
-import MyHeader from '@/components/ui/MyHeader.vue';
+import { useRoute, useRouter } from 'vue-router';
 import type { Service, Example } from '@/interfaces/servicesTypes/servicesTypes';
+import MyHeader from '@/components/ui/MyHeader.vue';
 
 const route = useRoute();
+const router = useRouter();
 const firstTitle = route.query.firstTitle as string;
 const title = route.query.title as string;
 const parentId = Number(route.query.parentId);

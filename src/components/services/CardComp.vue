@@ -56,14 +56,15 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
 import { ref, computed } from 'vue';
-import { Icons } from "@/assets/img/Icons";
+import axios from 'axios';
 import { useAuthStore } from "@/store/authStore";
+import type { Image } from '@/interfaces/services/Image';
 import DeleteCard from '@/components/services/DeleteCard.vue';
 import EditCard from "@/components/services/EditCard.vue";
 import NotificationComp from '../notifications/NotificationComp.vue';
-import type { Image } from '@/interfaces/services/Image';
+import { Icons } from "@/assets/img/Icons";
+
 
 const props = defineProps<{
   image: Image; // Используем Image вместо CardImage

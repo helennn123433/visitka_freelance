@@ -69,8 +69,8 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import MyButton from '@/components/ui/MyButton.vue';
 import type { Image } from '@/interfaces/services/Image';
+import MyButton from '@/components/ui/MyButton.vue';
 
 const props = defineProps<{
   currentData: Image

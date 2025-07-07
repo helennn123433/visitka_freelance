@@ -32,8 +32,8 @@
 </template>
 
 <script setup lang="ts" >
-  import { Icons } from "@/assets/img/Icons";
   import {useAuthStore} from "@/store/authStore";
+  import { Icons } from "@/assets/img/Icons";
   import MyButton from "@/components/ui/MyButton.vue";
   const authStore = useAuthStore()
 

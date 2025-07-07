@@ -77,10 +77,10 @@
 
 <script setup lang="ts">
 import { toRef, ref, onMounted, onUnmounted } from 'vue'
-import { Icons } from "@/assets/img/Icons"
+import router from '@/router';
 import MyButton from '@/components/ui/MyButton.vue'
 import ButtonsComp from "@/components/header/ButtonsComp.vue";
-import router from '@/router';
+import { Icons } from "@/assets/img/Icons"
 
 const Show = ref(true)
 const isMobile = ref(window.innerWidth < 769)

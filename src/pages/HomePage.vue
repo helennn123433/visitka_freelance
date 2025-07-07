@@ -27,10 +27,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { emitter } from '@/emits/event-bus';
 import AboutUs from '@/components/aboutUs/AboutUs.vue'
 import HomeView from '@/components/services/HomeView.vue'
 import ContactsSection from '@/components/contacts/ContactsSection.vue'
-import { emitter } from '@/emits/event-bus';
 
 defineProps({
   isSidebarOpen: Boolean

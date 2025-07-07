@@ -52,11 +52,11 @@ import { ref, onMounted, computed, nextTick, onUnmounted} from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/authStore";
 import { useSearchingStore } from "@/store/searchingStore";
+import { emitter } from '@/emits/event-bus';
+import { type Image } from "@/interfaces/services/Image";
 import CardComp from "@/components/services/CardComp.vue";
 import MyButton from "@/components/ui/MyButton.vue";
 import AddDialog from "@/components/services/addDialog.vue";
-import { type Image } from "@/interfaces/services/Image";
-import { emitter } from '@/emits/event-bus';
 import NotificationComp from '@/components/notifications/NotificationComp.vue';
 
 const isDialogOpen = ref(false);

@@ -57,12 +57,12 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted, watch } from 'vue'
-  import ContactCard from './ContactCard.vue'
-  import { Contact } from '@/interfaces/contacts/Contact'
-  import { Icons } from "@/assets/img/Icons"
-  import NotificationComp from '../notifications/NotificationComp.vue';
+  import { ref, onMounted, watch} from 'vue'
   import { useAuthStore } from "@/store/authStore"
+  import { Contact } from '@/interfaces/contacts/Contact'
+  import ContactCard from './ContactCard.vue'
+  import NotificationComp from '../notifications/NotificationComp.vue';
+  import { Icons } from "@/assets/img/Icons"
 
   const authStore = useAuthStore()
 

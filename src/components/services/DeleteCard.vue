@@ -21,8 +21,8 @@
 </template>
   
 <script setup lang="ts">
-import MyButton from '@/components/ui/MyButton.vue';
 import { defineEmits } from 'vue';
+import MyButton from '@/components/ui/MyButton.vue';
 
 const emit = defineEmits(['confirm', 'cancel']);
 

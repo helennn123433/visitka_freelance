@@ -64,12 +64,12 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+import router from "@/router";
+import {useAuthStore} from "@/store/authStore";
 import MyButton from '@/components/ui/MyButton.vue'
 import NotificationComp from "@/components/notifications/NotificationComp.vue";
 import { Icons } from "@/assets/img/Icons";
-import {useAuthStore} from "@/store/authStore";
-import { ref } from "vue";
-import router from "@/router";
 
 const passwordFieldType = ref('password')
 

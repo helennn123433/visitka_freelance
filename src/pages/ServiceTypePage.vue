@@ -12,7 +12,7 @@
       </div>
       <div 
         class="breadCrumps__services"
-        @click="$router.back()"
+        @click="router.back()"
       >
         {{ firstTitle.toUpperCase() }}
       </div>
@@ -39,7 +39,7 @@
           >
             <img 
               :src="example.image" 
-              :alt="'Example ' + example.id" 
+              :alt="'Example ' + example.id"
               class="image"
             >
           </div>
@@ -59,12 +59,13 @@
 
 <script setup lang='ts'>
 import { ref, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
 import axios from 'axios';
-import MyHeader from '@/components/ui/MyHeader.vue';
+import { useRoute, useRouter } from 'vue-router';
 import type { Service, Example } from '@/interfaces/servicesTypes/servicesTypes';
+import MyHeader from '@/components/ui/MyHeader.vue';
 
 const route = useRoute();
+const router = useRouter();
 const firstTitle = route.query.firstTitle as string;
 const title = route.query.title as string;
 const parentId = Number(route.query.parentId);

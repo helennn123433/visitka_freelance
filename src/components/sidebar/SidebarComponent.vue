@@ -77,10 +77,10 @@
 
 <script setup lang="ts">
 import { toRef, ref, onMounted, onUnmounted } from 'vue'
-import { Icons } from "@/assets/img/Icons"
+import router from '@/router';
 import MyButton from '@/components/ui/MyButton.vue'
 import ButtonsComp from "@/components/header/ButtonsComp.vue";
-import router from '@/router';
+import { Icons } from "@/assets/img/Icons"
 
 const Show = ref(true)
 const isMobile = ref(window.innerWidth < 769)
@@ -93,7 +93,7 @@ const props = defineProps<{ activeIcon: string }>()
 
 const activeIcon = toRef(props, 'activeIcon')
 
-const emit = defineEmits(['icon-click', 'close'] as const)
+const emit = defineEmits(['icon-click', 'close'])
 
 const toggle = async (section: string) => {
   if (router.currentRoute.value.name === 'home') {

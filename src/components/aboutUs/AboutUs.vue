@@ -81,12 +81,12 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, watch } from "vue";
+import { useAuthStore } from "@/store/authStore";
+import { Stats} from "@/interfaces/aboutUs/Stats";
 import MyButton from '@/components/ui/MyButton.vue'
 import MyCard from '@/components/aboutUs/MyCard.vue'
-import { Stats} from "@/interfaces/aboutUs/Stats";
 import { Icons } from "@/assets/img/Icons";
-import { useAuthStore } from "@/store/authStore";
-import { onMounted, ref, watch } from "vue";
 
 const authStore = useAuthStore()
 

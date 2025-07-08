@@ -47,10 +47,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import CardComp from '@/components/services/CardComp.vue';
-import type { ServiceType } from '@/interfaces/servicesTypes/servicesTypes';
-import MyHeader from '@/components/ui/MyHeader.vue';
 import { useSearchingStore } from '@/store/searchingStore';
+import type { ServiceType } from '@/interfaces/servicesTypes/servicesTypes';
+import CardComp from '@/components/services/CardComp.vue';
+import MyHeader from '@/components/ui/MyHeader.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -58,9 +58,7 @@ const title = route.query.title as string;
 const serviceId = ref<number>(Number(route.params.id));
 const searchStore = useSearchingStore();
 
-const services = computed(() => {
-  return searchStore.getServicesByType(serviceId.value);
-});
+const services = computed(() => searchStore.getServicesByType(serviceId.value));
 
 const displayedServices = computed(() => {
   if (!searchStore.searchInput.trim()) {

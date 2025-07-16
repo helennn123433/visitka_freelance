@@ -4,25 +4,25 @@
     {
       "id": 1,
       "icon": "TelegramBlue",
-      "title": "@frtarget",
+      "title": "@qwerty",
       "subtitle": "Telegram — самый оперативный канал для связи с нами."
     },
     {
       "id": 2,
       "icon": "PhoneBlue",
-      "title": "+7(965)077-89-87",
+      "title": "+7(777)777-77-77",
       "subtitle": "Если мы не смогли Вам оперативно ответить, то обязательно перезвоним."
     },
     {
       "id": 3,
       "icon": "WhatsAppBlue",
-      "title": "+7(965)077-89-87",
+      "title": "+7(777)777-77-77",
       "subtitle": "Вы можете написать или позвонить нам в WhatsApp."
     },
     {
       "id": 4,
       "icon": "EmailBlue",
-      "title": "alexpysenkov@gmail.com",
+      "title": "qwerty@gmail.com",
       "subtitle": "Мы всегда ждем любые Ваши вопросы на почте."
     }
   ]

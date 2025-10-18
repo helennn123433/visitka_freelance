@@ -36,7 +36,7 @@
             Загрузка...
           </p>
           <p v-else>
-            Услуги не найдены
+             Услуги не найдены для ID: {{ serviceId }}
           </p>
         </div>
       </div>
@@ -58,7 +58,10 @@ const title = route.query.title as string;
 const serviceId = ref<number>(Number(route.params.id));
 const searchStore = useSearchingStore();
 
-const services = computed(() => searchStore.getServicesByType(serviceId.value));
+const services = computed(() => {
+  const result = searchStore.getServicesByType(serviceId.value);
+  return result;
+});
 
 const displayedServices = computed(() => {
   if (!searchStore.searchInput.trim()) {
@@ -85,6 +88,10 @@ watch(() => route.params.id, (newId) => {
 }, { immediate: true });
 
 onMounted(() => {
+  if (!title || isNaN(serviceId.value)) {
+    router.push('/');
+    return;
+  }
   searchStore.fetchServiceTypes();
 });
 </script>

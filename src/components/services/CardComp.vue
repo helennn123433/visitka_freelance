@@ -1,6 +1,6 @@
 <template>
   <div
-    :id="image.id.toString()"
+    :id="imageId"
     class="card"
   >
     <div
@@ -21,17 +21,17 @@
       >
     </div>
     <img
-      :src="image.image"
+      :src="image.image || ''"
       class="image"
     >
     <div
       v-if="hasPrice"
       class="price"
     >
-      {{ `от ${'price' in image ? image.price : ''} Р/час` }}
+      {{ `от ${imagePrice} Р/час` }}
     </div>
     <div class="title">
-      {{ image.title }}
+      {{ image.title || 'Без названия' }}
     </div>
 
     <EditCard
@@ -58,7 +58,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import axios from 'axios';
+import apiClient from '@/network/connection';
 import { useAuthStore } from "@/store/authStore";
+import { useSearchingStore } from "@/store/searchingStore";
 import type { Image } from '@/interfaces/services/Image';
 import DeleteCard from '@/components/services/DeleteCard.vue';
 import EditCard from "@/components/services/EditCard.vue";
@@ -66,14 +68,19 @@ import NotificationComp from '../notifications/NotificationComp.vue';
 import { Icons } from "@/assets/img/Icons";
 
 
+const searchStore = useSearchingStore();
+
 const props = defineProps<{
-  image: Image; // Используем Image вместо CardImage
+  image: Image;
   showPrice?: boolean;
 }>();
 
+const imageId = computed(() => props.image?.id?.toString() || 'unknown');
+const imagePrice = computed(() => props.image?.price || 0);
+
 const hasPrice = computed(() => {
   if (props.showPrice === false) return false;
-  return 'price' in props.image && typeof props.image.price === 'number';
+  return props.image && 'price' in props.image && typeof props.image.price === 'number';
 });
 
 const showNotification = ref(false);
@@ -84,9 +91,7 @@ const closeNotification = () => {
 };
 
 const authStore = useAuthStore()
-
-const emit = defineEmits(['updated', 'success', 'error']); 
-
+const emit = defineEmits(['updated', 'success', 'error', 'edit']);
 const isDeleteModalOpen = ref(false)
 const isEditModalOpen = ref(false)
 
@@ -107,10 +112,12 @@ const closeEditModal = () => {
 }
 
 const handleDeleteConfirm = async (e:Event) => {
+  closeDeleteModal();
+  
   e?.stopPropagation()
   try {
-    const response = await axios.delete(
-      `/api/services/${props.image.id}`
+    const response = await apiClient.delete( 
+      `/services/${props.image?.id}`
     )
     if (response.status === 200) {
       emit('updated')
@@ -120,7 +127,7 @@ const handleDeleteConfirm = async (e:Event) => {
   } catch (error: unknown) {
     let errorMsg = 'Неизвестная ошибка';
     
-    if (isAxiosError(error)) {
+    if (axios.isAxiosError(error)) {
       errorMsg = `Ошибка ${error.response?.status || 'нет кода'}: ${error.response?.data?.error || error.message}`;
     } else if (error instanceof Error) {
       errorMsg = error.message;
@@ -128,37 +135,15 @@ const handleDeleteConfirm = async (e:Event) => {
       errorMsg = error;
     }
 
-    closeDeleteModal()
     emit('error', errorMsg); 
   }
+
+   await searchStore.fetchServices();
 }
 
-const handleSave = async (updatedData: Image) => {
-  try {
-    const response = await axios.put(
-      `/api/services/${updatedData.id}`,
-      { ...updatedData}
-    )
-
-    if (response.status === 200) {
-      emit('updated')
-      closeEditModal()
-      emit('success');
-    }
-  } catch (error: unknown) {
-     let errorMsg = 'Неизвестная ошибка';
-    
-    if (isAxiosError(error)) {
-      errorMsg = `Ошибка ${error.response?.status || 'нет кода'}: ${error.response?.data?.error || error.message}`;
-    } else if (error instanceof Error) {
-      errorMsg = error.message;
-    } else if (typeof error === 'string') {
-      errorMsg = error;
-    }
-    
-    closeEditModal()
-    emit('error', errorMsg);
-  }
+const handleSave = (updatedData: Image) => {
+  emit('edit', updatedData);
+  closeEditModal();
 };
 </script>
 

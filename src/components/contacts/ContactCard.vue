@@ -14,7 +14,7 @@
           v-model="editableTitle"
           class="contact-card__input"
           rows="3"
-          @input="emitUpdate"
+          @blur="updateTitle"
         />
       </template>
       <template v-else>
@@ -27,7 +27,7 @@
           v-model="editableSubtitle"
           class="contact-card__input"
           rows="3"
-          @input="emitUpdate"
+          @blur="updateSubtitle"
         />
       </template>
       <template v-else>
@@ -41,6 +41,7 @@
   import { ref, watch, defineProps, defineEmits, computed } from 'vue'
   import { Contact } from '@/interfaces/contacts/Contact'
   import { Icons } from "@/assets/img/Icons"
+  import apiClient from '@/network/connection'
   //тип ключей:
   //type IconKey = keyof typeof Icons
 
@@ -63,12 +64,12 @@
     if (icon.includes('phone')) return 'phone'
     if (icon.includes('mail')) return 'email'
     if (icon.includes('telegram')) return 'telegram'
-    if (icon.includes('whatsapp')) return 'whatsapp' // Добавлен WhatsApp
+    if (icon.includes('whatsapp')) return 'whatsapp'
     return null
   })
 
   const handleTitleClick = () => {
-    if (props.isEditing) return // Не обрабатываем клик в режиме редактирования
+    if (props.isEditing) return
     
     const value = props.contact.title.trim()
     
@@ -99,13 +100,38 @@
     editableSubtitle.value = newContact.subtitle
   }, { deep: true })
 
-  function emitUpdate() {
-    emits('contact-update', {
-      id: props.contact.id,
-      icon: props.contact.icon,
-      title: editableTitle.value,
-      subtitle: editableSubtitle.value
-    })
+const updateTitle = async () => {
+    try {
+      const response = await apiClient.patch(`/contacts/${props.contact.id}/title`, {
+        value: editableTitle.value
+      })
+      
+      emits('contact-update', {
+        ...props.contact,
+        title: editableTitle.value
+      })
+      
+    } catch (error) {
+      console.error('Error updating title:', error)
+      editableTitle.value = props.contact.title
+    }
+  }
+
+  const updateSubtitle = async () => {
+    try {
+      const response = await apiClient.patch(`/contacts/${props.contact.id}/subtitle`, {
+        value: editableSubtitle.value
+      })
+      
+      emits('contact-update', {
+        ...props.contact,
+        subtitle: editableSubtitle.value
+      })
+      
+    } catch (error) {
+      console.error('Error updating subtitle:', error)
+      editableSubtitle.value = props.contact.subtitle
+    }
   }
 </script>
 

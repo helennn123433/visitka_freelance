@@ -30,39 +30,62 @@ export const useSearchingStore = defineStore('searchingStore', () => {
       );
   });
 
-  const getServicesByType = (serviceId: number) => {
-    const foundService = servicesData.value.find(
-      service => service.id === serviceId
-    );
-    return foundService 
-      ? foundService.types.map(type => ({
-          id: type.id,
-          title: type.title,
-          image: type.image,
-        }))
-      : [];
-  };
-
-  const fetchServices = async () => {
-    try {
-      const response = await axios.get('/api/services');
+const getServicesByType = () => {
+  
+  if (!servicesData.value || servicesData.value.length === 0) {
+    return [];
+  }
+  
+  const firstService = servicesData.value[0];
+  
+  if (firstService && firstService.types) {
+    return firstService.types.map(type => ({
+      id: type.id,
+      title: type.title,
+      image: type.image,
+    }));
+  }
+  
+  return [];
+};
+const fetchServices = async () => {
+  try {
+    const response = await axios.get('/api/services');
+    
+    if (response.data && response.data.services) {
+      images.value = response.data.services;
+    } else if (Array.isArray(response.data)) {
       images.value = response.data;
-    } catch (error) {
-      console.error('Ошибка загрузки услуг:', error);
+    } else {
+      images.value = [];
     }
-  };
+    
+  } catch (error) {
+    console.error('Ошибка загрузки услуг:', error);
+  }
+};
 
-  const fetchServiceTypes = async () => {
-    try {
-      isLoading.value = true;
-      const response = await axios.get('/api/servicestypes');
-      servicesData.value = response.data || [];
-    } catch (error) {
-      console.error('Ошибка загрузки типов услуг:', error);
-    } finally {
-      isLoading.value = false;
+const fetchServiceTypes = async () => {
+  try {
+    isLoading.value = true;
+    const response = await axios.get('/api/subservices');
+    
+    if (response.data && Array.isArray(response.data.servicesTypesProjects)) {
+      servicesData.value = response.data.servicesTypesProjects;
+    } else if (Array.isArray(response.data)) {
+      servicesData.value = response.data;
+    } else {
+      console.warn('Неизвестная структура данных ServiceTypeProject:', response.data);
+      servicesData.value = [];
     }
-  };
+    
+  } catch (error) {
+    console.error('Ошибка загрузки типов услуг:', error);
+    servicesData.value = [];
+  } finally {
+    isLoading.value = false;
+  }
+};
 
   return {
     images,

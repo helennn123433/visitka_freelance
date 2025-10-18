@@ -22,54 +22,64 @@
         >
       </div>
     </div>
-    <div class="upperText">
-      <template v-if="isEditing">
-        <textarea
-          v-model="description[0]"
-          class="textarea"
+    <div v-if="!isLoading && aboutUsData">
+      <div class="upperText">
+        <template v-if="isEditing">
+          <textarea
+            v-model="localDescription[0]"
+            class="textarea"
+          />
+        </template>
+        <template v-else>
+          <p>{{ aboutUsData.description[0] }}</p>
+        </template>
+        <template v-if="isEditing">
+          <textarea
+            v-model="localDescription[1]"
+            class="textarea"
+          />
+        </template>
+        <template v-else>
+          <p>{{ aboutUsData.description[1] }}</p>
+        </template>
+      </div>
+      
+      <div class="middleText">
+        <my-card
+          v-for="stat in aboutUsData.stats"
+          :key="stat.id"
+          :stat="stat"
+          :is-editing="isEditing"
+          @status-update="updateStatus"
         />
-      </template>
-      <template v-else>
-        <p>{{ description[0] }}</p>
-      </template>
-      <template v-if="isEditing">
-        <textarea
-          v-model="description[1]"
-          class="textarea"
-        />
-      </template>
-      <template v-else>
-        <p>{{ description[1] }}</p>
-      </template>
+      </div>
+      
+      <div class="upperText">
+        <template v-if="isEditing">
+          <textarea
+            v-model="localDescription[2]"
+            class="textarea"
+          />
+        </template>
+        <template v-else>
+          <p>{{ aboutUsData.description[2] }}</p>
+        </template>
+        <template v-if="isEditing">
+          <textarea
+            v-model="localDescription[3]"
+            class="textarea"
+          />
+        </template>
+        <template v-else>
+          <p>{{ aboutUsData.description[3] }}</p>
+        </template>
+      </div>
     </div>
-    <div class="middleText">
-      <my-card
-        v-for="stat in stats"
-        :key="stat.id"
-        :stat="stat"
-        :is-editing="isEditing"
-        @status-update="updateStatus"
-      />
+    <div v-else-if="isLoading" class="loading">
+      Загрузка данных...
     </div>
-    <div class="upperText">
-      <template v-if="isEditing">
-        <textarea
-          v-model="description[2]"
-          class="textarea"
-        />
-      </template>
-      <template v-else>
-        <p>{{ description[2] }}</p>
-      </template>
-      <template v-if="isEditing">
-        <textarea
-          v-model="description[3]"
-          class="textarea"
-        />
-      </template>
-      <template v-else>
-        <p>{{ description[3] }}</p>
-      </template>
+    <div v-else class="error">
+      Данные не загружены
     </div>
     <my-button 
       class="btn" 
@@ -83,16 +93,24 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
 import { useAuthStore } from "@/store/authStore";
-import { Stats} from "@/interfaces/aboutUs/Stats";
+import type { Stats } from "@/interfaces/aboutUs/Stats";
 import MyButton from '@/components/ui/MyButton.vue'
 import MyCard from '@/components/aboutUs/MyCard.vue'
 import { Icons } from "@/assets/img/Icons";
+import apiClient from '@/network/connection';
+
+interface AboutUsData {
+  id: string;
+  description: string[];
+  stats: Stats[];
+}
 
 const authStore = useAuthStore()
 
-let isEditing = ref<boolean>(false);
-const description = ref([])
-const stats = ref([])
+const isEditing = ref<boolean>(false);
+const aboutUsData = ref<AboutUsData | null>(null);
+const localDescription = ref<string[]>([]);
+const isLoading = ref(true);
 
 watch(() => authStore.isAuthenticated, (isAuthenticated) => {
   if (!isAuthenticated) {
@@ -100,50 +118,96 @@ watch(() => authStore.isAuthenticated, (isAuthenticated) => {
   }
 });
 
-onMounted(async () => {
-  const res = await fetch('/api/aboutUs')
-  const data = await res.json()
-  description.value = data.description
-  stats.value = data.stats
-})
+const loadAboutUsData = async () => {
+  try {    
+    const response = await apiClient.get('/AboutUs');
+    const data = response.data;
+    
+    if (Array.isArray(data) && data.length > 0) {
+      aboutUsData.value = data[0];
+      localDescription.value = [...data[0].description];
+      
+      if (aboutUsData.value.stats) {
+        aboutUsData.value.stats.forEach(stat => {
+          if (stat.upper === null) {
+            stat.upper = "";
+          }
+        });
+      }
+    } else {
+      throw new Error('Неверная структура данных');
+    }
+    
+  } catch (error) {
+    console.error('❌ Ошибка загрузки AboutUs:', error);
+  } finally {
+    isLoading.value = false;
+  }
+};
 
 const emit = defineEmits(['navigate'])
 
 const toggleEdit = () => {
   isEditing.value = !isEditing.value;
+  if (!isEditing.value && aboutUsData.value) {
+    localDescription.value = [...aboutUsData.value.description];
+  }
 }
 
 const saveEdit = async () => {
-  await fetch('/api/aboutUs', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      description: description.value,
-      stats: stats.value,
-    })
-  })
-  isEditing.value = false;
+  if (!aboutUsData.value) return;
+  
+  try {
+    const descriptionArray = [...localDescription.value];
+    
+    const response = await apiClient.patch(`/AboutUs/${aboutUsData.value.id}/description`, 
+      descriptionArray
+    );
+
+    aboutUsData.value = response.data;
+    localDescription.value = [...response.data.description];
+    isEditing.value = false;
+    
+  } catch (error: any) {
+    console.error('Ошибка сохранения описания:', error);
+  }
 }
 
 const scrollToContacts = () => {
   emit('navigate', 'email')
 }
 
-const updateStatus = (updatedStatus: Stats) => {
-  const index =stats.value.findIndex(c => c.id === updatedStatus.id)
-  if (index !==-1){
-    stats.value[index] = {
-      ...stats.value[index],
-      ...updatedStatus
+const updateStatus = async (updatedStatus: Stats) => {
+  if (aboutUsData.value) {
+    const index = aboutUsData.value.stats.findIndex(stat => stat.id === updatedStatus.id);
+    if (index !== -1) {
+      aboutUsData.value.stats[index] = { ...updatedStatus };
+      
+      try {
+        await loadAboutUsData();
+      } catch (error) {
+        console.error('Ошибка обновления данных:', error);
+      }
     }
   }
 }
 
+onMounted(async () => {
+  await loadAboutUsData();
+});
+
 </script>
 
 <style lang="scss" scoped>
+.loading, .error {
+  text-align: center;
+  padding: 2rem;
+  color: #0652ff;
+  font-size: 1.2rem;
+}
+.error {
+  color: #ff0000;
+}
 .container {
   display: flex;
   flex-direction: column;

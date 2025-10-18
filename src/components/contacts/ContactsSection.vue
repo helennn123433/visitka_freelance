@@ -5,25 +5,25 @@
         КОНТАКТЫ
       </h2>
       <div
-        v-if="authStore.isAuthenticated && !isEditing"
+        v-if="authStore.isAuthenticated"
         class="adminCard"
-        @click="toggleEdit"
       >
-        <img
-          class="icon"
-          :src="Icons.Pencil"
-          alt="adminIcon"
-        >
-      </div>
-      <div
-        v-if="isEditing"  
-      >
-        <img
-          class="icon"
-          :src="Icons.ContentSave"
-          alt="adminIcon"
-          @click="saveEdit"
-        >
+        <template v-if="!isEditing">
+          <img
+            class="icon"
+            :src="Icons.Pencil"
+            alt="adminIcon"
+            @click="toggleEdit"
+          >
+        </template>
+        <template v-else>
+          <img
+            class="icon"
+            :src="Icons.ContentSave"
+            alt="adminIcon"
+            @click="saveEdit"
+          >
+        </template>
       </div>
     </div>
     <div class="contacts__description">
@@ -32,11 +32,23 @@
           v-model="description"
           class="contacts__description__input"
           rows="4"
+          @blur="updateDescription"
         />
       </template>
       <template v-else>
         <p>{{ description }}</p>
       </template>
+    </div>
+    <div 
+      v-if="isEditing && authStore.isAuthenticated"
+      class="add-button-container"
+    >
+      <!-- <MyButton
+        class="add-button"
+        @click="showAddDialog = true"
+      >
+        Добавить контакт
+      </MyButton> -->
     </div>
     <div class="contacts__list">
       <ContactCard
@@ -47,7 +59,12 @@
         @contact-update="updateContact"
       />
     </div>
-
+    <!-- <AddContactDialog
+      v-if="showAddDialog"
+      @toggle-dialog="showAddDialog = false"
+      @contact-added="handleContactAdded"
+      @error="handleError"
+    /> -->
     <NotificationComp 
       :visible="showError" 
       :error-message="textError" 
@@ -61,12 +78,16 @@
   import { useAuthStore } from "@/store/authStore"
   import { Contact } from '@/interfaces/contacts/Contact'
   import ContactCard from './ContactCard.vue'
+  // import AddContactDialog from './AddContactDialog.vue'
   import NotificationComp from '../notifications/NotificationComp.vue';
+  // import MyButton from '@/components/ui/MyButton.vue'
   import { Icons } from "@/assets/img/Icons"
+  import apiClient from '@/network/connection'
 
   const authStore = useAuthStore()
 
   const isEditing = ref(false)
+  // const showAddDialog = ref(false)
   const flagError = ref(0)
   const textError = ref('Нельзя оставлять пустые поля!')
   const showError = ref(false)
@@ -79,12 +100,16 @@
     }
   });
 
-  onMounted(async () => {
-    const res = await fetch('/api/contacts')
-    const data = await res.json()
-    description.value = data.description
-    contacts.value = data.contacts
-  })
+  const loadContacts = async () => {
+    try {
+      const response = await apiClient.get('/contacts')
+      const data = response.data
+      description.value = data.description
+      contacts.value = data.contacts
+    } catch (error) {
+      console.error('Error loading contacts:', error)
+    }
+  }
 
   const toggleEdit = () => {
     flagError.value = 0;
@@ -107,32 +132,46 @@
     }
   };
 
-
-  function updateContact(updatedContact: Contact){
+  const updateContact = async (updatedContact: Contact) => {
     const index = contacts.value.findIndex(c => c.id === updatedContact.id)
     if (index !== -1){
       contacts.value[index] = {
         ...contacts.value[index],
         ...updatedContact
       }
+      await loadContacts()
     }
   }
 
-
-  async function saveEdit() {
-    await fetch('/api/contacts', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        description: description.value,
-        contacts: contacts.value,
-      }),
-    })
-    isEditing.value = false;
+  // Пока пустышка так как отсутствовал эндпоинт описания
+  const updateDescription = async () => {
+    try {
+      console.log('Обновление описания:', description.value)
+    } catch (error) {
+      console.error('Error updating description:', error)
+    }
   }
 
+  // const handleContactAdded = (newContact: Contact) => {
+  //   contacts.value.push(newContact)
+  //   console.log('New contact added to list:', newContact)
+  // }
+
+  // const handleError = (error: string) => {
+  //   console.error('Error adding contact:', error)
+  // }
+
+  const saveEdit = async () => {
+    try {      
+      isEditing.value = false;
+    } catch (error) {
+      console.error('Error saving changes:', error)
+    }
+  }
+
+  onMounted(async () => {
+    await loadContacts()
+  })
 </script>
 
 <style lang="scss" scoped>
@@ -182,6 +221,27 @@
   border: none;   
   outline: none;  
   box-sizing: border-box;  
+}
+
+.add-button-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.add-button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: colors.$blue;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darken(colors.$blue, 10%);
+  }
 }
 
 .contacts__list {

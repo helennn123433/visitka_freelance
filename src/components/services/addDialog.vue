@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import axios from "axios";
+import apiClient from '@/network/connection';
 import MyButton from "@/components/ui/MyButton.vue";
 import NotificationComp from "../notifications/NotificationComp.vue";
 
@@ -83,7 +83,6 @@ const showErrorNotification = (message: string) => {
 
 const addService = async () => {
   try {
-    // Валидация формы перед отправкой
     if (!form.value.title.trim()) {
       showErrorNotification('Название услуги обязательно');
       return;
@@ -107,22 +106,19 @@ const addService = async () => {
       price: Number(form.value.price) || 0,
       image: form.value.image
     };
-    await axios.post('/api/addServices', newService);
+
+    await apiClient.post('/services', newService);
+    
     form.value = { title: "", price: 0, image: "" };
     emit('service-added');
     emit('toggle-dialog');
     emit('success');
   } catch(err: unknown) {
+    console.error('❌ Ошибка добавления услуги:', err);
+    
     let errorMsg = 'Неизвестная ошибка'
-    if (isAxiosError(err)) {
-      errorMsg = `Ошибка ${err.response?.status || 'нет кода'}: ${err.response?.data?.error || err.message}`;
-    } else if (err instanceof Error) {
-      errorMsg = err.message;
-    } else if (typeof err === 'string') {
-      errorMsg = err;
-    }
 
-    emit('toggle-dialog');
+    showErrorNotification(errorMsg);
     emit('error', errorMsg);
   }
 };

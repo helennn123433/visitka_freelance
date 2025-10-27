@@ -61,7 +61,7 @@
 import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
-import type { Service, Example } from '@/interfaces/servicesTypes/servicesTypes';
+import type { Example } from '@/interfaces/servicesTypes/servicesTypes';
 import MyHeader from '@/components/ui/MyHeader.vue';
 
 const route = useRoute();
@@ -76,31 +76,42 @@ const examples = ref<Example[]>([]);
 const fetchExamples = async () => {
   try {
     isLoading.value = true;
-    const response = await axios.get('/api/servicestypes');
-    const servicesData: Service[] = response.data || [];
+    const response = await axios.get('/api/ServiceTypeProject');
     
-    // Находим нужный родительский объект по ID
-    const parentService = servicesData.find(service => service.id === parentId);
+    let servicesData = [];
+    
+    if (response.data && Array.isArray(response.data.servicesTypesProjects)) {
+      servicesData = response.data.servicesTypesProjects;
+    } else if (Array.isArray(response.data)) {
+      servicesData = response.data;
+    } else {
+      examples.value = [];
+      return;
+    }
+    
+    const parentService = servicesData.find(service => service.id === parentId.toString());
+    
     if (!parentService) {
       examples.value = [];
       return;
     }
 
-    // Находим нужный тип услуги по title внутри родительского объекта
     const foundType = parentService.types.find(type => type.title === title);
+    
     examples.value = foundType?.examples || [];
+    
   } catch (error) {
-    console.error('Ошибка:', error);
     examples.value = [];
   } finally {
     isLoading.value = false;
   }
 };
-onMounted(() => {
+
+watch(() => route.query.title, () => {
   fetchExamples();
 });
 
-watch(() => route.query.title, () => {
+onMounted(() => {
   fetchExamples();
 });
 </script>

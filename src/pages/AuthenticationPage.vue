@@ -103,8 +103,8 @@ const checkInputAndConfirm = async () => {
   loading.value = true
 
   try {
-    const response = await apiClient.post('/auth/sign-in', {
-      login: login.value,
+    const response = await apiClient.post('http://localhost:8081/auth/sign-in', {
+      username: login.value,
       password: password.value
     })
 
@@ -130,8 +130,17 @@ const checkInputAndConfirm = async () => {
     if (axios.isAxiosError(error)) {
       const axiosError = error as AxiosError<{ message?: string }>;
       
+      if (axiosError.response?.status === 403) {
+      if (axiosError.code === 'NETWORK_ERR' || !axiosError.response) {
+        showError("CORS ошибка. Сервер не разрешает запросы с этого домена.")
+      } else {
+        showError("Неверные логин или пароль")
+      }
+    }
       if (axiosError.response?.status === 401) {
         showError("Неверные логин или пароль")
+      } else if (axiosError.response?.status === 404) { // ← ДОБАВЬТЕ 404
+        showError("Сервер авторизации недоступен. Проверьте настройки API.")
       } else if (axiosError.response?.status === 400) {
         showError("Некорректные данные")
       } else if (axiosError.code === 'NETWORK_ERROR' || !axiosError.response) {
@@ -149,6 +158,7 @@ const checkInputAndConfirm = async () => {
     loading.value = false
   }
 }
+
 const switchVisibility = () => {
   passwordFieldType.value =
     passwordFieldType.value === 'password' ? 'text' : 'password'

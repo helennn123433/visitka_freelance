@@ -22,6 +22,12 @@
       @success="showSuccess"
       @error="showError"
     />
+    <EditCard
+      v-if="editingItem"
+      :current-data="editingItem"
+      @close="closeEditModal"
+      @save="handleServiceUpdate"
+    />
     <div class="cards-field">
       <CardComp
         v-for="image in searchStore.filteredImages"
@@ -34,6 +40,7 @@
         }"
         :show-price="true"
         @updated="handleServiceUpdate"
+        @edit="openEditModal"
         @success="showSuccess"
         @error="showError"
         @click="goToService(image)"
@@ -48,6 +55,8 @@
 </template>
 
 <script setup lang="ts">
+import EditCard from "@/components/services/EditCard.vue";
+import apiClient from '@/network/connection';
 import { ref, onMounted, computed, nextTick, onUnmounted} from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/authStore";
@@ -60,6 +69,7 @@ import AddDialog from "@/components/services/addDialog.vue";
 import NotificationComp from '@/components/notifications/NotificationComp.vue';
 
 const isDialogOpen = ref(false);
+const editingItem = ref<Image | null>(null);
 
 const router = useRouter();
 const searchStore = useSearchingStore();
@@ -98,8 +108,65 @@ const toggleDialog = () => {
   isDialogOpen.value = !isDialogOpen.value;
 };
 
-const handleServiceUpdate = async () => {
-  await searchStore.fetchServices();
+const openEditModal = (image: Image) => {
+  editingItem.value = { ...image };
+};
+
+const closeEditModal = () => {
+  editingItem.value = null;
+};
+
+const updateService = async (updatedData: Image) => {
+  try {
+    const originalItem = searchStore.images.find(img => img.id === updatedData.id);
+    if (!originalItem) throw new Error('Услуга не найдена');
+    
+    const updatePromises = [];
+    
+    if (updatedData.title !== originalItem.title) {
+      updatePromises.push(
+        apiClient.patch(`/services/${updatedData.id}/title`, {
+          value: updatedData.title
+        })
+      );
+    }
+    
+    if (updatedData.price !== originalItem.price) {
+      updatePromises.push(
+        apiClient.patch(`/services/${updatedData.id}/price`, {
+          value: updatedData.price.toString()
+        })
+      );
+    }
+    
+    if (updatedData.image !== originalItem.image) {
+      updatePromises.push(
+        apiClient.patch(`/services/${updatedData.id}/image`, {
+          value: updatedData.image
+        })
+      );
+    }
+    
+    if (updatePromises.length > 0) {
+      await Promise.all(updatePromises);
+      showSuccess();
+    }
+    
+    await searchStore.fetchServices();
+    closeEditModal();
+    
+  } catch (error) {
+    console.error('Ошибка обновления услуги:', error);
+    showError('Не удалось обновить услугу');
+  }
+};
+
+const handleServiceUpdate = async (updatedData?: Image) => {
+  if (updatedData) {
+    await updateService(updatedData);
+  } else {
+    await searchStore.fetchServices();
+  }
   await nextTick();
   emit('section-loaded');
 };

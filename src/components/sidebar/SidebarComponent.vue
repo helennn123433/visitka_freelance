@@ -113,7 +113,7 @@ const toggle = async (section: string) => {
 const handleDiscountClick = async () => {
   if (router.currentRoute.value.name === 'home') {
     emit('icon-click', 'email')
-    emit('close') // Закрываем сайдбар на мобильных устройствах 
+    emit('close') 
     return;
   }
 
@@ -330,36 +330,6 @@ onUnmounted(() => {
 @media screen and (max-width: 1024px) and (min-width: 769px) {
   .main{
     margin: 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .img_plz {
-    /*display: none;*/
-  }
-
-  /*.btn {
-    font-size: 12px;
-    padding: 0.6vh;
-  }*/
-
-  /*.btn_discount {
-    font-size: 12px;
-  }*/
-}
-
-@media (max-width: 375px) {
-  .btn-text {
-    /*display: none;*/
-  }
-
-  .img_plz {
-    /*display: flex;
-    margin-right: 0;*/
-  }
-
-  .btn {
-    /*justify-content: center;*/
   }
 }
 </style>

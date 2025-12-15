@@ -57,7 +57,6 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import axios from 'axios';
 import apiClient from '@/network/connection';
 import { useAuthStore } from "@/store/authStore";
 import { useSearchingStore } from "@/store/searchingStore";
@@ -111,35 +110,30 @@ const closeEditModal = () => {
   isEditModalOpen.value = false
 }
 
-const handleDeleteConfirm = async (e:Event) => {
+const handleDeleteConfirm = async (e: Event) => {
   closeDeleteModal();
+  e?.stopPropagation();
   
-  e?.stopPropagation()
+  const serviceId = props.image?.id;
+  if (!serviceId) return emit('error', 'ID услуги не найден');
+
   try {
-    const response = await apiClient.delete( 
-      `/services/${props.image?.id}`
-    )
-    if (response.status === 200) {
-      emit('updated')
-      closeDeleteModal()
+    const { status } = await apiClient.delete(`/services/${serviceId}`);
+    if (status === 200) {
+      emit('updated');
       emit('success');
     }
   } catch (error: unknown) {
-    let errorMsg = 'Неизвестная ошибка';
-    
-    if (axios.isAxiosError(error)) {
-      errorMsg = `Ошибка ${error.response?.status || 'нет кода'}: ${error.response?.data?.error || error.message}`;
-    } else if (error instanceof Error) {
-      errorMsg = error.message;
-    } else if (typeof error === 'string') {
-      errorMsg = error;
-    }
-
-    emit('error', errorMsg); 
+    emit('error', getErrorMessage(error));
   }
 
-   await searchStore.fetchServices();
-}
+  await searchStore.fetchServices();
+};
+
+const getErrorMessage = (error: unknown): string => {
+  const err = error as any;
+  return err?.response?.data?.error || err?.message || 'Неизвестная ошибка';
+};
 
 const handleSave = (updatedData: Image) => {
   emit('edit', updatedData);

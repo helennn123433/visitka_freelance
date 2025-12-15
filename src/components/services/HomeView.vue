@@ -121,31 +121,18 @@ const updateService = async (updatedData: Image) => {
     const originalItem = searchStore.images.find(img => img.id === updatedData.id);
     if (!originalItem) throw new Error('Услуга не найдена');
     
-    const updatePromises = [];
+    const fieldUpdates = [
+      { field: 'title' as const, value: updatedData.title },
+      { field: 'price' as const, value: updatedData.price },
+      { field: 'image' as const, value: updatedData.image }
+    ];
     
-    if (updatedData.title !== originalItem.title) {
-      updatePromises.push(
-        apiClient.patch(`/services/${updatedData.id}/title`, {
-          value: updatedData.title
-        })
-      );
-    }
-    
-    if (updatedData.price !== originalItem.price) {
-      updatePromises.push(
-        apiClient.patch(`/services/${updatedData.id}/price`, {
-          value: updatedData.price.toString()
-        })
-      );
-    }
-    
-    if (updatedData.image !== originalItem.image) {
-      updatePromises.push(
-        apiClient.patch(`/services/${updatedData.id}/image`, {
-          value: updatedData.image
-        })
-      );
-    }
+    const updatePromises = fieldUpdates
+      .filter(({ field, value }) => value !== originalItem[field])
+      .map(({ field, value }) => apiClient.patch(
+        `/services/${updatedData.id}/${field}`,
+        { value: field === 'price' && value !== undefined ? value.toString() : value }
+      ));
     
     if (updatePromises.length > 0) {
       await Promise.all(updatePromises);

@@ -72,7 +72,6 @@ import MyButton from '@/components/ui/MyButton.vue'
 import NotificationComp from "@/components/notifications/NotificationComp.vue";
 import { Icons } from "@/assets/img/Icons";
 import apiClient from "@/network/connection";
-import type { AxiosError } from "axios";
 import axios from "axios";
 
 const passwordFieldType = ref('password')
@@ -95,69 +94,62 @@ const showError = (message: string) => {
 }
 
 const checkInputAndConfirm = async () => {
-  if (login.value === "" || password.value === "") {
-    showError("Введите данные для авторизации")
-    return
+  if (!login.value || !password.value) {
+    return showError("Введите данные для авторизации");
   }
 
-  loading.value = true
+  loading.value = true;
 
   try {
     const response = await apiClient.post('http://localhost:8081/auth/sign-in', {
       username: login.value,
       password: password.value
-    })
+    });
 
-    const token = response.data.token
-    
-    if (!token) {
-      throw new Error('Токен не получен от сервера')
-    }
+    const token = response.data.token;
+    if (!token) throw new Error('Токен не получен от сервера');
 
-    localStorage.setItem('auth_token', token)
-    
+    localStorage.setItem('auth_token', token);
     authStore.login({ 
       login: login.value, 
       password: password.value,
       token: token 
-    })
+    });
 
-    router.push('/')
+    router.push('/');
 
   } catch (error: unknown) {
-    console.error('Ошибка авторизации:', error)
-    
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-      
-      if (axiosError.response?.status === 403) {
-      if (axiosError.code === 'NETWORK_ERR' || !axiosError.response) {
-        showError("CORS ошибка. Сервер не разрешает запросы с этого домена.")
-      } else {
-        showError("Неверные логин или пароль")
-      }
-    }
-      if (axiosError.response?.status === 401) {
-        showError("Неверные логин или пароль")
-      } else if (axiosError.response?.status === 404) { // ← ДОБАВЬТЕ 404
-        showError("Сервер авторизации недоступен. Проверьте настройки API.")
-      } else if (axiosError.response?.status === 400) {
-        showError("Некорректные данные")
-      } else if (axiosError.code === 'NETWORK_ERROR' || !axiosError.response) {
-        showError("Сервер недоступен. Проверьте подключение.")
-      } else {
-        const serverMessage = axiosError.response?.data?.message;
-        showError(serverMessage || "Ошибка авторизации. Попробуйте позже.")
-      }
-    } else if (error instanceof Error) {
-      showError(error.message || "Неизвестная ошибка")
-    } else {
-      showError("Неизвестная ошибка. Попробуйте позже.")
-    }
+    console.error('Ошибка авторизации:', error);
+    showError(getAuthErrorMessage(error));
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
+
+const getAuthErrorMessage = (error: unknown): string => {
+  if (!axios.isAxiosError(error)) {
+    return error instanceof Error ? error.message : "Неизвестная ошибка. Попробуйте позже.";
+  }
+
+  const { response, code } = error;
+  const status = response?.status;
+
+  if (status === 403) {
+    return (code === 'NETWORK_ERR' || !response) 
+      ? "CORS ошибка. Сервер не разрешает запросы с этого домена."
+      : "Неверные логин или пароль";
+  }
+
+  if (status === 401) return "Неверные логин или пароль";
+  if (status === 404) return "Сервер авторизации недоступен. Проверьте настройки API.";
+  if (status === 400) return "Некорректные данные";
+  
+  if (code === 'NETWORK_ERROR' || !response) {
+    return "Сервер недоступен. Проверьте подключение.";
+  }
+
+  return response?.data?.message || "Ошибка авторизации. Попробуйте позже.";
+};
 
 const switchVisibility = () => {
   passwordFieldType.value =

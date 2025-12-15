@@ -81,43 +81,59 @@ const showErrorNotification = (message: string) => {
   showNotification.value = true;
 };
 
+const validateServiceForm = (title: string, price: number, image: string): string | null => {
+  if (!title.trim()) return 'Название услуги обязательно';
+  if (price <= 0) return 'Цена должна быть положительным числом';
+  
+  try {
+    new URL(image);
+  } catch {
+    return 'Некорректный URL изображения';
+  }
+  
+  return null;
+};
+
+const handleSuccess = () => {
+  form.value = { title: "", price: 0, image: "" };
+  emit('service-added');
+  emit('toggle-dialog');
+  emit('success');
+};
+
+const handleError = (err: unknown): string => {
+  console.error('❌ Ошибка добавления услуги:', err);
+  if (err && typeof err === 'object' && 'response' in err) {
+    const error = err as any;
+    return error.response?.data?.message || error.message || 'Неизвестная ошибка';
+  }
+  return 'Неизвестная ошибка';
+};
+
 const addService = async () => {
   try {
-    if (!form.value.title.trim()) {
-      showErrorNotification('Название услуги обязательно');
-      return;
-    }
+    const validationError = validateServiceForm(
+      form.value.title,
+      form.value.price,
+      form.value.image
+    );
     
-    if (form.value.price <= 0) {
-      showErrorNotification('Цена должна быть положительным числом');
-      return;
-    }
-
-    try {
-      new URL(form.value.image);
-    } catch {
-      showErrorNotification('Некорректный URL изображения');
+    if (validationError) {
+      showErrorNotification(validationError);
       return;
     }
 
     const newService = {
       id: String(Number(props.nextId)),
-      title: form.value.title,
+      title: form.value.title.trim(),
       price: Number(form.value.price) || 0,
-      image: form.value.image
+      image: form.value.image.trim()
     };
 
     await apiClient.post('/services', newService);
-    
-    form.value = { title: "", price: 0, image: "" };
-    emit('service-added');
-    emit('toggle-dialog');
-    emit('success');
+    handleSuccess();
   } catch(err: unknown) {
-    console.error('❌ Ошибка добавления услуги:', err);
-    
-    let errorMsg = 'Неизвестная ошибка'
-
+    const errorMsg = handleError(err);
     showErrorNotification(errorMsg);
     emit('error', errorMsg);
   }

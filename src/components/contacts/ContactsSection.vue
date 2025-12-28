@@ -29,7 +29,7 @@
     <div class="contacts__description">
       <template v-if="isEditing">
         <textarea 
-          v-model="description"
+          v-model="editableDescription"  
           class="contacts__description__input"
           rows="4"
           @blur="updateDescription"
@@ -43,12 +43,6 @@
       v-if="isEditing && authStore.isAuthenticated"
       class="add-button-container"
     >
-      <!-- <MyButton
-        class="add-button"
-        @click="showAddDialog = true"
-      >
-        Добавить контакт
-      </MyButton> -->
     </div>
     <div class="contacts__list">
       <ContactCard
@@ -59,12 +53,6 @@
         @contact-update="updateContact"
       />
     </div>
-    <!-- <AddContactDialog
-      v-if="showAddDialog"
-      @toggle-dialog="showAddDialog = false"
-      @contact-added="handleContactAdded"
-      @error="handleError"
-    /> -->
     <NotificationComp 
       :visible="showError" 
       :error-message="textError" 
@@ -78,20 +66,18 @@
   import { useAuthStore } from "@/store/authStore"
   import { Contact } from '@/interfaces/contacts/Contact'
   import ContactCard from './ContactCard.vue'
-  // import AddContactDialog from './AddContactDialog.vue'
   import NotificationComp from '../notifications/NotificationComp.vue';
-  // import MyButton from '@/components/ui/MyButton.vue'
   import { Icons } from "@/assets/img/Icons"
   import apiClient from '@/network/connection'
 
   const authStore = useAuthStore()
 
   const isEditing = ref(false)
-  // const showAddDialog = ref(false)
   const flagError = ref(0)
   const textError = ref('Нельзя оставлять пустые поля!')
   const showError = ref(false)
   const description = ref('')
+  const editableDescription = ref('')
   const contacts = ref<Contact[]>([])
 
   watch(() => authStore.isAuthenticated, (isAuthenticated) => {
@@ -106,6 +92,7 @@
       const data = response.data
       description.value = data.description
       contacts.value = data.contacts
+      editableDescription.value = data.description
     } catch (error) {
       console.error('Error loading contacts:', error)
     }
@@ -121,51 +108,77 @@
       }
     });
 
-    if (description.value === '') {
+    const descToCheck = isEditing.value ? editableDescription.value : description.value;
+    if (!descToCheck.trim()) {
       flagError.value = 1;
     }
 
     if (flagError.value === 1) {
       showError.value = true;
+      textError.value = 'Нельзя оставлять пустые поля!'
     } else {
       isEditing.value = !isEditing.value;
+      if (!isEditing.value) {
+        editableDescription.value = description.value;
+      }
     }
   };
 
   const updateContact = async (updatedContact: Contact) => {
-    const index = contacts.value.findIndex(c => c.id === updatedContact.id)
-    if (index !== -1){
-      contacts.value[index] = {
-        ...contacts.value[index],
-        ...updatedContact
+  const index = contacts.value.findIndex(c => c.id === updatedContact.id)
+    if (index !== -1) {
+      contacts.value[index] = { ...updatedContact }
+      
+      try {
+        await apiClient.put(`http://localhost:8080/admin/contacts/${updatedContact.id}`, {
+          id: updatedContact.id,
+          icon: updatedContact.icon,
+          title: updatedContact.title,
+          subtitle: updatedContact.subtitle
+        })
+        
+      } catch (error) {
+        console.error('❌ Ошибка обновления контакта:', error)
+        await loadContacts()
       }
-      await loadContacts()
     }
   }
 
-  // Пока пустышка так как отсутствовал эндпоинт описания
   const updateDescription = async () => {
     try {
-      console.log('Обновление описания:', description.value)
+      const newDescription = editableDescription.value.trim()
+      
+      if (!newDescription) {
+        showError.value = true
+        textError.value = 'Описание не может быть пустым'
+        editableDescription.value = description.value
+        return
+      }
+      
+      await apiClient.put('http://localhost:8080/admin/contacts/description', newDescription, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      
+      description.value = newDescription
+      
     } catch (error) {
-      console.error('Error updating description:', error)
+      console.error('❌ Ошибка обновления описания:', error)
+      editableDescription.value = description.value
     }
   }
 
-  // const handleContactAdded = (newContact: Contact) => {
-  //   contacts.value.push(newContact)
-  //   console.log('New contact added to list:', newContact)
-  // }
-
-  // const handleError = (error: string) => {
-  //   console.error('Error adding contact:', error)
-  // }
-
   const saveEdit = async () => {
-    try {      
-      isEditing.value = false;
+    try {
+      if (editableDescription.value !== description.value) {
+        await updateDescription()
+      }
+      
+      isEditing.value = false
+      
     } catch (error) {
-      console.error('Error saving changes:', error)
+      console.error('❌ Ошибка сохранения изменений:', error)
     }
   }
 

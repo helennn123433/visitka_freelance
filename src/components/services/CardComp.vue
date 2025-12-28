@@ -2,6 +2,7 @@
   <div
     :id="imageId"
     class="card"
+    @click="handleCardClick"
   >
     <div
       v-if="authStore.isAuthenticated"
@@ -34,15 +35,19 @@
       {{ image.title || 'Без названия' }}
     </div>
 
-    <EditCard
-      v-if="isEditModalOpen && hasPrice"
-      :current-data="image"
-      @close="closeEditModal"
-      @save="handleSave"
-    />
     <DeleteCard
       v-if="isDeleteModalOpen"
       @confirm="handleDeleteConfirm"
+      @cancel="closeDeleteModal"
+    />
+
+    <DeleteConfirmationDialog
+      v-if="isDeleteModalOpen && isSubserviceType"
+      type="type"
+      :item-title="image.title"
+      :item-id="image.id"
+      :subservice-id="subserviceId"
+      @confirm="handleDeleteTypeConfirm"
       @cancel="closeDeleteModal"
     />
 
@@ -57,21 +62,23 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import apiClient from '@/network/connection';
 import { useAuthStore } from "@/store/authStore";
 import { useSearchingStore } from "@/store/searchingStore";
 import type { Image } from '@/interfaces/services/Image';
 import DeleteCard from '@/components/services/DeleteCard.vue';
-import EditCard from "@/components/services/EditCard.vue";
 import NotificationComp from '../notifications/NotificationComp.vue';
+import DeleteConfirmationDialog from '@/components/subservices/DeleteConfirmationDialog.vue';
 import { Icons } from "@/assets/img/Icons";
 
-
 const searchStore = useSearchingStore();
+const authStore = useAuthStore();
 
 const props = defineProps<{
   image: Image;
   showPrice?: boolean;
+  isSubserviceType?: boolean;
+  subserviceId?: string;
+  serviceId?: string;
 }>();
 
 const imageId = computed(() => props.image?.id?.toString() || 'unknown');
@@ -89,10 +96,8 @@ const closeNotification = () => {
   showNotification.value = false;
 };
 
-const authStore = useAuthStore()
-const emit = defineEmits(['updated', 'success', 'error', 'edit']);
+const emit = defineEmits(['updated', 'success', 'error', 'edit', 'delete', 'click']);
 const isDeleteModalOpen = ref(false)
-const isEditModalOpen = ref(false)
 
 const openDeleteModal = () => {
   isDeleteModalOpen.value = true
@@ -103,41 +108,53 @@ const closeDeleteModal = () => {
 }
 
 const openEditModal = () => {
-  isEditModalOpen.value = true
+  emit('edit', props.image);
 }
 
-const closeEditModal = () => {
-  isEditModalOpen.value = false
+const handleCardClick = () => {
+  emit('click', props.image);
 }
 
-const handleDeleteConfirm = async (e: Event) => {
-  closeDeleteModal();
-  e?.stopPropagation();
-  
-  const serviceId = props.image?.id;
-  if (!serviceId) return emit('error', 'ID услуги не найден');
-
+const handleDeleteConfirm = async () => {
   try {
-    const { status } = await apiClient.delete(`/services/${serviceId}`);
-    if (status === 200) {
-      emit('updated');
-      emit('success');
-    }
-  } catch (error: unknown) {
-    emit('error', getErrorMessage(error));
+    await searchStore.deleteService(props.image.id);
+    emit('success');
+    emit('updated');
+  } catch (error) {
+    console.error('Ошибка удаления услуги:', error);
+    const errorMsg = error instanceof Error ? error.message : 'Не удалось удалить услугу';
+    emit('error', errorMsg);
+    showNotification.value = true;
+    notificationMessage.value = errorMsg;
+  } finally {
+    closeDeleteModal();
   }
-
-  await searchStore.fetchServices();
 };
 
-const getErrorMessage = (error: unknown): string => {
-  const err = error as any;
-  return err?.response?.data?.error || err?.message || 'Неизвестная ошибка';
-};
-
-const handleSave = (updatedData: Image) => {
-  emit('edit', updatedData);
-  closeEditModal();
+const handleDeleteTypeConfirm = async (data: any) => {
+  try {
+    const typeId = data?.itemId;
+    const subserviceId = data?.subserviceId || props.subserviceId;
+  
+    console.log('Итоговые ID для отправки:', { typeId, subserviceId });
+  
+    if (!typeId || !subserviceId) {
+      console.error('Не хватает данных для удаления:', { typeId, subserviceId });
+      return;
+    }
+    
+    await searchStore.deleteSubserviceType(subserviceId, typeId);
+    emit('success');
+    emit('updated');
+  } catch (error) {
+    console.error('Ошибка удаления типа:', error);
+    const errorMsg = error instanceof Error ? error.message : 'Не удалось удалить тип';
+    emit('error', errorMsg);
+    showNotification.value = true;
+    notificationMessage.value = errorMsg;
+  } finally {
+    closeDeleteModal();
+  }
 };
 </script>
 

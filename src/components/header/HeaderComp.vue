@@ -15,13 +15,13 @@ import ButtonsComp from "@/components/header/ButtonsComp.vue";
   const handleResize = () => {
     isMobile.value = window.innerWidth < 769
     if (isMobile.value) {
-      Show.value = false
+      Show.value = false // скрываем значки
     }else Show.value = true
   }
 
   onMounted(() => {
     if (isMobile.value) {
-      Show.value = false 
+      Show.value = false // скрываем значки
     }else Show.value = true
     window.addEventListener('resize', handleResize)
   })

@@ -4,7 +4,7 @@
       <input
         v-model="editableUpper"
         class="edit-input"
-        @blur="updateUpper"
+        @blur="updateStat"
       >
     </div>
     <div
@@ -17,7 +17,7 @@
       <input
         v-model="editableLower"
         class="edit-input"
-        @blur="updateLower"
+        @blur="updateStat"
       >
     </div>
     <div
@@ -31,7 +31,6 @@
 
 <script setup lang="ts">
 import { defineProps, ref, watch } from "vue";
-import apiClient from '@/network/connection';
 import { Stats } from "@/interfaces/aboutUs/Stats";
 
 const props = defineProps<{
@@ -40,7 +39,7 @@ const props = defineProps<{
 }>()
 
 /* eslint-disable */
-const emits = defineEmits<{
+const emit = defineEmits<{
   (e: 'statusUpdate', payload: Stats): void
 }>()
 
@@ -52,46 +51,25 @@ watch(() => props.stat, (newStat) => {
   editableLower.value = newStat.lower
 }, { deep: true })
 
-const updateUpper = async () => {
+const updateStat = async () => {
   try {
-    const upperValue = editableUpper.value === null ? "" : editableUpper.value;
-    
-    const response = await apiClient.patch(`/AboutUs/${props.stat.id}/upper`, {
-      value: upperValue
-    });
-
-    
-    emits('statusUpdate', {
+    const statData = {
       id: props.stat.id,
-      upper: upperValue,
-      lower: editableLower.value
-    });
+      upper: editableUpper.value || "",
+      lower: editableLower.value || ""
+    };
+    
+    emit('statusUpdate', statData);
     
   } catch (error: any) {
-    if (error.response) {
+    console.error('❌ Ошибка обновления статистики:', error);
+    
+    if (error.response?.data) {
       console.error('Данные ошибки:', error.response.data);
     }
-    editableUpper.value = props.stat.upper;
-  }
-}
-
-const updateLower = async () => {
-  try {
-    const response = await apiClient.patch(`/AboutUs/${props.stat.id}/lower`, {
-      value: editableLower.value
-    });
     
-    emits('statusUpdate', {
-      id: props.stat.id,
-      upper: editableUpper.value,
-      lower: editableLower.value
-    });
-    
-  } catch (error: any) {
-    if (error.response) {
-      console.error('Данные ошибки:', error.response.data);
-    }
-    editableLower.value = props.stat.lower;
+    editableUpper.value = props.stat.upper || "";
+    editableLower.value = props.stat.lower || "";
   }
 }
 </script>

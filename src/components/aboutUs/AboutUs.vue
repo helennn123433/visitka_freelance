@@ -100,7 +100,6 @@ import { Icons } from "@/assets/img/Icons";
 import apiClient from '@/network/connection';
 
 interface AboutUsData {
-  id: string;
   description: string[];
   stats: Stats[];
 }
@@ -120,12 +119,12 @@ watch(() => authStore.isAuthenticated, (isAuthenticated) => {
 
 const loadAboutUsData = async () => {
   try {    
-    const response = await apiClient.get('/AboutUs');
+    const response = await apiClient.get('/about-us');
     const data = response.data;
     
-    if (Array.isArray(data) && data.length > 0) {
-      aboutUsData.value = data[0];
-      localDescription.value = [...data[0].description];
+    if (data && data.description && data.stats) {
+      aboutUsData.value = data;
+      localDescription.value = [...data.description];
       
       if (aboutUsData.value.stats) {
         aboutUsData.value.stats.forEach(stat => {
@@ -160,12 +159,14 @@ const saveEdit = async () => {
   try {
     const descriptionArray = [...localDescription.value];
     
-    const response = await apiClient.patch(`/AboutUs/${aboutUsData.value.id}/description`, 
+    await apiClient.put('http://localhost:8080/admin/about-us/description', 
       descriptionArray
     );
 
-    aboutUsData.value = response.data;
-    localDescription.value = [...response.data.description];
+    if (aboutUsData.value) {
+      aboutUsData.value.description = [...descriptionArray];
+    }
+
     isEditing.value = false;
     
   } catch (error: any) {
@@ -180,11 +181,16 @@ const scrollToContacts = () => {
 const updateStatus = async (updatedStatus: Stats) => {
   if (aboutUsData.value) {
     const index = aboutUsData.value.stats.findIndex(stat => stat.id === updatedStatus.id);
+    console.log("updatedStatus",{updatedStatus})
     if (index !== -1) {
       aboutUsData.value.stats[index] = { ...updatedStatus };
       
       try {
-        await loadAboutUsData();
+        await apiClient.put(`http://localhost:8080/admin/about-us/stats/${updatedStatus.id}`, {
+          id: updatedStatus.id,
+          upper: updatedStatus.upper,
+          lower: updatedStatus.lower
+        });
       } catch (error) {
         console.error('Ошибка обновления данных:', error);
       }

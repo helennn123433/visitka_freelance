@@ -1,5 +1,5 @@
 export interface Stats {
-  id: string
+  id: number
   upper: string
   lower: string
 }

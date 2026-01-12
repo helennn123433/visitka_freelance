@@ -16,7 +16,7 @@
     </div>
     <add-dialog
       v-if="isDialogOpen"
-      :next-id="(maxId + 1).toString()"
+      
       @toggle-dialog="toggleDialog"
       @service-added="handleServiceUpdate"
       @success="showSuccess"
@@ -26,24 +26,24 @@
       v-if="editingItem"
       :current-data="editingItem"
       @close="closeEditModal"
-      @save="handleServiceUpdate"
+      @save="handleSaveService"
     />
     <div class="cards-field">
       <CardComp
-        v-for="image in searchStore.filteredImages"
-        :key="image.id"
+        v-for="service in searchStore.filteredImages"
+        :key="service.id"
         :image="{ 
-          id: image.id, 
-          title: image.title, 
-          image: image.image,
-          price: image.price
+          id: service.id, 
+          title: service.title, 
+          image: service.image,
+          price: service.price
         }"
         :show-price="true"
         @updated="handleServiceUpdate"
         @edit="openEditModal"
         @success="showSuccess"
         @error="showError"
-        @click="goToService(image)"
+        @click="goToService(service)"
       />
     </div>
     <NotificationComp 
@@ -56,8 +56,7 @@
 
 <script setup lang="ts">
 import EditCard from "@/components/services/EditCard.vue";
-import apiClient from '@/network/connection';
-import { ref, onMounted, computed, nextTick, onUnmounted} from "vue";
+import { ref, onMounted, nextTick, onUnmounted} from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/store/authStore";
 import { useSearchingStore } from "@/store/searchingStore";
@@ -74,7 +73,6 @@ const editingItem = ref<Image | null>(null);
 const router = useRouter();
 const searchStore = useSearchingStore();
 const authStore = useAuthStore();
-const emit = defineEmits(['section-loaded']);
 const notificationVisible = ref(false);
 const notificationError = ref<string | null>(null);
 let notificationTimeout: number | null = null;
@@ -99,11 +97,6 @@ const showError = (message: string) => {
   }, 5000);
 };
 
-const maxId = computed(() => {
-  if (searchStore.images.length === 0) return 0;
-  return Math.max(...searchStore.images.map(item => Number(item.id)));
-});
-
 const toggleDialog = () => {
   isDialogOpen.value = !isDialogOpen.value;
 };
@@ -116,58 +109,41 @@ const closeEditModal = () => {
   editingItem.value = null;
 };
 
-const updateService = async (updatedData: Image) => {
+const handleSaveService = async (updatedData: Image) => {
   try {
-    const originalItem = searchStore.images.find(img => img.id === updatedData.id);
-    if (!originalItem) throw new Error('Услуга не найдена');
+    await searchStore.updateService(updatedData.id, {
+      title: updatedData.title,
+      price: updatedData.price,
+      image: updatedData.image,
+    });
     
-    const fieldUpdates = [
-      { field: 'title' as const, value: updatedData.title },
-      { field: 'price' as const, value: updatedData.price },
-      { field: 'image' as const, value: updatedData.image }
-    ];
-    
-    const updatePromises = fieldUpdates
-      .filter(({ field, value }) => value !== originalItem[field])
-      .map(({ field, value }) => apiClient.patch(
-        `/services/${updatedData.id}/${field}`,
-        { value: field === 'price' && value !== undefined ? value.toString() : value }
-      ));
-    
-    if (updatePromises.length > 0) {
-      await Promise.all(updatePromises);
-      showSuccess();
-    }
-    
-    await searchStore.fetchServices();
+    showSuccess();
     closeEditModal();
-    
+    await searchStore.fetchServices();
   } catch (error) {
     console.error('Ошибка обновления услуги:', error);
     showError('Не удалось обновить услугу');
   }
 };
 
-const handleServiceUpdate = async (updatedData?: Image) => {
-  if (updatedData) {
-    await updateService(updatedData);
-  } else {
-    await searchStore.fetchServices();
-  }
-  await nextTick();
-  emit('section-loaded');
+const handleServiceUpdate = async () => {
+  await searchStore.fetchServices();
+  emitter.emit('section-loaded');
 };
 
 const goToService = (service: Image) => {
   router.push({
     name: 'service',
-    params: { id: service.id },
-    query: { title: service.title }
+    params: { serviceId: service.id },
   });
 };
 
 onMounted(async () => {
-  await searchStore.fetchServices();
+  try {
+    await searchStore.fetchServices();
+  } catch (error) {
+    showError('Не удалось загрузить услуги');
+  }
   await nextTick(); 
   emitter.emit('section-loaded');
 });
@@ -215,15 +191,15 @@ onUnmounted(() => {
 }
 
 .header {
-display: flex;
-justify-content: space-between;
-align-self: flex-start;
-line-height: 100%;
-width: 100%;
-color: #0652ff;
-font-size: clamp(1.5rem, 5vw, 2.5rem);
-font-weight: 800;
-padding-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-self: flex-start;
+  line-height: 100%;
+  width: 100%;
+  color: #0652ff;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 800;
+  padding-bottom: 16px;
 }
 
 @media (max-width: 767px) {

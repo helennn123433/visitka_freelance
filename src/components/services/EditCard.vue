@@ -102,11 +102,13 @@ const validateForm = () => {
     isValid = false;
   }
 
-  try {
-    new URL(formData.value.image);
-  } catch {
-    errors.value.image = 'Некорректный URL изображения';
-    isValid = false;
+  if (formData.value.image) {
+    try {
+      new URL(formData.value.image);
+    } catch {
+      errors.value.image = 'Некорректный URL изображения';
+      isValid = false;
+    }
   }
 
   return isValid;

@@ -14,7 +14,7 @@
           v-model="editableTitle"
           class="contact-card__input"
           rows="3"
-          @blur="updateTitle"
+          @blur="updateContact"
         />
       </template>
       <template v-else>
@@ -27,7 +27,7 @@
           v-model="editableSubtitle"
           class="contact-card__input"
           rows="3"
-          @blur="updateSubtitle"
+          @blur="updateContact"
         />
       </template>
       <template v-else>
@@ -38,12 +38,9 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, watch, defineProps, defineEmits, computed } from 'vue'
+  import { ref, watch, computed } from 'vue'
   import { Contact } from '@/interfaces/contacts/Contact'
   import { Icons } from "@/assets/img/Icons"
-  import apiClient from '@/network/connection'
-  //тип ключей:
-  //type IconKey = keyof typeof Icons
 
   const props = defineProps<{
     contact: Contact
@@ -51,7 +48,7 @@
   }>()
 
   /* eslint-disable */
-  const emits = defineEmits<{
+  const emit = defineEmits<{
     (e: 'contact-update', payload: Contact): void
   }>()
 
@@ -81,12 +78,10 @@
         window.location.href = `mailto:${value}`
         break
       case 'telegram':
-        // Удаляем @ если он есть в начале
         const username = value.startsWith('@') ? value.slice(1) : value
         window.open(`https://t.me/${username}`, '_blank')
         break
-      case 'whatsapp': // Обработка WhatsApp
-        // Удаляем все нецифровые символы
+      case 'whatsapp': 
         const phoneNumber = value.replace(/\D/g, '')
         window.open(`https://wa.me/${phoneNumber}`, '_blank')
         break
@@ -100,37 +95,26 @@
     editableSubtitle.value = newContact.subtitle
   }, { deep: true })
 
-const updateTitle = async () => {
+  const updateContact = async () => {
     try {
-      const response = await apiClient.patch(`/contacts/${props.contact.id}/title`, {
-        value: editableTitle.value
-      })
-      
-      emits('contact-update', {
+      const updatedContact = {
         ...props.contact,
-        title: editableTitle.value
-      })
+        title: editableTitle.value.trim(),
+        subtitle: editableSubtitle.value.trim()
+      }
+      
+      if (!updatedContact.title || !updatedContact.subtitle) {
+        editableTitle.value = props.contact.title || ''
+        editableSubtitle.value = props.contact.subtitle || ''
+        return
+      }
+      
+      emit('contact-update', updatedContact)
       
     } catch (error) {
-      console.error('Error updating title:', error)
-      editableTitle.value = props.contact.title
-    }
-  }
-
-  const updateSubtitle = async () => {
-    try {
-      const response = await apiClient.patch(`/contacts/${props.contact.id}/subtitle`, {
-        value: editableSubtitle.value
-      })
-      
-      emits('contact-update', {
-        ...props.contact,
-        subtitle: editableSubtitle.value
-      })
-      
-    } catch (error) {
-      console.error('Error updating subtitle:', error)
-      editableSubtitle.value = props.contact.subtitle
+      console.error('❌ Ошибка обновления контакта:', error)
+      editableTitle.value = props.contact.title || ''
+      editableSubtitle.value = props.contact.subtitle || ''
     }
   }
 </script>

@@ -38,15 +38,15 @@
   const authStore = useAuthStore()
 
   const handlePhoneClick = () => {
-    window.location.href = 'tel:+79650778987'; 
+    window.location.href = 'tel:+79650778987'; // Формат номера для звонка
   };
 
   const handleTelegramClick = () => {
-    window.open('https://t.me/frtarget', '_blank'); 
+    window.open('https://t.me/frtarget', '_blank'); // Открытие Telegram в новой вкладке
   };
 
   const handleEmailClick = () => {
-    window.location.href = 'mailto:alexpysenkov@gmail.com';
+    window.location.href = 'mailto:alexpysenkov@gmail.com'; // Формат для почтового клиента
   };
 </script>
 

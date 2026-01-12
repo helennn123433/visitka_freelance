@@ -16,6 +16,7 @@
           placeholder="цена"
           type="number"
           class="input"
+          min="1"
         >
         <input
           v-model="form.image"
@@ -50,16 +51,11 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import apiClient from '@/network/connection';
+import { useSearchingStore } from "@/store/searchingStore";
 import MyButton from "@/components/ui/MyButton.vue";
 import NotificationComp from "../notifications/NotificationComp.vue";
 
-const props = defineProps({
-  nextId: {
-    type: String,
-    required: true
-  }
-});
+const searchStore = useSearchingStore();
 
 const form = ref({
   title: "",
@@ -81,59 +77,42 @@ const showErrorNotification = (message: string) => {
   showNotification.value = true;
 };
 
-const validateServiceForm = (title: string, price: number, image: string): string | null => {
-  if (!title.trim()) return 'Название услуги обязательно';
-  if (price <= 0) return 'Цена должна быть положительным числом';
-  
-  try {
-    new URL(image);
-  } catch {
-    return 'Некорректный URL изображения';
-  }
-  
-  return null;
-};
-
-const handleSuccess = () => {
-  form.value = { title: "", price: 0, image: "" };
-  emit('service-added');
-  emit('toggle-dialog');
-  emit('success');
-};
-
-const handleError = (err: unknown): string => {
-  console.error('❌ Ошибка добавления услуги:', err);
-  if (err && typeof err === 'object' && 'response' in err) {
-    const error = err as any;
-    return error.response?.data?.message || error.message || 'Неизвестная ошибка';
-  }
-  return 'Неизвестная ошибка';
-};
-
 const addService = async () => {
   try {
-    const validationError = validateServiceForm(
-      form.value.title,
-      form.value.price,
-      form.value.image
-    );
+    if (!form.value.title.trim()) {
+      showErrorNotification('Название услуги обязательно');
+      return;
+    }
     
-    if (validationError) {
-      showErrorNotification(validationError);
+    if (form.value.price <= 0) {
+      showErrorNotification('Цена должна быть положительным числом');
       return;
     }
 
-    const newService = {
-      id: String(Number(props.nextId)),
-      title: form.value.title.trim(),
-      price: Number(form.value.price) || 0,
-      image: form.value.image.trim()
+    if (form.value.image) {
+      try {
+        new URL(form.value.image);
+      } catch {
+        showErrorNotification('Некорректный URL изображения');
+        return;
+      }
+    }
+
+    const serviceData = {
+      title: form.value.title,
+      price: Number(form.value.price),
+      image: form.value.image
     };
 
-    await apiClient.post('/services', newService);
-    handleSuccess();
+    await searchStore.addService(serviceData);
+    
+    form.value = { title: "", price: 0, image: "" };
+    emit('service-added');
+    emit('toggle-dialog');
+    emit('success');
   } catch(err: unknown) {
-    const errorMsg = handleError(err);
+    console.error('Ошибка добавления услуги:', err);
+    const errorMsg = err instanceof Error ? err.message : 'Неизвестная ошибка';
     showErrorNotification(errorMsg);
     emit('error', errorMsg);
   }

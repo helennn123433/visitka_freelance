@@ -1,6 +1,9 @@
 <template>
   <nav class="breadcrumbs">
-    <template v-for="(item, index) in items" :key="index">
+    <template
+      v-for="(item, index) in items"
+      :key="index"
+    >
       <component
         :is="item.to ? 'router-link' : 'span'"
         :to="item.to"
@@ -13,7 +16,10 @@
       >
         {{ item.label.toUpperCase() }}
       </component>
-      <span v-if="index < items.length - 1" class="breadcrumbs__separator">
+      <span
+        v-if="index < items.length - 1"
+        class="breadcrumbs__separator"
+      >
         {{ separator }}
       </span>
     </template>

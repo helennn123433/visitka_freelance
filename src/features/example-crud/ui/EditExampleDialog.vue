@@ -1,7 +1,7 @@
 <template>
   <div
     class="dialog-overlay"
-    @click.self="$emit('close')"
+    @click.self="handleClose"
   >
     <div class="dialog">
       <h3>{{ dialogTitle }}</h3>
@@ -91,7 +91,7 @@
           <MyButton
             type="button"
             class="btn"
-            @click="$emit('close')"
+            @click="handleClose"
           >
             Отмена
           </MyButton>
@@ -150,6 +150,10 @@ watch(() => formData.value.image, () => {
 const validateForm = (): boolean => {
   showValidation.value = true;
   return !!(formData.value.typeId.trim() && formData.value.image.trim());
+};
+
+const handleClose = () => {
+  emit('close');
 };
 
 const handleSubmit = async () => {

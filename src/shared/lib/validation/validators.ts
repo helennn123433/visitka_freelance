@@ -1,4 +1,4 @@
-export type ValidationRule<T> = (value: T) => string | null;
+export type ValidationRule<T> = (_value: T) => string | null;
 
 export const required = (message = 'Поле обязательно для заполнения'): ValidationRule<string> => {
   return (value: string) => {

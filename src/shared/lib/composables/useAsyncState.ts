@@ -4,7 +4,7 @@ export interface AsyncState<T> {
   data: Ref<T>;
   isLoading: Ref<boolean>;
   error: Ref<string | null>;
-  execute: <R>(fn: () => Promise<R>, errorMessage?: string) => Promise<R>;
+  execute: <R>(_fn: () => Promise<R>, _errorMessage?: string) => Promise<R>;
   clearError: () => void;
   reset: () => void;
 }

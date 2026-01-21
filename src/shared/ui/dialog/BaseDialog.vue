@@ -15,7 +15,9 @@
             class="dialog-header"
           >
             <slot name="header">
-              <h3 class="dialog-title">{{ title }}</h3>
+              <h3 class="dialog-title">
+                {{ title }}
+              </h3>
             </slot>
           </div>
 

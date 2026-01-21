@@ -1,2 +1,2 @@
-export { default as Breadcrumbs } from './Breadcrumbs.vue';
-export type { BreadcrumbItem, BreadcrumbsProps } from './Breadcrumbs.vue';
+export { default as Breadcrumbs } from './BreadcrumbsNav.vue';
+export type { BreadcrumbItem, BreadcrumbsProps } from './BreadcrumbsNav.vue';

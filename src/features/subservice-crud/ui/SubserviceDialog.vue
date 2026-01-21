@@ -1,7 +1,7 @@
 <template>
   <div
     class="dialog-overlay"
-    @click.self="$emit('close')"
+    @click.self="handleClose"
   >
     <div class="dialog">
       <h3>{{ dialogTitle }}</h3>
@@ -108,7 +108,7 @@
         <MyButton
           type="button"
           class="go_back_btn"
-          @click="$emit('close')"
+          @click="handleClose"
         >
           Отмена
         </MyButton>
@@ -185,6 +185,10 @@ const removeTypeField = (index: number) => {
   if (typesData.value.length > 1) {
     typesData.value.splice(index, 1);
   }
+};
+
+const handleClose = () => {
+  emit('close');
 };
 
 const validateForm = (): boolean => {

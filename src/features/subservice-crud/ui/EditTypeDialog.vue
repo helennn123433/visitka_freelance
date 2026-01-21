@@ -1,7 +1,7 @@
 <template>
   <div
     class="dialog-overlay"
-    @click.self="$emit('close')"
+    @click.self="handleClose"
   >
     <div class="dialog">
       <h3>Редактировать тип</h3>

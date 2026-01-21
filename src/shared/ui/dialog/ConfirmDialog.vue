@@ -7,7 +7,9 @@
     @update:model-value="$emit('update:modelValue', $event)"
     @close="$emit('cancel')"
   >
-    <p class="confirm-message">{{ message }}</p>
+    <p class="confirm-message">
+      {{ message }}
+    </p>
 
     <template #footer>
       <MyButton

@@ -53,7 +53,9 @@ const props = withDefaults(defineProps<FormInputProps>(), {
   placeholder: '',
   required: false,
   disabled: false,
-  error: ''
+  error: '',
+  min: undefined,
+  max: undefined
 });
 
 defineEmits<{

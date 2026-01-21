@@ -16,7 +16,7 @@
     >
     <img
       :src="Icons.Telegram"
-      alt="Иконка телеграма"
+      alt="Иконка Telegram"
       class="icon"
       title="Написать в Telegram"
       @click="handleTelegramClick"

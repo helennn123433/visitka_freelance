@@ -3,7 +3,6 @@ import { createTestingPinia } from '@pinia/testing';
 import HomeView from '@/components/services/HomeView.vue';
 import CardComp from '@/components/services/CardComp.vue';
 
-// Моки для стора
 jest.mock('@/store/searchingStore', () => ({
   useSearchingStore: jest.fn(),
 }));
@@ -12,7 +11,6 @@ jest.mock('@/store/authStore', () => ({
   useAuthStore: jest.fn(),
 }));
 
-// Мокируем компоненты
 jest.mock('@/components/services/addDialog.vue', () => ({
   __esModule: true,
   default: {

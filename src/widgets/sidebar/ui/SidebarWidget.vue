@@ -329,7 +329,7 @@ onUnmounted(() => {
   }
 
   .main {
-    margin: 0vw 1.5vw 0 0vw;
+    margin: 0 1.5vw 0 0;
   }
 }
 

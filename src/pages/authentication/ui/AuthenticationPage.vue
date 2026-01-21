@@ -125,7 +125,7 @@ const checkInputAndConfirm = async () => {
       token: token
     });
 
-    router.push('/');
+    await router.push('/');
 
   } catch (error: unknown) {
     console.error('Ошибка авторизации:', error);
@@ -242,7 +242,6 @@ const switchVisibility = () => {
 
 .input.password {
   width: 100%;
-  padding-right: 40px;
   box-sizing: border-box;
   padding: 10px;
   font-size: 16px;

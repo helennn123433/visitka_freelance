@@ -110,12 +110,13 @@ export const useSubserviceStore = defineStore('subserviceStore', () => {
       const serverResponse = await subservicesApi.updateType(subserviceId, typeId, updatedType);
 
       const subserviceIndex = subservices.value.findIndex(s => s.subserviceId === subserviceId);
-      if (subserviceIndex !== -1 && subservices.value[subserviceIndex].types) {
-        const typeIndex = subservices.value[subserviceIndex].types!.findIndex(t => t.id === typeId);
+      const types = subservices.value[subserviceIndex]?.types;
+      if (subserviceIndex !== -1 && types) {
+        const typeIndex = types.findIndex(t => t.id === typeId);
         if (typeIndex !== -1) {
-          subservices.value[subserviceIndex].types![typeIndex] = serverResponse;
+          types[typeIndex] = serverResponse;
         } else {
-          subservices.value[subserviceIndex].types!.push(serverResponse);
+          types.push(serverResponse);
         }
       }
 

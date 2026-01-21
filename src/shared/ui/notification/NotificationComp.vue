@@ -43,11 +43,11 @@ const message = computed(() =>
 );
 
 const textClass = computed(() =>
-  props.errorMessage ? 'error-text' : 'allright-text'
+  props.errorMessage ? 'error-text' : 'alright-text'
 );
 
 const imgClass = computed(() =>
-  props.errorMessage ? 'error-img' : 'allright-img'
+  props.errorMessage ? 'error-img' : 'alright-img'
 );
 
 const handleClose = () => {
@@ -82,7 +82,7 @@ const handleClose = () => {
   font-size: 15px;
 }
 
-.allright-text {
+.alright-text {
   color: #076423;
   font-size: 15px;
 }
@@ -91,7 +91,7 @@ const handleClose = () => {
   background-image: url('@/shared/ui/icons/assets/cross.svg');
 }
 
-.allright-img {
+.alright-img {
   background-image: url('@/shared/ui/icons/assets/tick.svg');
 }
 

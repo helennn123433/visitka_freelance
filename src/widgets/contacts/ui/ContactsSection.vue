@@ -223,7 +223,6 @@ $white: #FFFFFF;
   width: 100%;
   font: inherit;
   padding: 8px;
-  border: 1px solid #ccc;
   border-radius: 8px;
   border: none;
   outline: none;

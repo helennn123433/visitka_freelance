@@ -133,7 +133,6 @@ a {
   width: 100%;
   font: inherit;
   padding: 4px 6px;
-  border: 1px solid #ccc;
   border-radius: 8px;
   border: none;
   outline: none;

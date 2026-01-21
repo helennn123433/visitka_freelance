@@ -222,7 +222,7 @@ const handleExampleUpdated = async () => {
 
 onMounted(async () => {
   if (!subserviceId.value || !serviceId.value) {
-    router.push('/services');
+    await router.push('/services');
     return;
   }
 
@@ -267,8 +267,7 @@ $blue: #0652FF;
   display: flex;
   flex-direction: column;
   background-color: $white;
-  padding: 1.5vw;
-  padding-top: 1vw;
+  padding: 1vw 1.5vw 1.5vw;
   width: 100%;
   box-sizing: border-box;
   overflow: auto;

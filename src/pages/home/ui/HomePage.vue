@@ -31,11 +31,14 @@ import { AboutUsSection } from '@widgets/about-us';
 import { ServicesListWidget } from '@widgets/services-list';
 import { ContactsSection } from '@widgets/contacts';
 
-defineProps({
-  isSidebarOpen: Boolean
-});
+defineProps<{
+  isSidebarOpen?: boolean;
+}>();
 
-const emit = defineEmits(['section-change', 'navigate']);
+const emit = defineEmits<{
+  'section-change': [sectionId: string];
+  'navigate': [sectionId: string];
+}>();
 
 const sectionIds = ['info', 'list', 'email'] as const;
 const wrapper = ref<HTMLElement>();

@@ -1,10 +1,13 @@
 import { apiClient } from '@shared/api';
+import { API_CONFIG } from '@shared/config';
 import type { Subservice, SubserviceType } from '../model/types';
+
+const { endpoints } = API_CONFIG;
 
 export const subservicesApi = {
   async getSubservices(): Promise<Subservice[]> {
     try {
-      const response = await apiClient.get<Subservice[]>('/subservices');
+      const response = await apiClient.get<Subservice[]>(endpoints.subservices);
       return response.data;
     } catch (error) {
       console.error('Ошибка при получении подуслуг:', error);
@@ -14,7 +17,7 @@ export const subservicesApi = {
 
   async createSubservice(subserviceData: Omit<Subservice, 'subserviceId'> & { subserviceId?: string }): Promise<Subservice> {
     try {
-      const response = await apiClient.post<Subservice>('http://localhost:8080/admin/subservices', {
+      const response = await apiClient.post<Subservice>(endpoints.admin.subservices, {
         ...subserviceData,
         types: subserviceData.types || []
       });
@@ -27,7 +30,7 @@ export const subservicesApi = {
 
   async deleteSubservice(id: string): Promise<void> {
     try {
-      await apiClient.delete(`http://localhost:8080/admin/subservices/${id}`);
+      await apiClient.delete(`${endpoints.admin.subservices}/${id}`);
     } catch (error) {
       console.error(`Ошибка при удалении подуслуги ${id}:`, error);
       throw new Error('Не удалось удалить подуслугу');
@@ -37,7 +40,7 @@ export const subservicesApi = {
   async createType(subserviceId: string, typeData: Omit<SubserviceType, 'id'>): Promise<Subservice> {
     try {
       const response = await apiClient.post<Subservice>(
-        `http://localhost:8080/admin/subservices/${subserviceId}/types`,
+        `${endpoints.admin.subservices}/${subserviceId}/types`,
         {
           title: typeData.title,
           image: typeData.image,
@@ -53,10 +56,8 @@ export const subservicesApi = {
 
   async updateType(subserviceId: string, typeId: string, typeData: SubserviceType): Promise<SubserviceType> {
     try {
-      console.log(`Обновление типа ${typeId} в подуслуге ${subserviceId}:`, typeData);
-
       const response = await apiClient.put<SubserviceType>(
-        `http://localhost:8080/admin/subservices/${subserviceId}/types/${typeId}`,
+        `${endpoints.admin.subservices}/${subserviceId}/types/${typeId}`,
         {
           id: typeId,
           title: typeData.title,
@@ -73,7 +74,7 @@ export const subservicesApi = {
 
   async deleteType(subserviceId: string, typeId: string): Promise<void> {
     try {
-      await apiClient.delete(`http://localhost:8080/admin/subservices/${subserviceId}/types/${typeId}`);
+      await apiClient.delete(`${endpoints.admin.subservices}/${subserviceId}/types/${typeId}`);
     } catch (error) {
       console.error(`Ошибка при удалении типа ${typeId} из подуслуги ${subserviceId}:`, error);
       throw new Error('Не удалось удалить тип услуги');

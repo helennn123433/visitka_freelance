@@ -1,70 +1,70 @@
 <template>
-  <div class="dialog">
-    <div class="dialog__card">
-      <div class="dialog__card__title">
-        <h3>Добавить новую услугу</h3>
-      </div>
-      <div class="dialog__card__inputs">
-        <input
-          v-model="form.title"
-          placeholder="название"
-          type="text"
-          class="input"
-        >
-        <input
-          v-model="form.price"
-          placeholder="цена"
-          type="number"
-          class="input"
-          min="1"
-        >
-        <input
-          v-model="form.image"
-          type="text"
-          placeholder="ссылка на картинку"
-          class="input"
-        >
-      </div>
-      <div class="dialog__card__btns">
-        <MyButton
-          class="btn"
-          @click="handleCancel"
-        >
-          Назад
-        </MyButton>
-        <MyButton
-          class="btn"
-          @click="addService"
-        >
-          Добавить
-        </MyButton>
-      </div>
-    </div>
-  </div>
+  <FormDialog
+    v-model="isOpen"
+    title="Добавить новую услугу"
+    submit-text="Добавить"
+    cancel-text="Назад"
+    :loading="isLoading"
+    @submit="handleSubmit"
+    @close="handleClose"
+  >
+    <FormInput
+      v-model="form.title"
+      label="Название"
+      placeholder="Введите название услуги"
+      required
+      :error="errors.title"
+    />
+    <FormInput
+      v-model="form.price"
+      label="Цена"
+      type="number"
+      placeholder="Введите цену"
+      :min="1"
+      required
+      :error="errors.price"
+    />
+    <FormInput
+      v-model="form.image"
+      label="Изображение"
+      placeholder="URL изображения"
+      :error="errors.image"
+    />
+  </FormDialog>
+
   <NotificationComp
     v-if="showNotification"
     :visible="showNotification"
     :error-message="notificationMessage"
-    @close="closeNotification"
+    @close="showNotification = false"
   />
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { useServiceStore } from '@entities/service';
-import { MyButton } from '@shared/ui/button';
+import { FormDialog, FormInput } from '@shared/ui/dialog';
 import { NotificationComp } from '@shared/ui/notification';
+import { required, positiveNumber, isUrl, validateForm as validateFormUtil } from '@shared/lib';
 
 const serviceStore = useServiceStore();
 
-const form = ref({
+const isOpen = ref(true);
+const isLoading = ref(false);
+const showNotification = ref(false);
+const notificationMessage = ref('');
+
+const form = reactive({
   title: '',
   price: 0,
   image: ''
 });
 
-const showNotification = ref(false);
-const notificationMessage = ref('');
+const errors = reactive({
+  title: '',
+  price: '',
+  image: ''
+});
 
 const emit = defineEmits<{
   'toggle-dialog': [];
@@ -73,125 +73,56 @@ const emit = defineEmits<{
   error: [message: string];
 }>();
 
-const closeNotification = () => {
-  showNotification.value = false;
+const validateForm = (): boolean => {
+  const { isValid, errors: validationErrors } = validateFormUtil(
+    { title: form.title, price: form.price, image: form.image },
+    {
+      title: [required('Название услуги обязательно')],
+      price: [positiveNumber('Цена должна быть положительным числом')],
+      image: [isUrl('Некорректный URL изображения')]
+    }
+  );
+
+  errors.title = validationErrors.title || '';
+  errors.price = validationErrors.price || '';
+  errors.image = validationErrors.image || '';
+
+  return isValid;
 };
 
-const showErrorNotification = (message: string) => {
-  notificationMessage.value = message;
-  showNotification.value = true;
-};
+const handleSubmit = async () => {
+  if (!validateForm()) return;
 
-const handleCancel = () => {
-  emit('toggle-dialog');
-};
+  isLoading.value = true;
 
-const addService = async () => {
   try {
-    if (!form.value.title.trim()) {
-      showErrorNotification('Название услуги обязательно');
-      return;
-    }
+    await serviceStore.addService({
+      title: form.title,
+      price: Number(form.price),
+      image: form.image
+    });
 
-    if (form.value.price <= 0) {
-      showErrorNotification('Цена должна быть положительным числом');
-      return;
-    }
-
-    if (form.value.image) {
-      try {
-        new URL(form.value.image);
-      } catch {
-        showErrorNotification('Некорректный URL изображения');
-        return;
-      }
-    }
-
-    const serviceData = {
-      title: form.value.title,
-      price: Number(form.value.price),
-      image: form.value.image
-    };
-
-    await serviceStore.addService(serviceData);
-
-    form.value = { title: '', price: 0, image: '' };
     emit('service-added');
-    emit('toggle-dialog');
     emit('success');
+    handleClose();
   } catch (err: unknown) {
     console.error('Ошибка добавления услуги:', err);
     const errorMsg = err instanceof Error ? err.message : 'Неизвестная ошибка';
-    showErrorNotification(errorMsg);
+    notificationMessage.value = errorMsg;
+    showNotification.value = true;
     emit('error', errorMsg);
+  } finally {
+    isLoading.value = false;
   }
 };
+
+const handleClose = () => {
+  form.title = '';
+  form.price = 0;
+  form.image = '';
+  errors.title = '';
+  errors.price = '';
+  errors.image = '';
+  emit('toggle-dialog');
+};
 </script>
-
-<style lang="scss" scoped>
-.dialog {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1002;
-
-  &__card {
-    display: flex;
-    flex-direction: column;
-    width: 20%;
-    background-color: white;
-    border-radius: 32px;
-    box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
-    padding: 10px;
-
-    &__title {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-    }
-
-    &__inputs {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      width: 100%;
-      height: 100%;
-    }
-
-    &__btns {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      width: 100%;
-      height: 100%;
-      margin-top: 10px;
-    }
-  }
-}
-
-.input {
-  width: 70%;
-  height: 100%;
-  margin: 5px;
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 32px;
-  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
-}
-
-.btn {
-  height: 30%;
-  width: 40%;
-  padding: 5px;
-}
-</style>

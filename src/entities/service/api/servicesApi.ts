@@ -1,10 +1,13 @@
 import { apiClient } from '@shared/api';
+import { API_CONFIG } from '@shared/config';
 import type { Service } from '../model/types';
+
+const { endpoints } = API_CONFIG;
 
 export const servicesApi = {
   async getServices(): Promise<Service[]> {
     try {
-      const response = await apiClient.get<Service[]>('/services');
+      const response = await apiClient.get<Service[]>(endpoints.services);
       return response.data;
     } catch (error) {
       console.error('Ошибка при получении услуг:', error);
@@ -14,7 +17,7 @@ export const servicesApi = {
 
   async createService(serviceData: Omit<Service, 'id'> & { id?: string }): Promise<Service> {
     try {
-      const response = await apiClient.post<Service>('http://localhost:8080/admin/services', serviceData);
+      const response = await apiClient.post<Service>(endpoints.admin.services, serviceData);
       return response.data;
     } catch (error) {
       console.error('Ошибка при создании услуги:', error);
@@ -31,7 +34,10 @@ export const servicesApi = {
         id
       };
 
-      const response = await apiClient.put<Service>(`http://localhost:8080/admin/services/${id}`, updatedService);
+      const response = await apiClient.put<Service>(
+        `${endpoints.admin.services}/${id}`,
+        updatedService
+      );
       return response.data;
     } catch (error) {
       console.error(`Ошибка при обновлении услуги ${id}:`, error);
@@ -57,7 +63,7 @@ export const servicesApi = {
 
   async deleteService(id: string): Promise<void> {
     try {
-      await apiClient.delete(`http://localhost:8080/admin/services/${id}`);
+      await apiClient.delete(`${endpoints.admin.services}/${id}`);
     } catch (error) {
       console.error('Ошибка при удалении услуги:', error);
       throw error;

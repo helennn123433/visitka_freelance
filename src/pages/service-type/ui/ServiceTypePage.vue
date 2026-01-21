@@ -1,28 +1,6 @@
 <template>
   <div class="serviceTypePage">
-    <div class="breadCrumps">
-      <router-link
-        to="/"
-        class="breadCrumps__services"
-      >
-        УСЛУГИ
-      </router-link>
-      <div class="breadCrumps__separator">
-        »
-      </div>
-      <div
-        class="breadCrumps__services"
-        @click="router.back()"
-      >
-        {{ serviceTitle.toUpperCase() }}
-      </div>
-      <div class="breadCrumps__separator">
-        »
-      </div>
-      <div class="breadCrumps__serviceType">
-        {{ subserviceTitle.toUpperCase() }}
-      </div>
-    </div>
+    <Breadcrumbs :items="breadcrumbItems" />
     <div class="header-section">
       <MyHeader class="header">
         <span>{{ subserviceTitle.toUpperCase() }}</span>
@@ -124,6 +102,13 @@
       @confirm="handleDeleteExample"
       @cancel="closeDeleteDialog"
     />
+
+    <NotificationComp
+      :visible="notification.visible"
+      :message="notification.message"
+      :type="notification.type"
+      @close="notification.hide"
+    />
   </div>
 </template>
 
@@ -133,6 +118,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { MyHeader } from '@shared/ui/header';
 import { MyButton } from '@shared/ui/button';
 import { Icons } from '@shared/ui/icons';
+import { NotificationComp } from '@shared/ui/notification';
+import { Breadcrumbs, type BreadcrumbItem } from '@shared/ui/breadcrumbs';
+import { useNotification } from '@shared/lib';
 import { useServiceStore } from '@entities/service';
 import { useSubserviceStore } from '@entities/subservice';
 import { useExampleStore } from '@entities/example';
@@ -146,6 +134,7 @@ const serviceStore = useServiceStore();
 const subserviceStore = useSubserviceStore();
 const exampleStore = useExampleStore();
 const authStore = useAuthStore();
+const notification = useNotification();
 
 const serviceId = ref<string>(route.params.serviceId as string);
 const typeId = ref<string>((route.params.typeId as string));
@@ -170,6 +159,12 @@ const subservice = computed(() => {
   return subserviceStore.getSubserviceById(subserviceId.value);
 });
 
+const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
+  { label: 'Услуги', to: '/' },
+  { label: serviceTitle.value, onClick: () => router.back() },
+  { label: subserviceTitle.value }
+]);
+
 const loadExamples = async () => {
   try {
     examples.value = await exampleStore.fetchExamplesByTypeId(typeId.value);
@@ -179,7 +174,7 @@ const loadExamples = async () => {
 };
 
 const handleExampleCreated = async () => {
-  console.log('Пример добавлен, обновляем список...');
+  notification.showSuccess('Пример успешно добавлен');
   await loadExamples();
 };
 
@@ -200,11 +195,12 @@ const closeDeleteDialog = () => {
 const handleDeleteExample = async (data: { itemId: string; typeId: string }) => {
   try {
     await exampleStore.deleteExample(data.typeId, data.itemId);
+    notification.showSuccess('Пример успешно удален');
     await loadExamples();
     closeDeleteDialog();
   } catch (error) {
     console.error('Ошибка при удалении примера:', error);
-    alert('Не удалось удалить пример');
+    notification.showError('Не удалось удалить пример');
   }
 };
 
@@ -219,6 +215,7 @@ const closeEditDialog = () => {
 };
 
 const handleExampleUpdated = async () => {
+  notification.showSuccess('Пример успешно обновлен');
   await loadExamples();
   closeEditDialog();
 };
@@ -265,7 +262,6 @@ onMounted(async () => {
 <style lang="scss" scoped>
 $white: #FFFFFF;
 $blue: #0652FF;
-$grey: #898989;
 
 .serviceTypePage {
   display: flex;
@@ -375,29 +371,6 @@ $grey: #898989;
   object-position: center;
 }
 
-.breadCrumps {
-  display: flex;
-  padding-bottom: 16px;
-  font-size: 16px;
-  font-weight: 500;
-  flex-wrap: wrap;
-
-  &__services {
-    color: $grey;
-    cursor: pointer;
-    text-decoration: none;
-  }
-
-  &__separator {
-    color: $grey;
-    padding: 0 10px;
-  }
-
-  &__serviceType {
-    color: $blue;
-  }
-}
-
 .container {
   display: flex;
   justify-content: end;
@@ -419,9 +392,4 @@ $grey: #898989;
   }
 }
 
-@media (max-width: 450px) {
-  .breadCrumps {
-    font-size: 14px;
-  }
-}
 </style>

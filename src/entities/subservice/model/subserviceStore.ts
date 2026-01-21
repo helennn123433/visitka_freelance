@@ -2,26 +2,18 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import type { Subservice, SubserviceType } from './types';
 import { subservicesApi } from '../api/subservicesApi';
+import { useAsyncState } from '@shared/lib';
 
 export const useSubserviceStore = defineStore('subserviceStore', () => {
   const subservices = ref<Subservice[]>([]);
-  const isLoading = ref<boolean>(false);
-  const error = ref<string | null>(null);
+  const { isLoading, error, execute, clearError } = useAsyncState<Subservice[]>([]);
 
   const fetchSubservices = async () => {
-    try {
-      error.value = null;
-      isLoading.value = true;
+    await execute(async () => {
       const data = await subservicesApi.getSubservices();
       subservices.value = data;
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Не удалось загрузить подуслуги';
-      console.error('Ошибка загрузки подуслуг:', err);
-      subservices.value = [];
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
+      return data;
+    }, 'Не удалось загрузить подуслуги');
   };
 
   const getSubservicesByServiceId = (serviceId: string): Subservice[] => {
@@ -49,44 +41,22 @@ export const useSubserviceStore = defineStore('subserviceStore', () => {
   };
 
   const addSubservice = async (subserviceData: Omit<Subservice, 'subserviceId'> & { subserviceId?: string }): Promise<Subservice> => {
-    try {
-      error.value = null;
-      isLoading.value = true;
-
+    return execute(async () => {
       const newSubservice = await subservicesApi.createSubservice(subserviceData);
       subservices.value.push(newSubservice);
-
       return newSubservice;
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Не удалось создать подуслугу';
-      console.error('Store: Ошибка при создании подуслуги:', err);
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
+    }, 'Не удалось создать подуслугу');
   };
 
   const deleteSubservice = async (subserviceId: string): Promise<void> => {
-    try {
-      error.value = null;
-      isLoading.value = true;
-
+    return execute(async () => {
       await subservicesApi.deleteSubservice(subserviceId);
       subservices.value = subservices.value.filter(s => s.subserviceId !== subserviceId);
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Не удалось удалить подуслугу';
-      console.error('Ошибка при удалении подуслуги:', err);
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
+    }, 'Не удалось удалить подуслугу');
   };
 
   const addSubserviceType = async (subserviceId: string, typeData: Omit<SubserviceType, 'id'> & { id?: string }): Promise<SubserviceType> => {
-    try {
-      error.value = null;
-      isLoading.value = true;
-
+    return execute(async () => {
       const fullData = {
         title: typeData.title,
         image: typeData.image,
@@ -96,14 +66,10 @@ export const useSubserviceStore = defineStore('subserviceStore', () => {
       const updatedSubservice = await subservicesApi.createType(subserviceId, fullData);
 
       let createdType: SubserviceType;
-
       if (updatedSubservice.types && updatedSubservice.types.length > 0) {
         createdType = updatedSubservice.types[updatedSubservice.types.length - 1];
       } else {
-        createdType = {
-          id: 'unknown',
-          ...typeData
-        };
+        createdType = { id: 'unknown', ...typeData };
       }
 
       const subserviceIndex = subservices.value.findIndex(s => s.subserviceId === subserviceId);
@@ -114,20 +80,11 @@ export const useSubserviceStore = defineStore('subserviceStore', () => {
       }
 
       return createdType;
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Не удалось создать тип подуслуги';
-      console.error('Store: Ошибка при создании типа подуслуги:', err);
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
+    }, 'Не удалось создать тип подуслуги');
   };
 
   const updateSubserviceType = async (typeId: string, updates: Partial<SubserviceType>): Promise<SubserviceType> => {
-    try {
-      error.value = null;
-      isLoading.value = true;
-
+    return execute(async () => {
       const subserviceId = getSubserviceIdByTypeId(typeId);
       if (!subserviceId) {
         throw new Error('Не найдена родительская подуслуга');
@@ -163,33 +120,14 @@ export const useSubserviceStore = defineStore('subserviceStore', () => {
       }
 
       return serverResponse;
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Не удалось обновить тип подуслуги';
-      console.error('Store: Ошибка при обновлении типа подуслуги:', err);
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
+    }, 'Не удалось обновить тип подуслуги');
   };
 
   const deleteSubserviceType = async (subserviceId: string, typeId: string) => {
-    try {
-      error.value = null;
-      isLoading.value = true;
-
+    return execute(async () => {
       await subservicesApi.deleteType(subserviceId, typeId);
       await fetchSubservices();
-    } catch (err) {
-      error.value = err instanceof Error ? err.message : 'Не удалось удалить тип подуслуги';
-      console.error('Ошибка при удалении типа подуслуги:', err);
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
-  };
-
-  const clearError = () => {
-    error.value = null;
+    }, 'Не удалось удалить тип подуслуги');
   };
 
   return {

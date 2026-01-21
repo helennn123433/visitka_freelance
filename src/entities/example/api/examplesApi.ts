@@ -1,10 +1,13 @@
 import { apiClient } from '@shared/api';
+import { API_CONFIG } from '@shared/config';
 import type { Example, ServiceTypeProject, AddExampleRequest } from '../model/types';
+
+const { endpoints } = API_CONFIG;
 
 export const examplesApi = {
   async getServiceTypeProjects(): Promise<ServiceTypeProject[]> {
     try {
-      const response = await apiClient.get<ServiceTypeProject[]>('/services-types-projects');
+      const response = await apiClient.get<ServiceTypeProject[]>(endpoints.serviceTypeProjects);
       return response.data;
     } catch (error) {
       console.error('Ошибка при получении проектов:', error);
@@ -33,7 +36,7 @@ export const examplesApi = {
   async addExample(exampleData: AddExampleRequest): Promise<Example> {
     try {
       const response = await apiClient.post<Example>(
-        'http://localhost:8080/admin/type-projects',
+        endpoints.admin.typeProjects,
         {
           typeId: exampleData.typeId,
           image: exampleData.image
@@ -49,7 +52,7 @@ export const examplesApi = {
   async updateExample(exampleId: string, updateData: { typeId: string; image: string }): Promise<void> {
     try {
       await apiClient.put(
-        `http://localhost:8080/admin/type-projects/${exampleId}`,
+        `${endpoints.admin.typeProjects}/${exampleId}`,
         {
           typeId: updateData.typeId,
           image: updateData.image
@@ -63,9 +66,7 @@ export const examplesApi = {
 
   async deleteExample(exampleId: string): Promise<void> {
     try {
-      await apiClient.delete(
-        `http://localhost:8080/admin/type-projects/${exampleId}`
-      );
+      await apiClient.delete(`${endpoints.admin.typeProjects}/${exampleId}`);
     } catch (error) {
       console.error('Ошибка при удалении примера:', error);
       throw new Error('Не удалось удалить пример работы');

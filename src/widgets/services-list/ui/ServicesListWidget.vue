@@ -18,8 +18,8 @@
       v-if="isDialogOpen"
       @toggle-dialog="toggleDialog"
       @service-added="handleServiceUpdate"
-      @success="showSuccess"
-      @error="showError"
+      @success="() => notification.showSuccess('Услуга успешно добавлена')"
+      @error="notification.showError"
     />
     <EditServiceDialog
       v-if="editingItem"
@@ -40,21 +40,22 @@
         :show-price="true"
         @updated="handleServiceUpdate"
         @edit="openEditModal"
-        @success="showSuccess"
-        @error="showError"
+        @success="() => notification.showSuccess('Операция выполнена')"
+        @error="notification.showError"
         @click="goToService(service)"
       />
     </div>
     <NotificationComp
-      :visible="notificationVisible"
-      :error-message="notificationError"
-      @close="notificationVisible = false"
+      :visible="notification.visible"
+      :message="notification.message"
+      :type="notification.type"
+      @close="notification.hide"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick, onUnmounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@features/auth';
 import { useSearchStore } from '@features/search';
@@ -63,7 +64,7 @@ import type { Service } from '@entities/service';
 import { AddServiceDialog, EditServiceDialog } from '@features/service-crud';
 import { MyButton } from '@shared/ui/button';
 import { NotificationComp } from '@shared/ui/notification';
-import { emitter } from '@shared/lib/eventBus';
+import { emitter, useNotification } from '@shared/lib';
 
 const isDialogOpen = ref(false);
 const editingItem = ref<Service | null>(null);
@@ -72,29 +73,7 @@ const router = useRouter();
 const searchStore = useSearchStore();
 const serviceStore = useServiceStore();
 const authStore = useAuthStore();
-const notificationVisible = ref(false);
-const notificationError = ref<string | null>(null);
-let notificationTimeout: number | null = null;
-
-const showSuccess = () => {
-  notificationError.value = null;
-  notificationVisible.value = true;
-
-  if (notificationTimeout) clearTimeout(notificationTimeout);
-  notificationTimeout = setTimeout(() => {
-    notificationVisible.value = false;
-  }, 2000);
-};
-
-const showError = (message: string) => {
-  notificationError.value = message;
-  notificationVisible.value = true;
-
-  if (notificationTimeout) clearTimeout(notificationTimeout);
-  notificationTimeout = setTimeout(() => {
-    notificationVisible.value = false;
-  }, 5000);
-};
+const notification = useNotification();
 
 const toggleDialog = () => {
   isDialogOpen.value = !isDialogOpen.value;
@@ -116,12 +95,12 @@ const handleSaveService = async (updatedData: Service) => {
       image: updatedData.image,
     });
 
-    showSuccess();
+    notification.showSuccess('Услуга успешно обновлена');
     closeEditModal();
     await serviceStore.fetchServices();
   } catch (error) {
     console.error('Ошибка обновления услуги:', error);
-    showError('Не удалось обновить услугу');
+    notification.showError('Не удалось обновить услугу');
   }
 };
 
@@ -141,16 +120,10 @@ onMounted(async () => {
   try {
     await serviceStore.fetchServices();
   } catch (error) {
-    showError('Не удалось загрузить услуги');
+    notification.showError('Не удалось загрузить услуги');
   }
   await nextTick();
   emitter.emit('section-loaded');
-});
-
-onUnmounted(() => {
-  if (notificationTimeout) {
-    clearTimeout(notificationTimeout);
-  }
 });
 </script>
 

@@ -1,12 +1,9 @@
 import axios, { AxiosInstance } from 'axios';
-
-const API_BASE_URL = process.env.NODE_ENV === 'development'
-  ? 'http://localhost:8080/api'
-  : '/api';
+import { API_CONFIG } from '@shared/config';
 
 const apiClient: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 10000,
+  baseURL: API_CONFIG.baseUrl,
+  timeout: API_CONFIG.timeout,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -40,4 +37,5 @@ apiClient.interceptors.response.use(
   }
 );
 
+export { apiClient };
 export default apiClient;

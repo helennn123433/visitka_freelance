@@ -104,6 +104,9 @@ import { MyButton } from '@shared/ui/button';
 import StatsCard from './StatsCard.vue';
 import { Icons } from '@shared/ui/icons';
 import { apiClient } from '@shared/api';
+import { API_CONFIG } from '@shared/config';
+
+const { endpoints } = API_CONFIG;
 
 interface AboutUsData {
   description: string[];
@@ -125,7 +128,7 @@ watch(() => authStore.isAuthenticated, (isAuthenticated) => {
 
 const loadAboutUsData = async () => {
   try {
-    const response = await apiClient.get('/about-us');
+    const response = await apiClient.get(endpoints.aboutUs);
     const data = response.data;
 
     if (data && data.description && data.stats) {
@@ -166,7 +169,7 @@ const saveEdit = async () => {
   try {
     const descriptionArray = [...localDescription.value];
 
-    await apiClient.put('http://localhost:8080/admin/about-us/description',
+    await apiClient.put(`${endpoints.admin.aboutUs}/description`,
       descriptionArray
     );
 
@@ -191,7 +194,7 @@ const updateStatus = async (updatedStatus: Stats) => {
       aboutUsData.value.stats[index] = { ...updatedStatus };
 
       try {
-        await apiClient.put(`http://localhost:8080/admin/about-us/stats/${updatedStatus.id}`, {
+        await apiClient.put(`${endpoints.admin.aboutUs}/stats/${updatedStatus.id}`, {
           id: updatedStatus.id,
           upper: updatedStatus.upper,
           lower: updatedStatus.lower

@@ -1,19 +1,6 @@
 <template>
   <div class="servicePage">
-    <div class="breadCrumps">
-      <router-link
-        to="/"
-        class="breadCrumps__services"
-      >
-        УСЛУГИ
-      </router-link>
-      <div class="breadCrumps__separator">
-        »
-      </div>
-      <div class="breadCrumps__serviceType">
-        {{ serviceTitle.toUpperCase() }}
-      </div>
-    </div>
+    <Breadcrumbs :items="breadcrumbItems" />
     <div class="header-section">
       <MyHeader class="header">
         <span>{{ serviceTitle.toUpperCase() }}</span>
@@ -101,10 +88,10 @@
     />
 
     <NotificationComp
-      :visible="notificationVisible"
-      :message="notificationMessage"
-      :type="notificationType"
-      @close="notificationVisible = false"
+      :visible="notification.visible"
+      :message="notification.message"
+      :type="notification.type"
+      @close="notification.hide"
     />
   </div>
 </template>
@@ -121,6 +108,8 @@ import { SubserviceDialog, EditTypeDialog, DeleteConfirmationDialog } from '@fea
 import { MyHeader } from '@shared/ui/header';
 import { MyButton } from '@shared/ui/button';
 import { NotificationComp } from '@shared/ui/notification';
+import { Breadcrumbs, type BreadcrumbItem } from '@shared/ui/breadcrumbs';
+import { useNotification } from '@shared/lib';
 
 const route = useRoute();
 const router = useRouter();
@@ -128,16 +117,13 @@ const searchStore = useSearchStore();
 const serviceStore = useServiceStore();
 const subserviceStore = useSubserviceStore();
 const authStore = useAuthStore();
+const notification = useNotification();
 
 const serviceId = ref<string>(route.params.serviceId as string);
 const serviceTitle = ref<string>(route.query.title as string || '');
 
 const editingType = ref<SubserviceType | null>(null);
 const showDeleteSubserviceDialog = ref(false);
-
-const notificationVisible = ref(false);
-const notificationMessage = ref('');
-const notificationType = ref<'success' | 'error'>('success');
 
 const types = computed(() => {
   return subserviceStore.getTypesByServiceId(serviceId.value);
@@ -154,6 +140,11 @@ const filteredTypes = computed(() => {
   );
 });
 
+const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
+  { label: 'Услуги', to: '/' },
+  { label: serviceTitle.value }
+]);
+
 const openEditDialog = (type: SubserviceType) => {
   editingType.value = { ...type };
 };
@@ -169,7 +160,7 @@ const currentSubservice = computed(() => {
 
 const openDeleteSubserviceDialog = () => {
   if (!currentSubservice.value) {
-    showNotification('Подуслуга не найдена', 'error');
+    notification.showError('Подуслуга не найдена');
     return;
   }
 
@@ -189,12 +180,12 @@ const handleDeleteSubserviceConfirm = async (data: { itemId: string }) => {
     }
 
     await subserviceStore.deleteSubservice(itemId);
-    showNotification('Подуслуга успешно удалена', 'success');
+    notification.showSuccess('Подуслуга успешно удалена');
 
     await subserviceStore.fetchSubservices();
   } catch (error) {
     console.error('Ошибка удаления подуслуги:', error);
-    showNotification(error instanceof Error ? error.message : 'Ошибка удаления подуслуги', 'error');
+    notification.showError(error instanceof Error ? error.message : 'Ошибка удаления подуслуги');
   } finally {
     closeDeleteSubserviceDialog();
   }
@@ -211,7 +202,7 @@ const getSubserviceIdForType = (typeId: string): string => {
 };
 
 const handleTypeUpdated = () => {
-  showNotification('Тип успешно обновлен', 'success');
+  notification.showSuccess('Тип успешно обновлен');
   closeEditDialog();
 };
 
@@ -228,16 +219,6 @@ const goToTypeExamples = (type: SubserviceType) => {
       subserviceTitle: type.title
     }
   });
-};
-
-const showNotification = (message: string, type: 'success' | 'error') => {
-  notificationMessage.value = message;
-  notificationType.value = type;
-  notificationVisible.value = true;
-
-  setTimeout(() => {
-    notificationVisible.value = false;
-  }, type === 'error' ? 5000 : 2000);
 };
 
 const hasSubservices = computed(() => {
@@ -268,14 +249,14 @@ const handleAddButtonClick = async () => {
     try {
       await serviceStore.fetchServices();
     } catch (error) {
-      showNotification('Ошибка загрузки услуг', 'error');
+      notification.showError('Ошибка загрузки услуг');
       return;
     }
   }
 
   const service = serviceStore.getServiceById(serviceId.value);
   if (!service) {
-    showNotification('Сервис не найден', 'error');
+    notification.showError('Сервис не найден');
     return;
   }
 
@@ -283,7 +264,7 @@ const handleAddButtonClick = async () => {
     try {
       await subserviceStore.fetchSubservices();
     } catch (error) {
-      showNotification('Ошибка загрузки подуслуг', 'error');
+      notification.showError('Ошибка загрузки подуслуг');
       return;
     }
   }
@@ -296,13 +277,13 @@ const closeDialog = () => {
 };
 
 const handleSubserviceCreated = () => {
-  showNotification('Подуслуга успешно создана', 'success');
+  notification.showSuccess('Подуслуга успешно создана');
   subserviceStore.fetchSubservices();
   closeDialog();
 };
 
 const handleTypesAdded = () => {
-  showNotification('Типы успешно добавлены', 'success');
+  notification.showSuccess('Типы успешно добавлены');
   subserviceStore.fetchSubservices();
   closeDialog();
 };
@@ -323,7 +304,7 @@ onMounted(async () => {
     }
   } catch (error) {
     console.error('Ошибка загрузки данных:', error);
-    showNotification('Ошибка загрузки данных', 'error');
+    notification.showError('Ошибка загрузки данных');
   }
 });
 
@@ -338,7 +319,6 @@ watch(() => route.params.serviceId, (newId) => {
 <style scoped lang="scss">
 $white: #FFFFFF;
 $blue: #0652FF;
-$grey: #898989;
 
 .card {
   width: 100%;
@@ -387,29 +367,6 @@ $grey: #898989;
   align-content: space-between;
 }
 
-.breadCrumps {
-  display: flex;
-  padding-bottom: 16px;
-  font-size: 16px;
-  font-weight: 500;
-  flex-wrap: wrap;
-
-  &__services {
-    color: $grey;
-    cursor: pointer;
-    text-decoration: none;
-  }
-
-  &__separator {
-    color: $grey;
-    padding: 0 10px;
-  }
-
-  &__serviceType {
-    color: $blue;
-  }
-}
-
 .btn {
   width: 150px;
   height: 40px;
@@ -447,10 +404,6 @@ $grey: #898989;
     flex-direction: column;
     gap: 3vw;
     margin-bottom: 3vw;
-  }
-
-  .breadCrumps {
-    font-size: 14px;
   }
 }
 </style>

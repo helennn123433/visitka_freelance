@@ -167,7 +167,6 @@ $white: #FFFFFF;
   margin-bottom: 1.5vw;
   box-sizing: border-box;
   scroll-margin-top: 5vh;
-  min-height: 100vh;
 }
 
 .section#info,
@@ -176,7 +175,6 @@ $white: #FFFFFF;
   flex-direction: column;
   padding: 1.5vw;
   box-sizing: border-box;
-  min-height: auto;
   background: white;
 }
 
@@ -187,7 +185,7 @@ $white: #FFFFFF;
 }
 
 .section#list {
-  min-height: 100vh;
+  min-height: auto;
   height: auto;
   padding: 20px 0;
 }

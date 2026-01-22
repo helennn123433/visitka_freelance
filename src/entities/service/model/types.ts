@@ -12,5 +12,3 @@ export interface ServicesResponse {
 export interface UpdateFieldRequest {
   value: string;
 }
-
-export type { Service as Image };

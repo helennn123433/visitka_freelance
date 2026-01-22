@@ -29,6 +29,7 @@ export const useAuthStore = defineStore('authStore', () => {
     user.value = credentials;
     if (credentials.token) {
       token.value = credentials.token;
+      // TODO: прятать токен в другом месте
       localStorage.setItem('auth_token', credentials.token);
       localStorage.setItem('auth_user', JSON.stringify(credentials));
     }

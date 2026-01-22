@@ -1,39 +1,28 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios';
 import { API_CONFIG } from '@shared/config';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 const ADMIN_BASE_URL = isDevelopment ? 'http://localhost:8080' : '';
 
-const apiClient: AxiosInstance = axios.create({
-  baseURL: API_CONFIG.baseUrl,
-  timeout: API_CONFIG.timeout,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: false
-});
+const createApiClient = (config: CreateAxiosDefaults): AxiosInstance => {
+  const client = axios.create({
+    timeout: API_CONFIG.timeout,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    withCredentials: false,
+    ...config,
+  });
 
-const adminClient: AxiosInstance = axios.create({
-  baseURL: ADMIN_BASE_URL,
-  timeout: API_CONFIG.timeout,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: false
-});
-
-const setupInterceptors = (client: AxiosInstance) => {
   client.interceptors.request.use(
-    (config) => {
+    (requestConfig) => {
       const token = localStorage.getItem('auth_token');
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        requestConfig.headers.Authorization = `Bearer ${token}`;
       }
-      return config;
+      return requestConfig;
     },
-    (error) => {
-      return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
   );
 
   client.interceptors.response.use(
@@ -49,10 +38,12 @@ const setupInterceptors = (client: AxiosInstance) => {
       return Promise.reject(error);
     }
   );
+
+  return client;
 };
 
-setupInterceptors(apiClient);
-setupInterceptors(adminClient);
+const apiClient = createApiClient({ baseURL: API_CONFIG.baseUrl });
+const adminClient = createApiClient({ baseURL: ADMIN_BASE_URL });
 
 export { apiClient, adminClient };
 export default apiClient;

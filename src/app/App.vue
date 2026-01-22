@@ -24,7 +24,7 @@
       class="all__content"
     >
       <section
-        id="heder"
+        id="header"
         class="section"
       >
         <header
@@ -59,16 +59,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { SidebarWidget } from '@widgets/sidebar';
 import { HeaderWidget } from '@widgets/header';
+import { useBreakpoints } from '@shared/lib';
 
 const homePage = ref();
 const route = useRoute();
 
 const isOpen = ref(false);
-const isMobile = ref(window.innerWidth < 769);
+const { isMobile } = useBreakpoints();
 const activeSection = ref('info');
 
 const shouldShowCommonComponents = computed(() => {
@@ -87,24 +88,15 @@ const closeSidebar = () => {
   isOpen.value = false;
 };
 
-const handleResize = () => {
-  isMobile.value = window.innerWidth < 769;
-  if (!isMobile.value) {
-    isOpen.value = false;
-  }
-};
-
 const scrollToSection = (id: string) => {
   activeSection.value = id;
   homePage.value?.scrollToSection(id);
 };
 
-onMounted(() => {
-  window.addEventListener('resize', handleResize);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
+watch(isMobile, (newIsMobile) => {
+  if (!newIsMobile) {
+    isOpen.value = false;
+  }
 });
 
 defineExpose({
@@ -130,7 +122,7 @@ defineExpose({
   scroll-margin-top: 5vh;
 }
 
-.section#heder {
+.section#header {
   display: flex;
   flex-direction: column;
   padding: 1.3vw;

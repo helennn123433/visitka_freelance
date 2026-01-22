@@ -1,6 +1,7 @@
 export { emitter } from './eventBus';
 export { useAsyncState, type AsyncState } from './composables';
 export { useNotification, type NotificationState, type UseNotificationOptions } from './composables';
+export { useBreakpoints, type UseBreakpointsReturn } from './composables';
 export {
   required,
   minLength,

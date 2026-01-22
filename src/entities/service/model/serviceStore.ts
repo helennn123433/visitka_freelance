@@ -1,8 +1,8 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
-import type { Service } from './types';
-import { servicesApi } from '../api/servicesApi';
-import { useAsyncState } from '@shared/lib';
+import {defineStore} from 'pinia';
+import {ref} from 'vue';
+import type {Service} from './types';
+import {servicesApi} from '../api/servicesApi';
+import {useAsyncState} from '@shared/lib';
 
 export const useServiceStore = defineStore('serviceStore', () => {
   const services = ref<Service[]>([]);
@@ -30,11 +30,15 @@ export const useServiceStore = defineStore('serviceStore', () => {
 
   const updateService = async (id: string, updates: Partial<Service>) => {
     return execute(async () => {
-      await servicesApi.updateService(id, updates);
       const index = services.value.findIndex(s => s.id === id);
-      if (index !== -1) {
-        services.value[index] = { ...services.value[index], ...updates };
+      if (index === -1) {
+        throw new Error(`Услуга с ID ${id} не найдена`);
       }
+
+      const currentService = services.value[index];
+      const updatedService = { ...currentService, ...updates, id };
+
+      services.value[index] = await servicesApi.updateService(id, updatedService);
     }, 'Ошибка при обновлении услуги');
   };
 

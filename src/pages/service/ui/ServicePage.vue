@@ -38,7 +38,7 @@
           <ServiceCard
             v-for="type in filteredTypes"
             :key="type.id"
-            :image="{
+            :service="{
               id: type.id,
               title: type.title,
               image: type.image,
@@ -88,9 +88,9 @@
     />
 
     <NotificationComp
-      :visible="notification.visible"
-      :message="notification.message"
-      :type="notification.type"
+      :visible="notification.state.visible"
+      :message="notification.state.message"
+      :type="notification.state.type"
       @close="notification.hide"
     />
   </div>

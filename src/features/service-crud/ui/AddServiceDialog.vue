@@ -31,28 +31,18 @@
       :error="errors.image"
     />
   </FormDialog>
-
-  <NotificationComp
-    v-if="showNotification"
-    :visible="showNotification"
-    :error-message="notificationMessage"
-    @close="showNotification = false"
-  />
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { useServiceStore } from '@entities/service';
 import { FormDialog, FormInput } from '@shared/ui/dialog';
-import { NotificationComp } from '@shared/ui/notification';
 import { required, positiveNumber, isUrl, validateForm as validateFormUtil } from '@shared/lib';
 
 const serviceStore = useServiceStore();
 
 const isOpen = ref(true);
 const isLoading = ref(false);
-const showNotification = ref(false);
-const notificationMessage = ref('');
 
 const form = reactive({
   title: '',
@@ -108,8 +98,6 @@ const handleSubmit = async () => {
   } catch (err: unknown) {
     console.error('Ошибка добавления услуги:', err);
     const errorMsg = err instanceof Error ? err.message : 'Неизвестная ошибка';
-    notificationMessage.value = errorMsg;
-    showNotification.value = true;
     emit('error', errorMsg);
   } finally {
     isLoading.value = false;

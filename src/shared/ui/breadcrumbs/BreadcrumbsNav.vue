@@ -27,16 +27,7 @@
 </template>
 
 <script setup lang="ts">
-export interface BreadcrumbItem {
-  label: string;
-  to?: string;
-  onClick?: () => void;
-}
-
-export interface BreadcrumbsProps {
-  items: BreadcrumbItem[];
-  separator?: string;
-}
+import type { BreadcrumbsProps } from '@shared/types';
 
 withDefaults(defineProps<BreadcrumbsProps>(), {
   separator: '»'

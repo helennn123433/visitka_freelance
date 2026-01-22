@@ -39,17 +39,7 @@
 <script setup lang="ts">
 import BaseDialog from './BaseDialog.vue';
 import { MyButton } from '@shared/ui/button';
-
-export interface FormDialogProps {
-  modelValue: boolean;
-  title: string;
-  size?: 'small' | 'medium' | 'large';
-  submitText?: string;
-  cancelText?: string;
-  loadingText?: string;
-  loading?: boolean;
-  closeOnOverlay?: boolean;
-}
+import type { FormDialogProps } from '@shared/types';
 
 withDefaults(defineProps<FormDialogProps>(), {
   size: 'medium',

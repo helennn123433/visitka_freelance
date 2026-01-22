@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHashHistory, RouteRecordRaw, RouteLocationNormalized } from 'vue-router';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/services/:serviceId/subservices/:subserviceId/types/:typeId',
     name: 'subservice-examples',
     component: () => import('@pages/service-type/ui/ServiceTypePage.vue'),
-    props: (route) => ({
+    props: (route: RouteLocationNormalized) => ({
       serviceTitle: route.query.serviceTitle,
       subserviceTitle: route.query.subserviceTitle
     }),

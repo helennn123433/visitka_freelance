@@ -63,7 +63,7 @@ import type { Contact } from '@entities/contact';
 import ContactCard from './ContactCard.vue';
 import { NotificationComp } from '@shared/ui/notification';
 import { Icons } from '@shared/ui/icons';
-import { apiClient } from '@shared/api';
+import { apiClient, adminClient } from '@shared/api';
 import { API_CONFIG } from '@shared/config';
 
 const { endpoints } = API_CONFIG;
@@ -78,8 +78,9 @@ const editableDescription = ref('');
 const contacts = ref<Contact[]>([]);
 
 watch(() => authStore.isAuthenticated, (isAuthenticated) => {
-  if (!isAuthenticated) {
-    saveEdit();
+  if (!isAuthenticated && isEditing.value) {
+    isEditing.value = false;
+    editableDescription.value = description.value;
   }
 });
 
@@ -126,7 +127,7 @@ const updateContact = async (updatedContact: Contact) => {
     contacts.value[index] = { ...updatedContact };
 
     try {
-      await apiClient.put(`${endpoints.admin.contacts}/${updatedContact.id}`, {
+      await adminClient.put(`${endpoints.admin.contacts}/${updatedContact.id}`, {
         id: updatedContact.id,
         icon: updatedContact.icon,
         title: updatedContact.title,
@@ -150,7 +151,7 @@ const updateDescription = async () => {
       return;
     }
 
-    await apiClient.put(`${endpoints.admin.contacts}/description`, newDescription, {
+    await adminClient.put(`${endpoints.admin.contacts}/description`, newDescription, {
       headers: {
         'Content-Type': 'application/json'
       }

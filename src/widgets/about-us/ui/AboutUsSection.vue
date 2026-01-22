@@ -103,7 +103,7 @@ import type { Stats } from '@entities/stats';
 import { MyButton } from '@shared/ui/button';
 import StatsCard from './StatsCard.vue';
 import { Icons } from '@shared/ui/icons';
-import { apiClient } from '@shared/api';
+import { apiClient, adminClient } from '@shared/api';
 import { API_CONFIG } from '@shared/config';
 
 const { endpoints } = API_CONFIG;
@@ -121,8 +121,11 @@ const localDescription = ref<string[]>([]);
 const isLoading = ref(true);
 
 watch(() => authStore.isAuthenticated, (isAuthenticated) => {
-  if (!isAuthenticated) {
-    saveEdit();
+  if (!isAuthenticated && isEditing.value) {
+    isEditing.value = false;
+    if (aboutUsData.value) {
+      localDescription.value = [...aboutUsData.value.description];
+    }
   }
 });
 
@@ -169,7 +172,7 @@ const saveEdit = async () => {
   try {
     const descriptionArray = [...localDescription.value];
 
-    await apiClient.put(`${endpoints.admin.aboutUs}/description`,
+    await adminClient.put(`${endpoints.admin.aboutUs}/description`,
       descriptionArray
     );
 
@@ -194,7 +197,7 @@ const updateStatus = async (updatedStatus: Stats) => {
       aboutUsData.value.stats[index] = { ...updatedStatus };
 
       try {
-        await apiClient.put(`${endpoints.admin.aboutUs}/stats/${updatedStatus.id}`, {
+        await adminClient.put(`${endpoints.admin.aboutUs}/stats/${updatedStatus.id}`, {
           id: updatedStatus.id,
           upper: updatedStatus.upper,
           lower: updatedStatus.lower

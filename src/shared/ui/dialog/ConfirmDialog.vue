@@ -31,15 +31,7 @@
 <script setup lang="ts">
 import BaseDialog from './BaseDialog.vue';
 import { MyButton } from '@shared/ui/button';
-
-export interface ConfirmDialogProps {
-  modelValue: boolean;
-  title?: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-  variant?: 'default' | 'danger';
-}
+import type { ConfirmDialogProps } from '@shared/types';
 
 withDefaults(defineProps<ConfirmDialogProps>(), {
   title: 'Подтверждение',

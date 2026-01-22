@@ -2,7 +2,8 @@
   <div class="auth-model">
     <NotificationComp
       :visible="showNotification"
-      :error-message="notificationMessage"
+      :message="notificationMessage"
+      type="error"
       @close="showNotification = false"
     />
     <div class="auth-model__card">

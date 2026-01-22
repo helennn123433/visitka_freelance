@@ -1,4 +1,4 @@
-import { apiClient } from '@shared/api';
+import { apiClient, adminClient } from '@shared/api';
 import { API_CONFIG } from '@shared/config';
 import type { Service } from '../model/types';
 
@@ -17,7 +17,7 @@ export const servicesApi = {
 
   async createService(serviceData: Omit<Service, 'id'> & { id?: string }): Promise<Service> {
     try {
-      const response = await apiClient.post<Service>(endpoints.admin.services, serviceData);
+      const response = await adminClient.post<Service>(endpoints.admin.services, serviceData);
       return response.data;
     } catch (error) {
       console.error('Ошибка при создании услуги:', error);
@@ -34,7 +34,7 @@ export const servicesApi = {
         id
       };
 
-      const response = await apiClient.put<Service>(
+      const response = await adminClient.put<Service>(
         `${endpoints.admin.services}/${id}`,
         updatedService
       );
@@ -63,7 +63,7 @@ export const servicesApi = {
 
   async deleteService(id: string): Promise<void> {
     try {
-      await apiClient.delete(`${endpoints.admin.services}/${id}`);
+      await adminClient.delete(`${endpoints.admin.services}/${id}`);
     } catch (error) {
       console.error('Ошибка при удалении услуги:', error);
       throw error;

@@ -39,14 +39,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-
-export interface DialogProps {
-  modelValue: boolean;
-  title?: string;
-  size?: 'small' | 'medium' | 'large';
-  closeOnOverlay?: boolean;
-  centered?: boolean;
-}
+import type { DialogProps } from '@shared/types';
 
 const props = withDefaults(defineProps<DialogProps>(), {
   title: '',

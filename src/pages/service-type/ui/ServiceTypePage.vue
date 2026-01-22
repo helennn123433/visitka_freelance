@@ -104,9 +104,9 @@
     />
 
     <NotificationComp
-      :visible="notification.visible"
-      :message="notification.message"
-      :type="notification.type"
+      :visible="notification.state.visible"
+      :message="notification.state.message"
+      :type="notification.state.type"
       @close="notification.hide"
     />
   </div>

@@ -25,6 +25,3 @@ export interface UpdateTypeRequest {
   serviceId: string;
 }
 
-export interface UpdateFieldRequest {
-  value: string;
-}

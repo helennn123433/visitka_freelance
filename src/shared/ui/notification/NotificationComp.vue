@@ -1,20 +1,16 @@
 <template>
   <div class="notification-container">
-    <Transition name="fade-up">
+    <Transition name="slide-up">
       <div
         v-if="visible"
-        class="notification-modal"
+        :class="['notification-modal', type === 'error' ? 'notification-error' : 'notification-success']"
       >
-        <div
-          :class="textClass"
-          class="notification-text"
-        >
-          {{ message }}
-        </div>
-        <div
-          :class="imgClass"
-          class="img-notification"
-        />
+        <span class="notification-icon">
+          {{ type === 'error' ? '✕' : '✓' }}
+        </span>
+        <span class="notification-text">
+          {{ displayMessage }}
+        </span>
         <button
           class="close-btn"
           @click="handleClose"
@@ -35,19 +31,12 @@ const emit = defineEmits<{
 
 const props = defineProps<{
   visible: boolean
-  errorMessage?: string
+  message?: string
+  type?: 'success' | 'error'
 }>();
 
-const message = computed(() =>
-  props.errorMessage || 'Успешно!'
-);
-
-const textClass = computed(() =>
-  props.errorMessage ? 'error-text' : 'alright-text'
-);
-
-const imgClass = computed(() =>
-  props.errorMessage ? 'error-img' : 'alright-img'
+const displayMessage = computed(() =>
+  props.message || 'Успешно!'
 );
 
 const handleClose = () => {
@@ -56,81 +45,96 @@ const handleClose = () => {
 </script>
 
 <style lang="scss" scoped>
+$blue: #0652FF;
+$error: #E53935;
+$white: #FFFFFF;
+
 .notification-container {
   position: fixed;
-  bottom: 20px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
 }
 
 .notification-modal {
-  background-color: #eff0f2;
-  border-radius: 10px;
-  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
-  padding: 20px 35px;
-  font-weight: 600;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  padding: 16px 48px 16px 24px;
+  border-radius: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  font-family: 'Inter_normal', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: $white;
   position: relative;
-  gap: 15px;
+  min-width: 200px;
 }
 
-.error-text {
-  color: #cf1c1c;
-  font-size: 15px;
+.notification-success {
+  background: linear-gradient(135deg, $blue 0%, darken($blue, 10%) 100%);
 }
 
-.alright-text {
-  color: #076423;
-  font-size: 15px;
+.notification-error {
+  background: linear-gradient(135deg, $error 0%, darken($error, 10%) 100%);
 }
 
-.error-img {
-  background-image: url('@/shared/ui/icons/assets/cross.svg');
+.notification-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: rgba($white, 0.2);
+  font-size: 12px;
+  font-weight: 700;
 }
 
-.alright-img {
-  background-image: url('@/shared/ui/icons/assets/tick.svg');
-}
-
-.img-notification {
-  width: 30px;
-  aspect-ratio: 1 / 1;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+.notification-text {
+  flex: 1;
 }
 
 .close-btn {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
   background: transparent;
   border: none;
-  font-size: 30px;
-  color: rgb(121, 121, 121);
+  font-size: 20px;
+  color: rgba($white, 0.7);
   cursor: pointer;
-  position: absolute;
-  top: 5px;
-  right: 5px;
+  padding: 4px;
+  line-height: 1;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $white;
+  }
 }
 
-.close-btn:hover {
-  color: rgb(84, 84, 84);
+.slide-up-enter-active {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.fade-up-enter-active,
-.fade-up-leave-active {
-  transition: opacity 0.4s, transform 0.4s;
+.slide-up-leave-active {
+  transition: all 0.2s ease-in;
 }
 
-.fade-up-enter-from,
-.fade-up-leave-to {
+.slide-up-enter-from {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(30px);
 }
 
-.fade-up-enter-to,
-.fade-up-leave-from {
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.slide-up-enter-to,
+.slide-up-leave-from {
   opacity: 1;
   transform: translateY(0);
 }

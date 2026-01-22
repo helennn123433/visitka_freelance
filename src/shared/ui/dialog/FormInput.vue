@@ -34,18 +34,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-
-export interface FormInputProps {
-  modelValue: string | number;
-  label?: string;
-  type?: string;
-  placeholder?: string;
-  required?: boolean;
-  disabled?: boolean;
-  error?: string;
-  min?: number;
-  max?: number;
-}
+import type { FormInputProps } from '@shared/types';
 
 const props = withDefaults(defineProps<FormInputProps>(), {
   label: '',

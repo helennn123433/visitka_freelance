@@ -1,4 +1,4 @@
-import { ref, onUnmounted } from 'vue';
+import { reactive, onUnmounted } from 'vue';
 
 export interface NotificationState {
   visible: boolean;
@@ -14,9 +14,12 @@ export interface UseNotificationOptions {
 export function useNotification(options: UseNotificationOptions = {}) {
   const { successDuration = 2000, errorDuration = 5000 } = options;
 
-  const visible = ref(false);
-  const message = ref('');
-  const type = ref<'success' | 'error'>('success');
+  const state = reactive<NotificationState>({
+    visible: false,
+    message: '',
+    type: 'success',
+  });
+
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   const clearTimer = () => {
@@ -28,13 +31,13 @@ export function useNotification(options: UseNotificationOptions = {}) {
 
   const show = (msg: string, notificationType: 'success' | 'error' = 'success') => {
     clearTimer();
-    message.value = msg;
-    type.value = notificationType;
-    visible.value = true;
+    state.message = msg;
+    state.type = notificationType;
+    state.visible = true;
 
     const duration = notificationType === 'error' ? errorDuration : successDuration;
     timeoutId = setTimeout(() => {
-      visible.value = false;
+      state.visible = false;
     }, duration);
   };
 
@@ -48,15 +51,13 @@ export function useNotification(options: UseNotificationOptions = {}) {
 
   const hide = () => {
     clearTimer();
-    visible.value = false;
+    state.visible = false;
   };
 
   onUnmounted(clearTimer);
 
   return {
-    visible,
-    message,
-    type,
+    state,
     show,
     showSuccess,
     showError,

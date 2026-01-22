@@ -1,4 +1,4 @@
-import { apiClient } from '@shared/api';
+import { apiClient, adminClient } from '@shared/api';
 import { API_CONFIG } from '@shared/config';
 import type { Example, ServiceTypeProject, AddExampleRequest } from '../model/types';
 
@@ -35,7 +35,7 @@ export const examplesApi = {
 
   async addExample(exampleData: AddExampleRequest): Promise<Example> {
     try {
-      const response = await apiClient.post<Example>(
+      const response = await adminClient.post<Example>(
         endpoints.admin.typeProjects,
         {
           typeId: exampleData.typeId,
@@ -51,7 +51,7 @@ export const examplesApi = {
 
   async updateExample(exampleId: string, updateData: { typeId: string; image: string }): Promise<void> {
     try {
-      await apiClient.put(
+      await adminClient.put(
         `${endpoints.admin.typeProjects}/${exampleId}`,
         {
           typeId: updateData.typeId,
@@ -66,7 +66,7 @@ export const examplesApi = {
 
   async deleteExample(exampleId: string): Promise<void> {
     try {
-      await apiClient.delete(`${endpoints.admin.typeProjects}/${exampleId}`);
+      await adminClient.delete(`${endpoints.admin.typeProjects}/${exampleId}`);
     } catch (error) {
       console.error('Ошибка при удалении примера:', error);
       throw new Error('Не удалось удалить пример работы');

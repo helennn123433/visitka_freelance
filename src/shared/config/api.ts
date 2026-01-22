@@ -1,18 +1,16 @@
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 export const API_CONFIG = {
-  baseUrl: isDevelopment ? 'http://localhost:8080' : '',
+  baseUrl: isDevelopment ? 'http://localhost:8080/api' : '/api',
 
   endpoints: {
-    // Public endpoints
-    services: '/api/services',
-    subservices: '/api/subservices',
-    serviceTypeProjects: '/api/services-types-projects',
-    contacts: '/api/contacts',
-    aboutUs: '/api/about-us',
-    auth: '/api/auth',
+    services: '/services',
+    subservices: '/subservices',
+    serviceTypeProjects: '/services-types-projects',
+    contacts: '/contacts',
+    aboutUs: '/about-us',
+    auth: '/auth',
 
-    // Admin endpoints
     admin: {
       services: '/admin/services',
       subservices: '/admin/subservices',

@@ -31,7 +31,7 @@
       <ServiceCard
         v-for="service in searchStore.filteredServices"
         :key="service.id"
-        :image="{
+        :service="{
           id: service.id,
           title: service.title,
           image: service.image,
@@ -46,9 +46,9 @@
       />
     </div>
     <NotificationComp
-      :visible="notification.visible"
-      :message="notification.message"
-      :type="notification.type"
+      :visible="notification.state.visible"
+      :message="notification.state.message"
+      :type="notification.state.type"
       @close="notification.hide"
     />
   </div>

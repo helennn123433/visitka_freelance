@@ -45,6 +45,8 @@ const handleClose = () => {
 </script>
 
 <style lang="scss" scoped>
+@use "sass:color";
+
 $blue: #0652FF;
 $error: #E53935;
 $white: #FFFFFF;
@@ -73,11 +75,11 @@ $white: #FFFFFF;
 }
 
 .notification-success {
-  background: linear-gradient(135deg, $blue 0%, darken($blue, 10%) 100%);
+  background: linear-gradient(135deg, $blue 0%, color.adjust($blue, $lightness: -10%) 100%);
 }
 
 .notification-error {
-  background: linear-gradient(135deg, $error 0%, darken($error, 10%) 100%);
+  background: linear-gradient(135deg, $error 0%, color.adjust($error, $lightness: -10%) 100%);
 }
 
 .notification-icon {

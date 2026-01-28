@@ -27,6 +27,16 @@
       @close="closeEditModal"
       @save="handleSaveService"
     />
+    <ConfirmDialog
+      v-model="isDeleteDialogOpen"
+      title="Удаление услуги"
+      :message="`Вы уверены, что хотите удалить услугу '${deletingItem?.title}'?`"
+      confirm-text="Удалить"
+      cancel-text="Отмена"
+      variant="danger"
+      @confirm="handleDeleteService"
+      @cancel="closeDeleteModal"
+    />
     <div class="cards-field">
       <ServiceCard
         v-for="service in searchStore.filteredServices"
@@ -38,8 +48,10 @@
           price: service.price
         }"
         :show-price="true"
+        :show-admin-controls="authStore.isAuthenticated"
         @updated="handleServiceUpdate"
         @edit="openEditModal"
+        @delete="openDeleteModal"
         @success="() => notification.showSuccess('Операция выполнена')"
         @error="notification.showError"
         @click="goToService(service)"
@@ -62,12 +74,15 @@ import { useSearchStore } from '@features/search';
 import { useServiceStore, ServiceCard } from '@entities/service';
 import type { Service } from '@entities/service';
 import { AddServiceDialog, EditServiceDialog } from '@features/service-crud';
+import { ConfirmDialog } from '@shared/ui/dialog';
 import { MyButton } from '@shared/ui/button';
 import { NotificationComp } from '@shared/ui/notification';
 import { emitter, useNotification } from '@shared/lib';
 
 const isDialogOpen = ref(false);
 const editingItem = ref<Service | null>(null);
+const deletingItem = ref<Service | null>(null);
+const isDeleteDialogOpen = ref(false);
 
 const router = useRouter();
 const searchStore = useSearchStore();
@@ -85,6 +100,32 @@ const openEditModal = (image: Service) => {
 
 const closeEditModal = () => {
   editingItem.value = null;
+};
+
+const openDeleteModal = (service: Service) => {
+  deletingItem.value = { ...service };
+  isDeleteDialogOpen.value = true;
+};
+
+const closeDeleteModal = () => {
+  isDeleteDialogOpen.value = false;
+  deletingItem.value = null;
+};
+
+const handleDeleteService = async () => {
+  const serviceToDelete = deletingItem.value;
+  if (!serviceToDelete) return;
+
+  closeDeleteModal();
+
+  try {
+    await serviceStore.deleteService(serviceToDelete.id);
+    notification.showSuccess('Услуга успешно удалена');
+    await serviceStore.fetchServices();
+  } catch (error) {
+    console.error('Ошибка удаления услуги:', error);
+    notification.showError('Не удалось удалить услугу');
+  }
 };
 
 const handleSaveService = async (updatedData: Service) => {

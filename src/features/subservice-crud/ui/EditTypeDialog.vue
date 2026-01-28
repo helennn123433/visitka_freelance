@@ -56,6 +56,12 @@
           </MyButton>
         </div>
       </form>
+      <NotificationComp
+        :visible="notification.state.visible"
+        :message="notification.state.message"
+        :type="notification.state.type"
+        @close="notification.hide"
+      />
     </div>
   </div>
 </template>
@@ -64,6 +70,8 @@
 import { ref, computed } from 'vue';
 import { useSubserviceStore, type SubserviceType } from '@entities/subservice';
 import { MyButton } from '@shared/ui/button';
+import { NotificationComp } from '@shared/ui/notification';
+import { useNotification } from '@shared/lib';
 
 interface Props {
   typeData: SubserviceType;
@@ -76,6 +84,7 @@ const emit = defineEmits<{
 }>();
 
 const subserviceStore = useSubserviceStore();
+const notification = useNotification();
 const isLoading = ref(false);
 const showValidation = ref(false);
 
@@ -96,7 +105,7 @@ const validateForm = (): boolean => {
 
 const handleSubmit = async () => {
   if (!validateForm()) {
-    alert('Заполните все обязательные поля');
+    notification.showError('Заполните все обязательные поля');
     return;
   }
 
@@ -125,11 +134,11 @@ const handleSubmit = async () => {
       emit('updated');
       emit('close');
     } else {
-      alert('Нет изменений для сохранения');
+      notification.showError('Нет изменений для сохранения');
     }
   } catch (error) {
     console.error('Ошибка при редактировании типа:', error);
-    alert(error instanceof Error ? error.message : 'Произошла ошибка при сохранении');
+    notification.showError(error instanceof Error ? error.message : 'Произошла ошибка при сохранении');
   } finally {
     isLoading.value = false;
   }

@@ -1,9 +1,6 @@
 import axios, { AxiosInstance, CreateAxiosDefaults } from 'axios';
 import { API_CONFIG } from '@shared/config';
 
-const isDevelopment = process.env.NODE_ENV === 'development';
-const ADMIN_BASE_URL = isDevelopment ? 'http://localhost:8080' : '';
-
 const createApiClient = (config: CreateAxiosDefaults): AxiosInstance => {
   const client = axios.create({
     timeout: API_CONFIG.timeout,
@@ -43,7 +40,7 @@ const createApiClient = (config: CreateAxiosDefaults): AxiosInstance => {
 };
 
 const apiClient = createApiClient({ baseURL: API_CONFIG.baseUrl });
-const adminClient = createApiClient({ baseURL: ADMIN_BASE_URL });
+const adminClient = createApiClient({ baseURL: API_CONFIG.adminBaseUrl });
 
 export { apiClient, adminClient };
 export default apiClient;

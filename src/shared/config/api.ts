@@ -2,6 +2,7 @@ const isDevelopment = process.env.NODE_ENV === 'development';
 
 export const API_CONFIG = {
   baseUrl: isDevelopment ? 'http://localhost:8080/api' : '/api',
+  adminBaseUrl: isDevelopment ? 'http://localhost:8080' : '',
 
   endpoints: {
     services: '/services',

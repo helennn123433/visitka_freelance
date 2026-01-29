@@ -75,15 +75,23 @@
           </MyButton>
         </div>
       </form>
+      <NotificationComp
+        :visible="notification.state.visible"
+        :message="notification.state.message"
+        :type="notification.state.type"
+        @close="notification.hide"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useExampleStore } from '@entities/example';
 import { useSubserviceStore, type SubserviceType } from '@entities/subservice';
 import { MyButton } from '@shared/ui/button';
+import { NotificationComp } from '@shared/ui/notification';
+import { useNotification } from '@shared/lib';
 
 interface Props {
   typeId: string;
@@ -97,6 +105,7 @@ const emit = defineEmits<{
 
 const exampleStore = useExampleStore();
 const subserviceStore = useSubserviceStore();
+const notification = useNotification();
 const isLoading = ref(false);
 const showValidation = ref(false);
 const imageError = ref(false);
@@ -126,12 +135,12 @@ const handleClose = () => {
 
 const handleSubmit = async () => {
   if (!validateForm()) {
-    alert('Введите URL изображения');
+    notification.showError('Введите URL изображения');
     return;
   }
 
   if (!props.typeId) {
-    alert('Ошибка: ID типа не указан');
+    notification.showError('Ошибка: ID типа не указан');
     return;
   }
 
@@ -147,16 +156,11 @@ const handleSubmit = async () => {
     emit('close');
   } catch (error) {
     console.error('Ошибка при добавлении примера:', error);
-    alert(error instanceof Error ? error.message : 'Произошла ошибка при добавлении');
+    notification.showError(error instanceof Error ? error.message : 'Произошла ошибка при добавлении');
   } finally {
     isLoading.value = false;
   }
 };
-
-onMounted(() => {
-  console.log('Открыто добавление примера для типа:', props.typeId);
-  console.log('Информация о типе:', typeInfo.value);
-});
 </script>
 
 <style scoped>

@@ -6,26 +6,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { computed } from 'vue';
 import { SearchInput } from '@features/search';
 import HeaderButtons from './HeaderButtons.vue';
+import { useBreakpoints } from '@shared/lib';
 
-const showButtons = ref(true);
-const isMobile = ref(window.innerWidth < 769);
+const { isMobile } = useBreakpoints();
 
-const handleResize = () => {
-  isMobile.value = window.innerWidth < 769;
-  showButtons.value = !isMobile.value;
-};
-
-onMounted(() => {
-  showButtons.value = !isMobile.value;
-  window.addEventListener('resize', handleResize);
-});
-
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
-});
+const showButtons = computed(() => !isMobile.value);
 </script>
 
 <style lang="scss" scoped>

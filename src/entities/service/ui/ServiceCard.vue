@@ -22,7 +22,7 @@
       >
     </div>
     <img
-      :src="service.image || ''"
+      :src="imageUrl"
       class="image"
     >
     <div
@@ -41,6 +41,7 @@
 import { computed } from 'vue';
 import type { Service } from '../model/types';
 import { Icons } from '@shared/ui/icons';
+import { getImageUrl } from '@/shared/lib/getImageUrl';
 
 const props = defineProps<{
   service: Service;
@@ -56,6 +57,7 @@ const emit = defineEmits<{
 
 const serviceId = computed(() => props.service?.id?.toString() || 'unknown');
 const servicePrice = computed(() => props.service?.price || 0);
+const imageUrl = computed(() => getImageUrl(props.service.image));
 
 const hasPrice = computed(() => {
   if (props.showPrice === false) return false;

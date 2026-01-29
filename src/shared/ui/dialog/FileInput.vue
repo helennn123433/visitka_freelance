@@ -13,7 +13,7 @@
     @click="fileInput?.click()"
   >
     <span v-if="!preview">
-      {{ placeholder }}
+      Выберите файл
     </span>
 
     <img

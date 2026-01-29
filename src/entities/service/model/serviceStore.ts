@@ -20,9 +20,15 @@ export const useServiceStore = defineStore('serviceStore', () => {
     return services.value.find(service => service.id === id);
   };
 
-  const addService = async (serviceData: Omit<Service, 'id'> & { id?: string }) => {
+  const addService = async ({
+  formData,
+  params,
+  }: {
+    formData: FormData;
+    params: { title: string; price: number };
+  }) => {
     return execute(async () => {
-      const newService = await servicesApi.createService(serviceData);
+      const newService = await servicesApi.createService(formData, params);
       services.value.push(newService);
       return newService;
     }, 'Ошибка при добавлении услуги');

@@ -246,11 +246,15 @@ onMounted(async () => {
   font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 800;
   margin-top: 1vh;
+
+  div {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+  }
 }
 
 .icon {
-  width: 30px;
-  height: 30px;
+  width: 1.5vw;
+  height: 1.5vw;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -280,7 +284,13 @@ onMounted(async () => {
 
 .btn {
   align-self: center;
-  padding: 1.5vh;
+  padding: 16px 48px;
+}
+
+@media (min-width: 1921px) {
+  .btn {
+    padding: 24px 100px;
+  }
 }
 
 .textarea {

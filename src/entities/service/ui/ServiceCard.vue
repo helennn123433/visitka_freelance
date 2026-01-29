@@ -88,13 +88,16 @@ $white: #FFFFFF;
   background-position: center;
   position: relative;
   overflow: hidden;
+  object-fit: cover;
 }
 
 .card {
   flex: 0 0 48.5%;
   position: relative;
   color: $white;
-  width: auto;
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  max-height: 900px;
   overflow: hidden;
   border-radius: 3vw;
   cursor: pointer;
@@ -114,8 +117,8 @@ $white: #FFFFFF;
     color: $white;
     border-radius: 1.5vw;
     font-weight: bold;
-    font-size: 1vw;
-    padding: 1.5vw 1vw;
+    font-size: 2vmin;
+    padding: 52px;
     z-index: 10;
     transition: background-color 0.3s ease;
   }
@@ -128,7 +131,7 @@ $white: #FFFFFF;
     color: $white;
     text-transform: uppercase;
     font-weight: 800;
-    font-size: 2.5vw;
+    font-size: 3vmin;
   }
 
   .price,
@@ -179,7 +182,32 @@ $white: #FFFFFF;
   }
 }
 
-@media(max-width: 800px) {
+@media(min-width: 1921px) {
+  .card {
+    width: 90%;
+
+  }
+}
+@media(max-width: 1920px) and (min-width: 1441px) {
+  .card {
+    .price {
+      padding: 32px;
+    }
+  }
+}
+@media(max-width: 1440px) and (min-width: 768px) {
+  .card {
+    .title {
+      font-size: 2vmin;
+    }
+    .price {
+      padding: 14px;
+      font-size: 1.5vmin;
+    }
+  }
+}
+
+@media(max-width: 767px) {
   .settings-icon {
     width: 4vw;
     height: 4vw;
@@ -200,11 +228,11 @@ $white: #FFFFFF;
     margin-bottom: 2vw;
 
     .title {
-      font-size: 6vw;
+      font-size: 5vmin;
     }
 
     .price {
-      font-size: 3vw;
+      font-size: 4vmin;
       padding: 3vw 2vw;
       border-radius: 3.4vw;
     }
@@ -249,4 +277,6 @@ $white: #FFFFFF;
 .card:hover .title {
   transform: translateX(-1vw) scale(1.05);
 }
+
+
 </style>

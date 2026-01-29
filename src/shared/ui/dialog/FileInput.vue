@@ -32,12 +32,19 @@ const emit = defineEmits<{
   'update:modelValue': [file: File | null];
 }>();
 
-const fileInput = ref();
+const fileInput = ref<HTMLInputElement | null>(null);
 const preview = ref<string | null>(null);
 
 const onFileChange = () => {
+  if (!fileInput.value) return;
   const file = fileInput.value?.files?.[0] ?? null;
-
+  if (file && file.size > 1_000_000) {
+    alert("Файл слишком большой. Максимум 10мб");
+    fileInput.value.value = '';
+    preview.value = null;
+    emit('update:modelValue', null);
+    return;
+  }
   emit('update:modelValue', file);
 
   if (!file) {

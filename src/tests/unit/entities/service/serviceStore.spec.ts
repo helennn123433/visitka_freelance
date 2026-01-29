@@ -91,27 +91,39 @@ describe('serviceStore', () => {
   });
 
     describe('updateService', () => {
-      it('обновляет существующую услугу', async () => {
-        (servicesApi.getServices as jest.Mock).mockResolvedValue(mockServices);
-        const updatedService = { ...mockServices[0], title: 'Updated Service' };
-        (servicesApi.updateService as jest.Mock).mockResolvedValue(updatedService);
+  it('обновляет существующую услугу', async () => {
+    // Подготовка моков
+    (servicesApi.getServices as jest.Mock).mockResolvedValue(mockServices);
+    const updatedService = { ...mockServices[0], title: 'Updated Service' };
+    (servicesApi.updateService as jest.Mock).mockResolvedValue(updatedService);
 
-        const store = useServiceStore();
-        await store.fetchServices();
-        await store.updateService('1', { title: 'Updated Service' });
+    const store = useServiceStore();
+    await store.fetchServices();
 
-        expect(store.services[0].title).toBe('Updated Service');
-      });
-
-      it('выбрасывает ошибку для несуществующей услуги', async () => {
-        (servicesApi.getServices as jest.Mock).mockResolvedValue(mockServices);
-
-        const store = useServiceStore();
-        await store.fetchServices();
-
-        await expect(store.updateService('999', { title: 'Test' })).rejects.toThrow();
-      });
+    // 🔹 Вызов updateService с объектом
+    await store.updateService({
+      id: '1',
+      params: { title: 'Updated Service', price: mockServices[0].price },
+      formData: new FormData(), // Можно пустой FormData, тест же мокает API
     });
+
+    expect(store.services[0].title).toBe('Updated Service');
+  });
+  it('выбрасывает ошибку для несуществующей услуги', async () => {
+    (servicesApi.getServices as jest.Mock).mockResolvedValue(mockServices);
+
+    const store = useServiceStore();
+    await store.fetchServices();
+
+    await expect(
+      store.updateService({
+        id: '999',
+        params: { title: 'Test', price: 123 },
+        formData: new FormData(),
+      })
+      ).rejects.toThrow();
+    });
+  });
 
     describe('deleteService', () => {
       it('удаляет услугу', async () => {

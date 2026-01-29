@@ -54,35 +54,30 @@ const handleEmailClick = () => {
 <style lang="scss" scoped>
 .header-buttons {
   display: flex;
-  gap: 2vw;
+  gap: 32px;
 
   img {
-    width: 2vw;
+    width: 28px;
     cursor: pointer;
 
     &:hover {
       filter: brightness(0.1) invert(0.3);
     }
 
-    &.phone-icon {
-      width: 1.7vw;
-    }
-
-    &.account-icon {
-      width: 2.5vw;
-    }
   }
-}
-
-.auth-button {
-  width: 90px;
-  height: 50px;
 }
 
 .auth-button:hover {
   background-color: #082f8b;
 }
-
+@media (min-width: 1921px) {
+.header-buttons {
+  gap: 40px;
+    img {
+      width: 44px;
+    }
+  }
+}
 @media (max-width: 768px) {
   .header-buttons {
     gap: 10vw;

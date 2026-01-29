@@ -331,7 +331,6 @@ watch(typesData, () => {
 }
 
 .info-text {
-  background-color: #f0f7ff;
   padding: 12px;
   border-radius: 6px;
   margin-top: 12px;
@@ -351,7 +350,6 @@ watch(typesData, () => {
   padding: 16px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  background-color: #f9f9f9;
 }
 
 .type-fields {
@@ -367,8 +365,8 @@ watch(typesData, () => {
 }
 
 .remove-btn {
-  width: 30px;
-  height: 30px;
+  width: 1.5vw;
+  height: 1.5vw;
   border: none;
   background: #ff6b6b;
   color: white;

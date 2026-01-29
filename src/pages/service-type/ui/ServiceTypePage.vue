@@ -19,10 +19,7 @@
 
     <div class="content">
       <div class="cards-field">
-        <div
-          v-if="examples.length > 0"
-          class="cards-grid"
-        >
+        <div v-if="examples.length > 0" class="cards-grid">
           <div
             v-for="example in examples"
             :key="example.id"
@@ -34,7 +31,7 @@
               :src="example.image"
               :alt="'Example ' + example.id"
               class="image"
-            >
+            />
             <div
               v-if="authStore.isAuthenticated && hoveredExample === example.id"
               class="admin-controls"
@@ -49,7 +46,7 @@
                     :src="Icons.Gear"
                     alt="шестерёнка"
                     title="Редактировать"
-                  >
+                  />
                 </div>
               </div>
               <div class="icon-container">
@@ -62,19 +59,15 @@
                     :src="Icons.Trash"
                     alt="мусорка"
                     title="Удалить"
-                  >
+                  />
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div v-else>
-          <p v-if="isLoading">
-            Загрузка...
-          </p>
-          <p v-else>
-            Примеры работ не найдены
-          </p>
+          <p v-if="isLoading">Загрузка...</p>
+          <p v-else>Примеры работ не найдены</p>
         </div>
       </div>
     </div>
@@ -113,20 +106,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { MyHeader } from '@shared/ui/header';
-import { MyButton } from '@shared/ui/button';
-import { Icons } from '@shared/ui/icons';
-import { NotificationComp } from '@shared/ui/notification';
-import { Breadcrumbs, type BreadcrumbItem } from '@shared/ui/breadcrumbs';
-import { useNotification } from '@shared/lib';
-import { useServiceStore } from '@entities/service';
-import { useSubserviceStore } from '@entities/subservice';
-import { useExampleStore } from '@entities/example';
-import type { Example } from '@entities/example';
-import { useAuthStore } from '@features/auth';
-import { AddExampleDialog, EditExampleDialog, DeleteExampleDialog } from '@features/example-crud';
+import { ref, onMounted, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { MyHeader } from "@shared/ui/header";
+import { MyButton } from "@shared/ui/button";
+import { Icons } from "@shared/ui/icons";
+import { NotificationComp } from "@shared/ui/notification";
+import { Breadcrumbs, type BreadcrumbItem } from "@shared/ui/breadcrumbs";
+import { useNotification } from "@shared/lib";
+import { useServiceStore } from "@entities/service";
+import { useSubserviceStore } from "@entities/subservice";
+import { useExampleStore } from "@entities/example";
+import type { Example } from "@entities/example";
+import { useAuthStore } from "@features/auth";
+import {
+  AddExampleDialog,
+  EditExampleDialog,
+  DeleteExampleDialog,
+} from "@features/example-crud";
 
 const route = useRoute();
 const router = useRouter();
@@ -137,10 +134,12 @@ const authStore = useAuthStore();
 const notification = useNotification();
 
 const serviceId = ref<string>(route.params.serviceId as string);
-const typeId = ref<string>((route.params.typeId as string));
+const typeId = ref<string>(route.params.typeId as string);
 const subserviceId = ref<string>(route.params.subserviceId as string);
-const serviceTitle = ref<string>((route.query.serviceTitle as string) || '');
-const subserviceTitle = ref<string>((route.query.subserviceTitle as string) || '');
+const serviceTitle = ref<string>((route.query.serviceTitle as string) || "");
+const subserviceTitle = ref<string>(
+  (route.query.subserviceTitle as string) || "",
+);
 
 const isLoading = ref(true);
 const examples = ref<Example[]>([]);
@@ -149,9 +148,9 @@ const showEditDialog = ref(false);
 const showDeleteDialog = ref(false);
 const hoveredExample = ref<string | null>(null);
 
-const selectedExampleId = ref<string>('');
-const selectedExampleImage = ref<string>('');
-const selectedTypeId = ref<string>('');
+const selectedExampleId = ref<string>("");
+const selectedExampleImage = ref<string>("");
+const selectedTypeId = ref<string>("");
 
 const selectedExample = ref<Example | null>(null);
 
@@ -160,21 +159,21 @@ const subservice = computed(() => {
 });
 
 const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
-  { label: 'Услуги', to: '/' },
+  { label: "Услуги", to: "/" },
   { label: serviceTitle.value, onClick: () => router.back() },
-  { label: subserviceTitle.value }
+  { label: subserviceTitle.value },
 ]);
 
 const loadExamples = async () => {
   try {
     examples.value = await exampleStore.fetchExamplesByTypeId(typeId.value);
   } catch (error) {
-    console.error('Ошибка загрузки примеров:', error);
+    console.error("Ошибка загрузки примеров:", error);
   }
 };
 
 const handleExampleCreated = async () => {
-  notification.showSuccess('Пример успешно добавлен');
+  notification.showSuccess("Пример успешно добавлен");
   await loadExamples();
 };
 
@@ -187,20 +186,23 @@ const openDeleteModal = (example: Example) => {
 
 const closeDeleteDialog = () => {
   showDeleteDialog.value = false;
-  selectedExampleId.value = '';
-  selectedExampleImage.value = '';
-  selectedTypeId.value = '';
+  selectedExampleId.value = "";
+  selectedExampleImage.value = "";
+  selectedTypeId.value = "";
 };
 
-const handleDeleteExample = async (data: { itemId: string; typeId: string }) => {
+const handleDeleteExample = async (data: {
+  itemId: string;
+  typeId: string;
+}) => {
   try {
     await exampleStore.deleteExample(data.typeId, data.itemId);
-    notification.showSuccess('Пример успешно удален');
+    notification.showSuccess("Пример успешно удален");
     await loadExamples();
     closeDeleteDialog();
   } catch (error) {
-    console.error('Ошибка при удалении примера:', error);
-    notification.showError('Не удалось удалить пример');
+    console.error("Ошибка при удалении примера:", error);
+    notification.showError("Не удалось удалить пример");
   }
 };
 
@@ -215,14 +217,14 @@ const closeEditDialog = () => {
 };
 
 const handleExampleUpdated = async () => {
-  notification.showSuccess('Пример успешно обновлен');
+  notification.showSuccess("Пример успешно обновлен");
   await loadExamples();
   closeEditDialog();
 };
 
 onMounted(async () => {
   if (!subserviceId.value || !serviceId.value) {
-    await router.push('/services');
+    await router.push("/services");
     return;
   }
 
@@ -231,7 +233,7 @@ onMounted(async () => {
       await subserviceStore.fetchSubservices();
     }
 
-    if (subservice.value?.types && subservice.value.types.length > 0) {
+    if (!typeId.value && subservice.value?.types &&subservice.value.types.length > 0) {
       typeId.value = subservice.value.types[0].id;
     }
 
@@ -250,9 +252,8 @@ onMounted(async () => {
     if (typeId.value) {
       await loadExamples();
     }
-
   } catch (error) {
-    console.error('Ошибка при инициализации страницы:', error);
+    console.error("Ошибка при инициализации страницы:", error);
   } finally {
     isLoading.value = false;
   }
@@ -260,8 +261,8 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-$white: #FFFFFF;
-$blue: #0652FF;
+$white: #ffffff;
+$blue: #0652ff;
 
 .serviceTypePage {
   display: flex;
@@ -318,8 +319,8 @@ $blue: #0652FF;
 }
 
 .icon-background {
-  width: 36px;
-  height: 36px;
+  width: 1.5vw;
+  height: 1.5vw;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.7);
   display: flex;
@@ -331,8 +332,8 @@ $blue: #0652FF;
 }
 
 .delete-icon {
-  width: 18px;
-  height: 18px;
+  width: 1vw;
+  height: 1vw;
   filter: brightness(0) invert(1);
   transition: transform 0.3s ease;
 }
@@ -342,8 +343,8 @@ $blue: #0652FF;
 }
 
 .settings-icon {
-  width: 18px;
-  height: 18px;
+  width: 1vw;
+  height: 1vw;
   filter: brightness(0) invert(1);
   transition: transform 0.3s ease;
   transform-origin: center;
@@ -376,11 +377,17 @@ $blue: #0652FF;
 }
 
 .btn {
-  width: 200px;
-  height: 40px;
-  margin: 0 10px 10px 0;
+  margin: 0 10px 20px 0;
 }
-
+@media (min-width: 1921px) {
+  .card {
+    width: 10vw;
+    height: 10vw;
+  }
+  .about-us-header span {
+    font-size: clamp(40px, 5vw, 100px);
+  }
+}
 @media (max-width: 768px) {
   .serviceTypePage {
     padding: 1rem;
@@ -390,5 +397,4 @@ $blue: #0652FF;
     width: 90%;
   }
 }
-
 </style>

@@ -1,28 +1,17 @@
 <template>
-  <div
-    class="dialog-overlay"
-    @click.self="handleClose"
-  >
+  <div class="dialog-overlay" @click.self="handleClose">
     <div class="dialog">
       <h3>{{ dialogTitle }}</h3>
 
       <form @submit.prevent="handleSubmit">
-        <div
-          v-if="availableTypes.length > 0"
-          class="form-group"
-        >
+        <div v-if="availableTypes.length > 0" class="form-group">
           <label>Тип:</label>
           <select
             v-model="formData.typeId"
             required
-            :class="{ 'error': !formData.typeId && showValidation }"
+            :class="{ error: !formData.typeId && showValidation }"
           >
-            <option
-              value=""
-              disabled
-            >
-              Выберите тип
-            </option>
+            <option value="" disabled>Выберите тип</option>
             <option
               v-for="type in availableTypes"
               :key="type.id"
@@ -32,10 +21,7 @@
               {{ type.title }}
             </option>
           </select>
-          <span
-            v-if="!formData.typeId && showValidation"
-            class="error-message"
-          >
+          <span v-if="!formData.typeId && showValidation" class="error-message">
             Обязательное поле
           </span>
         </div>
@@ -46,12 +32,9 @@
             v-model="formData.image"
             required
             placeholder="Введите URL изображения"
-            :class="{ 'error': !formData.image && showValidation }"
-          >
-          <span
-            v-if="!formData.image && showValidation"
-            class="error-message"
-          >
+            :class="{ error: !formData.image && showValidation }"
+          />
+          <span v-if="!formData.image && showValidation" class="error-message">
             Обязательное поле
           </span>
         </div>
@@ -64,16 +47,16 @@
               :src="formData.image || props.exampleData.image"
               alt="Предпросмотр"
               @error="imageError = true"
-            >
-            <div
-              v-if="imageError"
-              class="preview-error"
-            >
+            />
+            <div v-if="imageError" class="preview-error">
               Не удалось загрузить изображение
             </div>
           </div>
           <div
-            v-if="props.exampleData.image && formData.image !== props.exampleData.image"
+            v-if="
+              props.exampleData.image &&
+              formData.image !== props.exampleData.image
+            "
             class="preview-info"
           >
             <small>Текущее изображение будет заменено</small>
@@ -86,13 +69,9 @@
             :disabled="isLoading || !hasChanges"
             class="btn"
           >
-            {{ isLoading ? 'Сохранение...' : 'Сохранить изменения' }}
+            {{ isLoading ? "Сохранение..." : "Сохранить изменения" }}
           </MyButton>
-          <MyButton
-            type="button"
-            class="btn"
-            @click="handleClose"
-          >
+          <MyButton type="button" class="btn" @click="handleClose">
             Отмена
           </MyButton>
         </div>
@@ -102,10 +81,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { useExampleStore, type Example } from '@entities/example';
-import { useSubserviceStore, type SubserviceType } from '@entities/subservice';
-import { MyButton } from '@shared/ui/button';
+import { ref, computed, watch } from "vue";
+import { useExampleStore, type Example } from "@entities/example";
+import { useSubserviceStore, type SubserviceType } from "@entities/subservice";
+import { MyButton } from "@shared/ui/button";
 
 interface Props {
   exampleData: Example;
@@ -126,10 +105,10 @@ const imageError = ref(false);
 
 const formData = ref({
   typeId: props.exampleData.typeId,
-  image: props.exampleData.image
+  image: props.exampleData.image,
 });
 
-const dialogTitle = computed(() => 'Редактировать пример работы');
+const dialogTitle = computed(() => "Редактировать пример работы");
 
 const hasChanges = computed(() => {
   return (
@@ -143,9 +122,12 @@ const availableTypes = computed<SubserviceType[]>(() => {
   return subservice?.types || [];
 });
 
-watch(() => formData.value.image, () => {
-  imageError.value = false;
-});
+watch(
+  () => formData.value.image,
+  () => {
+    imageError.value = false;
+  },
+);
 
 const validateForm = (): boolean => {
   showValidation.value = true;
@@ -153,17 +135,17 @@ const validateForm = (): boolean => {
 };
 
 const handleClose = () => {
-  emit('close');
+  emit("close");
 };
 
 const handleSubmit = async () => {
   if (!validateForm()) {
-    alert('Заполните все обязательные поля');
+    alert("Заполните все обязательные поля");
     return;
   }
 
   if (!hasChanges.value) {
-    alert('Нет изменений для сохранения');
+    alert("Нет изменений для сохранения");
     return;
   }
 
@@ -173,20 +155,24 @@ const handleSubmit = async () => {
     const updateData = {
       id: props.exampleData.id,
       typeId: formData.value.typeId,
-      image: formData.value.image
+      image: formData.value.image,
     };
 
     const updatedExample = await exampleStore.updateExample(
       props.exampleData.typeId,
       props.exampleData.id,
-      updateData
+      updateData,
     );
 
-    emit('updated', updatedExample);
-    emit('close');
+    emit("updated", updatedExample);
+    emit("close");
   } catch (error) {
-    console.error('Ошибка при обновлении примера:', error);
-    alert(error instanceof Error ? error.message : 'Произошла ошибка при обновлении');
+    console.error("Ошибка при обновлении примера:", error);
+    alert(
+      error instanceof Error
+        ? error.message
+        : "Произошла ошибка при обновлении",
+    );
   } finally {
     isLoading.value = false;
   }
@@ -211,8 +197,7 @@ const handleSubmit = async () => {
   background: white;
   padding: 24px;
   border-radius: 8px;
-  min-width: 500px;
-  max-width: 600px;
+  width: 25vw;
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

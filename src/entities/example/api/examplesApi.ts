@@ -25,7 +25,7 @@ export const examplesApi = {
         const matchingExamples = project.examples.filter(example => example.typeId === typeId);
         allExamples.push(...matchingExamples);
       });
-
+      console.log('Полученные примеры:', allExamples);
       return allExamples;
     } catch (error) {
       console.error(`Ошибка при получении примеров для типа ${typeId}:`, error);

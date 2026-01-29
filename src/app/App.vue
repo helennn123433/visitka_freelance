@@ -117,9 +117,9 @@ defineExpose({
 }
 
 .section {
-  margin: 1.4vw 1.5vw 0 1.5vw;
   box-sizing: border-box;
   scroll-margin-top: 5vh;
+  margin-top: 1vh;
 }
 
 .section#header {
@@ -144,6 +144,7 @@ defineExpose({
   display: flex;
   flex: 1;
   height: 100%;
+  padding: 22px 22px 0 22px;
 }
 
 .mobile-header {

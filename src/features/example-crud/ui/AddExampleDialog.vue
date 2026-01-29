@@ -1,24 +1,17 @@
 <template>
-  <div
-    class="dialog-overlay"
-    @click.self="handleClose"
-  >
+  <div class="dialog-overlay" @click.self="handleClose">
     <div class="dialog">
       <h3>{{ dialogTitle }}</h3>
 
-      <div
-        v-if="!typeInfo"
-        class="error-state"
-      >
+      <div v-if="!typeInfo" class="error-state">
         <p>Тип не найден</p>
       </div>
 
-      <form
-        v-else
-        @submit.prevent="handleSubmit"
-      >
+      <form v-else @submit.prevent="handleSubmit">
         <div>
-          <p>Добавить пример для типа: <strong> {{ typeInfo.title }} </strong></p>
+          <p>
+            Добавить пример для типа: <strong> {{ typeInfo.title }} </strong>
+          </p>
         </div>
 
         <div class="form-group">
@@ -27,20 +20,14 @@
             v-model="formData.image"
             required
             placeholder="Введите URL изображения"
-            :class="{ 'error': !formData.image && showValidation }"
-          >
-          <span
-            v-if="!formData.image && showValidation"
-            class="error-message"
-          >
+            :class="{ error: !formData.image && showValidation }"
+          />
+          <span v-if="!formData.image && showValidation" class="error-message">
             Обязательное поле
           </span>
         </div>
 
-        <div
-          v-if="formData.image"
-          class="preview-section"
-        >
+        <div v-if="formData.image" class="preview-section">
           <label>Предпросмотр:</label>
           <div class="preview-image">
             <img
@@ -48,29 +35,18 @@
               :src="formData.image"
               alt="Предпросмотр"
               @error="imageError = true"
-            >
-            <div
-              v-if="imageError"
-              class="preview-error"
-            >
+            />
+            <div v-if="imageError" class="preview-error">
               Не удалось загрузить изображение
             </div>
           </div>
         </div>
 
         <div class="dialog-actions">
-          <MyButton
-            type="submit"
-            :disabled="isLoading"
-            class="btn"
-          >
-            {{ isLoading ? 'Добавление...' : 'Добавить' }}
+          <MyButton type="submit" :disabled="isLoading" class="btn">
+            {{ isLoading ? "Добавление..." : "Добавить" }}
           </MyButton>
-          <MyButton
-            type="button"
-            class="btn"
-            @click="handleClose"
-          >
+          <MyButton type="button" class="btn" @click="handleClose">
             Отмена
           </MyButton>
         </div>
@@ -86,12 +62,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useExampleStore } from '@entities/example';
-import { useSubserviceStore, type SubserviceType } from '@entities/subservice';
-import { MyButton } from '@shared/ui/button';
-import { NotificationComp } from '@shared/ui/notification';
-import { useNotification } from '@shared/lib';
+import { ref, computed } from "vue";
+import { useExampleStore } from "@entities/example";
+import { useSubserviceStore, type SubserviceType } from "@entities/subservice";
+import { MyButton } from "@shared/ui/button";
+import { NotificationComp } from "@shared/ui/notification";
+import { useNotification } from "@shared/lib";
 
 interface Props {
   typeId: string;
@@ -111,14 +87,14 @@ const showValidation = ref(false);
 const imageError = ref(false);
 
 const formData = ref({
-  image: ''
+  image: "",
 });
 
-const dialogTitle = computed(() => 'Добавить пример работы');
+const dialogTitle = computed(() => "Добавить пример работы");
 
 const typeInfo = computed<SubserviceType | null>(() => {
   for (const subservice of subserviceStore.subservices) {
-    const foundType = subservice.types?.find(t => t.id === props.typeId);
+    const foundType = subservice.types?.find((t) => t.id === props.typeId);
     if (foundType) return foundType;
   }
   return null;
@@ -126,21 +102,21 @@ const typeInfo = computed<SubserviceType | null>(() => {
 
 const validateForm = (): boolean => {
   showValidation.value = true;
-  return !!(formData.value.image.trim());
+  return !!formData.value.image.trim();
 };
 
 const handleClose = () => {
-  emit('close');
+  emit("close");
 };
 
 const handleSubmit = async () => {
   if (!validateForm()) {
-    notification.showError('Введите URL изображения');
+    notification.showError("Введите URL изображения");
     return;
   }
 
   if (!props.typeId) {
-    notification.showError('Ошибка: ID типа не указан');
+    notification.showError("Ошибка: ID типа не указан");
     return;
   }
 
@@ -149,14 +125,18 @@ const handleSubmit = async () => {
   try {
     await exampleStore.addExample({
       typeId: props.typeId,
-      image: formData.value.image
+      image: formData.value.image,
     });
 
-    emit('created');
-    emit('close');
+    emit("created");
+    emit("close");
   } catch (error) {
-    console.error('Ошибка при добавлении примера:', error);
-    notification.showError(error instanceof Error ? error.message : 'Произошла ошибка при добавлении');
+    console.error("Ошибка при добавлении примера:", error);
+    notification.showError(
+      error instanceof Error
+        ? error.message
+        : "Произошла ошибка при добавлении",
+    );
   } finally {
     isLoading.value = false;
   }
@@ -181,8 +161,7 @@ const handleSubmit = async () => {
   background: white;
   padding: 24px;
   border-radius: 8px;
-  min-width: 500px;
-  max-width: 600px;
+  width: 25vw;
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

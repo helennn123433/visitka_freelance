@@ -192,8 +192,8 @@ $white: #FFFFFF;
 }
 
 .icon {
-  width: 30px;
-  height: 30px;
+  width: 1.5vw;
+  height: 1.5vw;
   cursor: pointer;
   transition: transform 0.3s ease;
 }

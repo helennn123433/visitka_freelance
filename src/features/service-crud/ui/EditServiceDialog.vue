@@ -23,20 +23,15 @@
       required
       :error="errors.price"
     />
-    <FormInput
-      v-model="form.image"
-      label="Изображение"
-      placeholder="URL изображения"
-      :error="errors.image"
-    />
+    <FileInput v-model="form.image"/>
   </FormDialog>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, watch } from 'vue';
 import type { Service } from '@entities/service';
-import { FormDialog, FormInput } from '@shared/ui/dialog';
-import { required, positiveNumber, isUrl, validateForm } from '@shared/lib';
+import { FormDialog, FormInput, FileInput } from '@shared/ui/dialog';
+import { required, positiveNumber, validateForm } from '@shared/lib';
 
 const props = defineProps<{
   currentData: Service;
@@ -44,27 +39,31 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   close: [];
-  save: [data: Service];
+  save: [data: Service & { imageFile?: File | null }];
 }>();
 
 const isOpen = ref(true);
 
-const form = reactive({
+const form = reactive<{
+  title: string;
+  price: number;
+  image: File | null;
+}>({
   title: props.currentData.title,
   price: props.currentData.price,
-  image: props.currentData.image
+  image: null
 });
+
 
 const errors = reactive({
   title: '',
-  price: '',
-  image: ''
+  price: ''
 });
 
 watch(() => props.currentData, (newVal) => {
   form.title = newVal.title;
   form.price = newVal.price;
-  form.image = newVal.image;
+  form.image = null;
 });
 
 const validate = (): boolean => {
@@ -73,13 +72,11 @@ const validate = (): boolean => {
     {
       title: [required('Название услуги обязательно')],
       price: [positiveNumber('Цена должна быть положительным числом')],
-      image: [isUrl('Некорректный URL изображения')]
     }
   );
 
   errors.title = validationErrors.title || '';
   errors.price = validationErrors.price || '';
-  errors.image = validationErrors.image || '';
 
   return isValid;
 };
@@ -91,7 +88,7 @@ const handleSubmit = () => {
     ...props.currentData,
     title: form.title,
     price: Number(form.price),
-    image: form.image
+    imageFile: form.image
   });
 };
 

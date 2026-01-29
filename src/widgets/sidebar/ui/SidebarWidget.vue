@@ -4,18 +4,9 @@
       <div>
         <div class="sidebar__logo">
           <div class="logo__main">
-            <img
-              class="img_n31"
-              :src="Icons.H31"
-              alt="Logo_H31"
-            >
+            <img class="img_n31" :src="Icons.H31" alt="Logo_H31" />
           </div>
-          <button
-            class="close-btn"
-            @click="$emit('close')"
-          >
-            ×
-          </button>
+          <button class="close-btn" @click="$emit('close')">×</button>
         </div>
         <button
           class="btn"
@@ -27,7 +18,7 @@
             :src="Icons.Info"
             alt="info"
             :class="{ active: activeIcon === 'info' }"
-          >
+          />
           <span class="btn-text">О нас</span>
         </button>
         <button
@@ -40,7 +31,7 @@
             :src="Icons.List"
             alt="list"
             :class="{ active: activeIcon === 'list' }"
-          >
+          />
           <span class="btn-text">Услуги</span>
         </button>
         <button
@@ -53,21 +44,14 @@
             :src="Icons.atEmail"
             alt="email"
             :class="{ active: activeIcon === 'email' }"
-          >
+          />
           <span class="btn-text">Контакты</span>
         </button>
       </div>
       <div class="btn_bottom">
         <HeaderButtons v-if="showMobileButtons" />
-        <MyButton
-          class="btn_discount"
-          @click="handleDiscountClick"
-        >
-          <img
-            class="img_discount"
-            :src="Icons.Light"
-            alt="light"
-          >
+        <MyButton class="btn_discount" @click="handleDiscountClick">
+          <img class="img_discount" :src="Icons.Light" alt="light" />
           <span>Получить скидку <b>25%</b></span>
         </MyButton>
       </div>
@@ -76,11 +60,11 @@
 </template>
 
 <script setup lang="ts">
-import { toRef, ref, onMounted, onUnmounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { MyButton } from '@shared/ui/button';
-import { HeaderButtons } from '@widgets/header';
-import { Icons } from '@shared/ui/icons';
+import { toRef, ref, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
+import { MyButton } from "@shared/ui/button";
+import { HeaderButtons } from "@widgets/header";
+import { Icons } from "@shared/ui/icons";
 
 const router = useRouter();
 
@@ -94,50 +78,50 @@ const handleResize = () => {
 
 const props = defineProps<{ activeIcon: string }>();
 
-const activeIcon = toRef(props, 'activeIcon');
+const activeIcon = toRef(props, "activeIcon");
 
 const emit = defineEmits<{
-  'icon-click': [section: string];
+  "icon-click": [section: string];
   close: [];
 }>();
 
 const toggle = async (section: string) => {
-  if (router.currentRoute.value.name === 'home') {
-    emit('icon-click', section);
-    emit('close');
+  if (router.currentRoute.value.name === "home") {
+    emit("icon-click", section);
+    emit("close");
     return;
   }
 
-  await router.push({ name: 'home' });
+  await router.push({ name: "home" });
 
   setTimeout(() => {
-    emit('icon-click', section);
-    emit('close');
+    emit("icon-click", section);
+    emit("close");
   }, 100);
 };
 
 const handleDiscountClick = async () => {
-  if (router.currentRoute.value.name === 'home') {
-    emit('icon-click', 'email');
-    emit('close');
+  if (router.currentRoute.value.name === "home") {
+    emit("icon-click", "email");
+    emit("close");
     return;
   }
 
-  await router.push({ name: 'home' });
+  await router.push({ name: "home" });
 
   setTimeout(() => {
-    emit('icon-click', 'email');
-    emit('close');
+    emit("icon-click", "email");
+    emit("close");
   }, 100);
 };
 
 onMounted(() => {
   showMobileButtons.value = !!isMobile.value;
-  window.addEventListener('resize', handleResize);
+  window.addEventListener("resize", handleResize);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
+  window.removeEventListener("resize", handleResize);
 });
 </script>
 
@@ -145,7 +129,7 @@ onUnmounted(() => {
 .main {
   display: flex;
   margin: 22px 22px 0 22px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .logo__main {
@@ -153,8 +137,8 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2vh 2vh 2vh 2vh;
-  margin-top: 1vh;
+  padding: 24px;
+  margin: 1vh 0;
 }
 
 .sidebar__logo {
@@ -162,7 +146,6 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 1vh 2vw;
 }
 
 .close-btn {
@@ -187,6 +170,12 @@ onUnmounted(() => {
   height: auto;
 }
 
+@media (min-width: 1921px) {
+  .img_n31 {
+    width: 300px;
+  }
+}
+
 .img_plz {
   width: 20px;
   height: 20px;
@@ -195,7 +184,8 @@ onUnmounted(() => {
 }
 
 .img_plz.active {
-  filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%) hue-rotate(214deg) brightness(100%) contrast(105%);
+  filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%)
+    hue-rotate(214deg) brightness(100%) contrast(105%);
 }
 
 .sidebar__main {
@@ -203,19 +193,20 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: space-between;
   width: 256px;
+  padding: 0 20px;
   height: 93vh;
   max-width: 30vh;
   min-width: 8vh;
   background-color: white;
   border-radius: 32px;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
+  margin-top: 1vh;
 }
 
 .btn {
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 1vh;
   background-color: white;
   border: 0 solid white;
   color: #898989;
@@ -231,7 +222,7 @@ onUnmounted(() => {
 }
 
 .btn-text {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 18px;
 }
 
@@ -244,8 +235,7 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 48px;
-  padding: 1.7vh 0.5vw;
+  padding: 10px 20px;
   background-color: #0652ff;
   border: 0 solid white;
   color: #ffffff;
@@ -254,6 +244,10 @@ onUnmounted(() => {
   cursor: pointer;
   white-space: nowrap;
   font-size: 16px;
+
+  span {
+    text-wrap: auto;
+  }
 }
 
 .btn_discount:hover {
@@ -271,16 +265,38 @@ onUnmounted(() => {
 }
 
 .img_discount {
-  width: 16px;
-  height: 20px;
+  width: 1.5vw;
+  height: 1.5vw;
   margin-right: 6px;
 }
 
 .btn {
   font-size: 21px;
-  padding: 1.5vh;
+  padding: 24px;
 }
 
+@media (min-width: 1921px) {
+  .btn {
+    font-size: 21px;
+    padding: 32px 24px;
+  }
+  .btn-text {
+    font-size: clamp(20px, 1vmax, 40px);
+  }
+  .img_plz {
+    width: 28px;
+    height: 28px;
+  }
+
+  .sidebar__main {
+    width: 384px;
+  }
+}
+@media (max-width: 1921px) {
+  .btn-text {
+    font-size: 20px;
+  }
+}
 @media (max-width: 1470px) {
   .btn_discount {
     font-size: 16px;

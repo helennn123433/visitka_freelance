@@ -44,6 +44,7 @@
               image: type.image,
               price: undefined
             }"
+            :show-admin-controls="authStore.isAuthenticated"
             :show-price="false"
             :is-subservice-type="true"
             :subservice-id="getSubserviceIdForType(type.id)"
@@ -368,18 +369,15 @@ $blue: #0652FF;
 }
 
 .btn {
-  width: 150px;
-  height: 40px;
-  margin: 0 10px 10px 0;
-
-  &__delete {
-    width: 200px;
-    height: 40px;
-  }
+  margin: 0 10px 20px 0;
 
   &__delete:hover {
     background-color: #082f8b;
   }
+}
+
+.btn__delete {
+  margin: 0 10px 20px 10px;
 }
 
 .admin-actions {
@@ -405,5 +403,12 @@ $blue: #0652FF;
     gap: 3vw;
     margin-bottom: 3vw;
   }
+}
+
+@media (min-width: 1921px) {
+  .about-us-header
+    span {
+      font-size: clamp(40px, 5vw, 100px);
+    }
 }
 </style>

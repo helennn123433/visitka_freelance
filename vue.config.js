@@ -32,6 +32,7 @@ module.exports = defineConfig({
         '@entities': path.resolve(__dirname, 'src/entities'),
         '@shared': path.resolve(__dirname, 'src/shared')
       }
-    }
+    },
+    devtool: 'source-map'
   }
 });

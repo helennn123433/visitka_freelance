@@ -1,5 +1,16 @@
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter_normal', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: "Inter_normal", sans-serif;
+}
+
+@media (min-width: 1921px) {
+  * {
+    font-size: clamp(20px, 1vmax, 40px);
+  }
+
+  button,
+  input {
+    font-size: clamp(20px, 1vmax, 40px) !important;
+  }
 }

@@ -1,27 +1,29 @@
 <template>
-  <div class="form-file">
-    <input
-      ref="fileInput"
-      type="file"
-      class="form-file__input"
-      @change="onFileChange"
-    >
-  </div>
+  <div>
+    <div class="form-file">
+      <input
+        ref="fileInput"
+        type="file"
+        class="form-file__input"
+        @change="onFileChange"
+      >
+    </div>
 
-  <div
-    class="form-file__dropzone"
-    @click="fileInput?.click()"
-  >
-    <span v-if="!preview">
-      Выберите файл
-    </span>
-
-    <img
-      v-else
-      :src="preview"
-      alt="Preview"
-      class="form-file__preview"
+    <div
+      class="form-file__dropzone"
+      @click="fileInput?.click()"
     >
+      <span v-if="!preview">
+        Выберите файл
+      </span>
+
+      <img
+        v-else
+        :src="preview"
+        alt="Preview"
+        class="form-file__preview"
+      >
+    </div>
   </div>
 </template>
 

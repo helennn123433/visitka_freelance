@@ -25,12 +25,15 @@
             :key="example.id"
             class="card"
             @mouseenter="hoveredExample = example.id"
+            @click="openDetailsModal(example)"
+            style="cursor: pointer"
             @mouseleave="hoveredExample = null"
           >
             <img
-              :src="example.image"
+              :src="getImageUrl(example.image)"
               :alt="'Example ' + example.id"
               class="image"
+              loading="lazy"
             />
             <div
               v-if="authStore.isAuthenticated && hoveredExample === example.id"
@@ -72,6 +75,7 @@
       </div>
     </div>
 
+    
     <AddExampleDialog
       v-if="showAddDialog && typeId"
       :type-id="typeId"
@@ -90,7 +94,7 @@
     <DeleteExampleDialog
       v-if="showDeleteDialog"
       :item-id="selectedExampleId"
-      :item-image="selectedExampleImage"
+      :item-image="getImageUrl(selectedExampleImage)"
       :type-id="selectedTypeId"
       @confirm="handleDeleteExample"
       @cancel="closeDeleteDialog"
@@ -102,27 +106,34 @@
       :type="notification.state.type"
       @close="notification.hide"
     />
+    <ExampleDetailsDialog
+      v-if="showDetailsDialog && selectedExample"
+      :example="selectedExample"
+      @close="showDetailsDialog = false"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { MyHeader } from "@shared/ui/header";
-import { MyButton } from "@shared/ui/button";
-import { Icons } from "@shared/ui/icons";
-import { NotificationComp } from "@shared/ui/notification";
-import { Breadcrumbs, type BreadcrumbItem } from "@shared/ui/breadcrumbs";
-import { useNotification } from "@shared/lib";
-import { useServiceStore } from "@entities/service";
-import { useSubserviceStore } from "@entities/subservice";
+import { ref, onMounted, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { MyHeader } from '@shared/ui/header';
+import { MyButton } from '@shared/ui/button';
+import { Icons } from '@shared/ui/icons';
+import { NotificationComp } from '@shared/ui/notification';
+import { Breadcrumbs, type BreadcrumbItem } from '@shared/ui/breadcrumbs';
+import { getImageUrl } from '@shared/lib/getImageUrl';
+import { useNotification } from '@shared/lib';
+import { useServiceStore } from '@entities/service';
+import { useSubserviceStore } from '@entities/subservice';
 import { useExampleStore } from "@entities/example";
-import type { Example } from "@entities/example";
-import { useAuthStore } from "@features/auth";
+import type { Example } from '@entities/example';
+import { useAuthStore } from '@features/auth';
 import {
   AddExampleDialog,
   EditExampleDialog,
   DeleteExampleDialog,
+  ExampleDetailsDialog
 } from "@features/example-crud";
 
 const route = useRoute();
@@ -147,6 +158,7 @@ const showAddDialog = ref(false);
 const showEditDialog = ref(false);
 const showDeleteDialog = ref(false);
 const hoveredExample = ref<string | null>(null);
+  const showDetailsDialog = ref(false);
 
 const selectedExampleId = ref<string>("");
 const selectedExampleImage = ref<string>("");
@@ -182,6 +194,11 @@ const openDeleteModal = (example: Example) => {
   selectedExampleImage.value = example.image;
   selectedTypeId.value = example.typeId;
   showDeleteDialog.value = true;
+};
+
+const openDetailsModal = (example: Example) => {
+  selectedExample.value = example;
+  showDetailsDialog.value = true;
 };
 
 const closeDeleteDialog = () => {

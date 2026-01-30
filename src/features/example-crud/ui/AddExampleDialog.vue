@@ -13,33 +13,40 @@
             Добавить пример для типа: <strong> {{ typeInfo.title }} </strong>
           </p>
         </div>
+        <FormInput
+          v-model="formData.title"
+          label="Название проекта"
+          placeholder="Введите название"
+          :required="true"
+          :error="showValidation && !formData.title ? 'Обязательное поле' : ''"
+        />
+
+        <FormInput
+          v-model="formData.description"
+          label="Описание"
+          placeholder="Краткое описание работы"
+          :required="true"
+          :error="showValidation && !formData.description ? 'Обязательное поле' : ''"
+        />
+
+        <FormInput
+          v-model.number="formData.price"
+          type="number"
+          label="Цена"
+          placeholder="0"
+          :required="true"
+          :min="0"
+          :error="showValidation && formData.price <= 0 ? 'Укажите цену' : ''"
+        />
 
         <div class="form-group">
-          <label>URL изображения:</label>
-          <input
-            v-model="formData.image"
-            required
-            placeholder="Введите URL изображения"
-            :class="{ error: !formData.image && showValidation }"
+          <label>Изображение:</label>
+          <FileInput 
+            v-model="formData.file" 
           />
-          <span v-if="!formData.image && showValidation" class="error-message">
+          <span v-if="!formData.file && showValidation" class="error-message">
             Обязательное поле
           </span>
-        </div>
-
-        <div v-if="formData.image" class="preview-section">
-          <label>Предпросмотр:</label>
-          <div class="preview-image">
-            <img
-              v-show="!imageError"
-              :src="formData.image"
-              alt="Предпросмотр"
-              @error="imageError = true"
-            />
-            <div v-if="imageError" class="preview-error">
-              Не удалось загрузить изображение
-            </div>
-          </div>
         </div>
 
         <div class="dialog-actions">
@@ -62,12 +69,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { useExampleStore } from "@entities/example";
-import { useSubserviceStore, type SubserviceType } from "@entities/subservice";
-import { MyButton } from "@shared/ui/button";
-import { NotificationComp } from "@shared/ui/notification";
-import { useNotification } from "@shared/lib";
+import { ref, computed } from 'vue';
+import { useExampleStore } from '@entities/example';
+import { useSubserviceStore, type SubserviceType } from '@entities/subservice';
+import { MyButton } from '@shared/ui/button';
+import { NotificationComp } from '@shared/ui/notification';
+import { useNotification } from '@shared/lib';
+import { FileInput, FormInput } from '@/shared/ui/dialog';
 
 interface Props {
   typeId: string;
@@ -84,10 +92,12 @@ const subserviceStore = useSubserviceStore();
 const notification = useNotification();
 const isLoading = ref(false);
 const showValidation = ref(false);
-const imageError = ref(false);
 
 const formData = ref({
-  image: "",
+  title: "",
+  description: "",
+  price: 0,
+  file: null as File | null,
 });
 
 const dialogTitle = computed(() => "Добавить пример работы");
@@ -100,9 +110,14 @@ const typeInfo = computed<SubserviceType | null>(() => {
   return null;
 });
 
-const validateForm = (): boolean => {
+const validate = () => {
   showValidation.value = true;
-  return !!formData.value.image.trim();
+  return (
+    formData.value.title.trim() !== "" &&
+    formData.value.description.trim() !== "" &&
+    formData.value.price > 0 &&
+    formData.value.file !== null
+  );
 };
 
 const handleClose = () => {
@@ -110,8 +125,8 @@ const handleClose = () => {
 };
 
 const handleSubmit = async () => {
-  if (!validateForm()) {
-    notification.showError("Введите URL изображения");
+  if (!validate()) {
+    notification.showError("Заполните все обязательные поля");
     return;
   }
 
@@ -121,22 +136,19 @@ const handleSubmit = async () => {
   }
 
   isLoading.value = true;
-
   try {
     await exampleStore.addExample({
       typeId: props.typeId,
-      image: formData.value.image,
+      title: formData.value.title,
+      description: formData.value.description,
+      price: formData.value.price,
+      image: formData.value.file as File,
     });
 
     emit("created");
     emit("close");
-  } catch (error) {
-    console.error("Ошибка при добавлении примера:", error);
-    notification.showError(
-      error instanceof Error
-        ? error.message
-        : "Произошла ошибка при добавлении",
-    );
+  } catch (error: any) {
+    notification.showError(error.message || "Ошибка при создании");
   } finally {
     isLoading.value = false;
   }

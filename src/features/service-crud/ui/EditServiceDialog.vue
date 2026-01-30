@@ -23,7 +23,7 @@
       required
       :error="errors.price"
     />
-    <FileInput v-model="form.image"/>
+    <FileInput v-model="form.image" />
   </FormDialog>
 </template>
 

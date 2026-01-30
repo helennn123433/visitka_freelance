@@ -1,18 +1,27 @@
 <template>
-  <div class="dialog-overlay" @click.self="handleClose">
+  <div 
+    class="dialog-overlay" 
+    @click.self="handleClose"
+  >
     <div class="dialog">
       <h3>{{ dialogTitle }}</h3>
-
-      <div v-if="!typeInfo" class="error-state">
+      <div 
+        v-if="!typeInfo" 
+        class="error-state"
+      >
         <p>Тип не найден</p>
       </div>
 
-      <form v-else @submit.prevent="handleSubmit">
+      <form 
+        v-else 
+        @submit.prevent="handleSubmit"
+      >
         <div>
           <p>
             Добавить пример для типа: <strong> {{ typeInfo.title }} </strong>
           </p>
         </div>
+
         <FormInput
           v-model="formData.title"
           label="Название проекта"
@@ -44,20 +53,32 @@
           <FileInput 
             v-model="formData.file" 
           />
-          <span v-if="!formData.file && showValidation" class="error-message">
+          <span 
+            v-if="!formData.file && showValidation" 
+            class="error-message"
+          >
             Обязательное поле
           </span>
         </div>
 
         <div class="dialog-actions">
-          <MyButton type="submit" :disabled="isLoading" class="btn">
+          <MyButton 
+            type="submit" 
+            :disabled="isLoading" 
+            class="btn"
+          >
             {{ isLoading ? "Добавление..." : "Добавить" }}
           </MyButton>
-          <MyButton type="button" class="btn" @click="handleClose">
+          <MyButton 
+            type="button" 
+            class="btn" 
+            @click="handleClose"
+          >
             Отмена
           </MyButton>
         </div>
       </form>
+
       <NotificationComp
         :visible="notification.state.visible"
         :message="notification.state.message"
@@ -147,8 +168,9 @@ const handleSubmit = async () => {
 
     emit("created");
     emit("close");
-  } catch (error: any) {
-    notification.showError(error.message || "Ошибка при создании");
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Ошибка при создании";
+    notification.showError(message);
   } finally {
     isLoading.value = false;
   }

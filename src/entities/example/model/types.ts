@@ -21,9 +21,11 @@ export interface AddExampleRequest {
 }
 
 export interface UpdateExampleRequest {
-  id: string;
-  typeId: string;
-  image: string;
+  typeId?: string;
+  title?: string;
+  description?: string;
+  price?: number | string;
+  image?: File | Blob;
 }
 
 export interface ServiceTypeProjectsResponse {

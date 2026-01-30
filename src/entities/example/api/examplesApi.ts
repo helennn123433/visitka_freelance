@@ -1,6 +1,6 @@
 import { apiClient, adminClient } from '@shared/api';
 import { API_CONFIG } from '@shared/config';
-import type { Example, ServiceTypeProject, AddExampleRequest } from '../model/types';
+import type { Example, ServiceTypeProject, AddExampleRequest, UpdateExampleRequest } from '../model/types';
 
 const { endpoints } = API_CONFIG;
 
@@ -60,7 +60,7 @@ export const examplesApi = {
     }
   },
 
-  async updateExample(exampleId: string, updateData: any): Promise<void> {
+  async updateExample(exampleId: string, updateData: UpdateExampleRequest): Promise<void> {
   const formData = new FormData();
   if (updateData.image) {
     formData.append('image', updateData.image);

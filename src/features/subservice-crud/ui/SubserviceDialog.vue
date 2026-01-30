@@ -55,7 +55,7 @@
               </span>
             </div>
             <div class="form-group">
-              <FileInput v-model="type.image"/>
+              <FileInput v-model="type.image" />
               <span
                 v-if="!type.image && showValidation"
                 class="error-message"

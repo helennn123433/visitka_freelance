@@ -1,17 +1,28 @@
 <template>
-  <div class="dialog-overlay" @click.self="handleClose">
+  <div 
+    class="dialog-overlay" 
+    @click.self="handleClose"
+  >
     <div class="dialog">
       <h3>{{ dialogTitle }}</h3>
 
       <form @submit.prevent="handleSubmit">
-        <div v-if="availableTypes.length > 0" class="form-group">
+        <div 
+          v-if="availableTypes.length > 0" 
+          class="form-group"
+        >
           <label>Тип:</label>
           <select
             v-model="formData.typeId"
             required
             :class="{ error: !formData.typeId && showValidation }"
           >
-            <option value="" disabled>Выберите тип</option>
+            <option 
+              value="" 
+              disabled
+            >
+              Выберите тип
+            </option>
             <option
               v-for="type in availableTypes"
               :key="type.id"
@@ -20,7 +31,10 @@
               {{ type.title }}
             </option>
           </select>
-          <span v-if="!formData.typeId && showValidation" class="error-message">
+          <span 
+            v-if="!formData.typeId && showValidation" 
+            class="error-message"
+          >
             Обязательное поле
           </span>
         </div>
@@ -49,7 +63,10 @@
         <div class="form-group">
           <label class="label">Изображение</label>
           <FileInput v-model="formData.imageFile" />
-          <small v-if="!formData.imageFile" class="hint">
+          <small 
+            v-if="!formData.imageFile" 
+            class="hint"
+          >
             Оставьте пустым, чтобы не менять текущее фото
           </small>
         </div>
@@ -62,7 +79,11 @@
           >
             {{ isLoading ? "Сохранение..." : "Сохранить изменения" }}
           </MyButton>
-          <MyButton type="button" class="btn" @click="handleClose">
+          <MyButton 
+            type="button" 
+            class="btn" 
+            @click="handleClose"
+          >
             Отмена
           </MyButton>
         </div>

@@ -4,7 +4,9 @@ export interface SubserviceType {
   image: string;
   serviceId: string;
 }
-
+export interface CreateSubserviceDTO extends Omit<Subservice, 'subserviceId' | 'types'> {
+  types?: SubserviceType[];
+}
 export interface Subservice {
   subserviceId: string;
   types: SubserviceType[];

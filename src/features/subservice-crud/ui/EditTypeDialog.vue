@@ -25,7 +25,7 @@
 
         <div class="form-group">
           <label>URL изображения:</label>
-          <FileInput v-model="imageFile"/>
+          <FileInput v-model="imageFile" />
           <span
             v-if="!imageFile && showValidation"
             class="error-message"
@@ -109,7 +109,12 @@ const handleSubmit = async () => {
     notification.showError('Заполните все обязательные поля');
     return;
   }
-
+  const typeId = props.typeData.id;
+    if (!typeId) {
+      notification.showError('ID типа отсутствует');
+      return;
+  }
+    
   isLoading.value = true;
 
   try {
@@ -119,9 +124,9 @@ const handleSubmit = async () => {
     const formDataToSend = new FormData();
     formDataToSend.append('image', imageFile.value as File);
 
-      await subserviceStore.updateSubserviceType(props.typeData.id!, formDataToSend, formData.value.title.trim());
-      emit('updated');
-      emit('close');
+    await subserviceStore.updateSubserviceType(typeId, formDataToSend, formData.value.title.trim());
+    emit('updated');
+    emit('close');
   } catch (error) {
     console.error('Ошибка при редактировании типа:', error);
     notification.showError(error instanceof Error ? error.message : 'Произошла ошибка при сохранении');

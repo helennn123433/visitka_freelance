@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Subservice, SubserviceType } from './types';
+import type { CreateSubserviceDTO, Subservice, SubserviceType } from './types';
 import { subservicesApi } from '../api/subservicesApi';
 import { useAsyncState } from '@shared/lib';
 
@@ -40,7 +40,7 @@ export const useSubserviceStore = defineStore('subserviceStore', () => {
     return subservices.value.find(s => s.subserviceId === subserviceId);
   };
 
-  const addSubservice = async (subserviceData: any): Promise<Subservice> => {
+  const addSubservice = async (subserviceData: CreateSubserviceDTO): Promise<Subservice> => {
   return execute(async () => {
     const cleanData = {
       ...subserviceData,

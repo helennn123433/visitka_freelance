@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { ServiceTypeProject, Example, AddExampleRequest } from './types';
+import type { ServiceTypeProject, Example, AddExampleRequest, UpdateExampleRequest } from './types';
 import { examplesApi } from '../api/examplesApi';
 import { useAsyncState } from '@shared/lib';
 
@@ -47,29 +47,39 @@ export const useExampleStore = defineStore('exampleStore', () => {
 
   const updateExample = async (
     exampleId: string,
-    updates: any,
+    updates: UpdateExampleRequest,
     oldTypeId: string
   ): Promise<void> => {
     return execute(async () => {
       await examplesApi.updateExample(exampleId, updates);
 
-      if (updates.typeId !== oldTypeId) {
+      if (updates.typeId && updates.typeId !== oldTypeId) {
         removeFromType(oldTypeId, exampleId);
       }
       
-      upsertToType(updates.typeId, {
+      let imagePath: string | undefined;
+      
+      if (updates.image instanceof Blob) {
+        imagePath = URL.createObjectURL(updates.image);
+      } else if (typeof updates.image === 'string') {
+        imagePath = updates.image;
+      }
+
+      upsertToType(updates.typeId || oldTypeId, {
         ...updates,
-        image: updates.image instanceof File ? URL.createObjectURL(updates.image) : updates.image 
-      });
+        id: exampleId,
+        image: imagePath
+      } as Partial<Example> & { id: string });
 
     }, 'Не удалось обновить проект');
   };
+
   function removeFromType(typeId: string, id: string) {
-  const project = serviceTypeProjects.value.find(p => p.id === typeId);
-  if (project) project.examples = project.examples.filter(e => e.id !== id);
+    const project = serviceTypeProjects.value.find(p => p.id === typeId);
+    if (project) project.examples = project.examples.filter(e => e.id !== id);
   }
 
-  function upsertToType(typeId: string, data: any) {
+  function upsertToType(typeId: string, data: Partial<Example> & { id: string }) {
     const project = serviceTypeProjects.value.find(p => p.id === typeId);
     if (!project) return;
     
@@ -77,7 +87,7 @@ export const useExampleStore = defineStore('exampleStore', () => {
     if (idx !== -1) {
       project.examples[idx] = { ...project.examples[idx], ...data };
     } else {
-      project.examples.push(data);
+      project.examples.push(data as Example);
     }
   }
 

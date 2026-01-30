@@ -19,22 +19,25 @@
 
     <div class="content">
       <div class="cards-field">
-        <div v-if="examples.length > 0" class="cards-grid">
+        <div 
+          v-if="examples.length > 0" 
+          class="cards-grid"
+        >
           <div
             v-for="example in examples"
             :key="example.id"
+            style="cursor: pointer"
             class="card"
             @mouseenter="hoveredExample = example.id"
-            @click="openDetailsModal(example)"
-            style="cursor: pointer"
             @mouseleave="hoveredExample = null"
+            @click="openDetailsModal(example)"
           >
             <img
               :src="getImageUrl(example.image)"
               :alt="'Example ' + example.id"
               class="image"
               loading="lazy"
-            />
+            >
             <div
               v-if="authStore.isAuthenticated && hoveredExample === example.id"
               class="admin-controls"
@@ -49,7 +52,7 @@
                     :src="Icons.Gear"
                     alt="шестерёнка"
                     title="Редактировать"
-                  />
+                  >
                 </div>
               </div>
               <div class="icon-container">
@@ -62,20 +65,23 @@
                     :src="Icons.Trash"
                     alt="мусорка"
                     title="Удалить"
-                  />
+                  >
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div v-else>
-          <p v-if="isLoading">Загрузка...</p>
-          <p v-else>Примеры работ не найдены</p>
+          <p v-if="isLoading">
+            Загрузка...
+          </p>
+          <p v-else>
+            Примеры работ не найдены
+          </p>
         </div>
       </div>
     </div>
 
-    
     <AddExampleDialog
       v-if="showAddDialog && typeId"
       :type-id="typeId"
@@ -106,6 +112,7 @@
       :type="notification.state.type"
       @close="notification.hide"
     />
+    
     <ExampleDetailsDialog
       v-if="showDetailsDialog && selectedExample"
       :example="selectedExample"

@@ -1,14 +1,31 @@
 <template>
-  <div class="modal-overlay" @click.self="$emit('close')">
+  <div 
+    class="modal-overlay" 
+    @click.self="$emit('close')"
+  >
     <div class="modal-content">
-      <button class="close-btn" @click="$emit('close')">&times;</button>
+      <button 
+        class="close-btn" 
+        @click="$emit('close')"
+      >
+        &times;
+      </button>
       
-      <img :src="getImageUrl(example.image)" :alt="example.title" class="modal-image" />
+      <img 
+        :src="getImageUrl(example.image)" 
+        :alt="example.title" 
+        class="modal-image"
+      >
       
       <div class="modal-info">
         <h3>{{ example.title || 'Без названия' }}</h3>
-        <p class="description">{{ example.description || 'Описание отсутствует' }}</p>
-        <div class="price-tag" v-if="example.price">
+        <p class="description">
+          {{ example.description || 'Описание отсутствует' }}
+        </p>
+        <div 
+          v-if="example.price" 
+          class="price-tag"
+        >
           <span>Цена:</span> <strong>{{ example.price }} ₽</strong>
         </div>
       </div>

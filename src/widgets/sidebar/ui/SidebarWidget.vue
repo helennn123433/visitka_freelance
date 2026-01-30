@@ -4,9 +4,18 @@
       <div>
         <div class="sidebar__logo">
           <div class="logo__main">
-            <img class="img_n31" :src="Icons.H31" alt="Logo_H31" />
+            <img 
+              class="img_n31" 
+              :src="Icons.H31" 
+              alt="Logo_H31"
+            >
           </div>
-          <button class="close-btn" @click="$emit('close')">×</button>
+          <button 
+            class="close-btn" 
+            @click="$emit('close')"
+          >
+            ×
+          </button>
         </div>
         <button
           class="btn"
@@ -18,7 +27,7 @@
             :src="Icons.Info"
             alt="info"
             :class="{ active: activeIcon === 'info' }"
-          />
+          >
           <span class="btn-text">О нас</span>
         </button>
         <button
@@ -31,7 +40,7 @@
             :src="Icons.List"
             alt="list"
             :class="{ active: activeIcon === 'list' }"
-          />
+          >
           <span class="btn-text">Услуги</span>
         </button>
         <button
@@ -44,14 +53,21 @@
             :src="Icons.atEmail"
             alt="email"
             :class="{ active: activeIcon === 'email' }"
-          />
+          >
           <span class="btn-text">Контакты</span>
         </button>
       </div>
       <div class="btn_bottom">
         <HeaderButtons v-if="showMobileButtons" />
-        <MyButton class="btn_discount" @click="handleDiscountClick">
-          <img class="img_discount" :src="Icons.Light" alt="light" />
+        <MyButton 
+          class="btn_discount" 
+          @click="handleDiscountClick"
+        >
+          <img 
+            class="img_discount" 
+            :src="Icons.Light" 
+            alt="light"
+          >
           <span>Получить скидку <b>25%</b></span>
         </MyButton>
       </div>

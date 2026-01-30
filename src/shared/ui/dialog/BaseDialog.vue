@@ -10,7 +10,10 @@
           class="dialog-content"
           :class="[sizeClass, { 'dialog-content--centered': centered }]"
         >
-          <div v-if="$slots.header || title" class="dialog-header">
+          <div 
+            v-if="$slots.header || title" 
+            class="dialog-header"
+          >
             <slot name="header">
               <h3 class="dialog-title">
                 {{ title }}
@@ -22,7 +25,10 @@
             <slot />
           </div>
 
-          <div v-if="$slots.footer" class="dialog-footer">
+          <div 
+            v-if="$slots.footer" 
+            class="dialog-footer"
+          >
             <slot name="footer" />
           </div>
         </div>

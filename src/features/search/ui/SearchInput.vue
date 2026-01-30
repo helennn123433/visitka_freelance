@@ -101,7 +101,7 @@ $light-grey: #EFF0F2;
   }
 
   .search-icon {
-    left: 20px;
+    left: 15px;
     width: 13px;
   }
 }

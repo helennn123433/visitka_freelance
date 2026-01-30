@@ -263,7 +263,12 @@ onMounted(async () => {
   transform: scale(1.2);
   filter: invert(25%) sepia(98%) saturate(2158%) hue-rotate(220deg) brightness(103%) contrast(104%);
 }
-
+@media (max-width: 820px) {
+  .icon {
+    width: 32px;
+    height: 32px;
+  }
+}
 .upperText {
   display: flex;
   flex-direction: column;

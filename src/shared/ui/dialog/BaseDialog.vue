@@ -96,7 +96,7 @@ defineExpose({ close });
   &--medium {
     width: 90%;
     max-width: 25vw;
-    max-height: 23vw;
+    max-height: 26vw;
   }
 
   &--large {

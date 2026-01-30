@@ -25,14 +25,9 @@
 
         <div class="form-group">
           <label>URL изображения:</label>
-          <input
-            v-model="formData.image"
-            required
-            placeholder="Введите URL изображения"
-            :class="{ 'error': !formData.image && showValidation }"
-          >
+          <FileInput v-model="imageFile"/>
           <span
-            v-if="!formData.image && showValidation"
+            v-if="!imageFile && showValidation"
             class="error-message"
           >
             Обязательное поле
@@ -70,6 +65,7 @@
 import { ref, computed } from 'vue';
 import { useSubserviceStore, type SubserviceType } from '@entities/subservice';
 import { MyButton } from '@shared/ui/button';
+import { FileInput } from '@shared/ui/dialog';
 import { NotificationComp } from '@shared/ui/notification';
 import { useNotification } from '@shared/lib';
 
@@ -90,9 +86,10 @@ const showValidation = ref(false);
 
 const formData = ref({
   title: props.typeData.title,
-  image: props.typeData.image,
   serviceId: props.typeData.serviceId
 });
+
+const imageFile = ref<File | null>(null);
 
 const subserviceId = computed(() => {
   return subserviceStore.getSubserviceIdByTypeId(props.typeData.id || '') || '';
@@ -100,7 +97,11 @@ const subserviceId = computed(() => {
 
 const validateForm = (): boolean => {
   showValidation.value = true;
-  return !!(formData.value.title.trim() && formData.value.image.trim());
+  if (!formData.value.title.trim() || !imageFile.value) {
+    notification.showError('Заполните все обязательные поля');
+    return false;
+  }
+  return true;
 };
 
 const handleSubmit = async () => {
@@ -115,27 +116,12 @@ const handleSubmit = async () => {
     if (!subserviceId.value) {
       throw new Error('Не удалось определить родительскую подуслугу');
     }
+    const formDataToSend = new FormData();
+    formDataToSend.append('image', imageFile.value as File);
 
-    const updates: Partial<SubserviceType> = {};
-    let hasUpdates = false;
-
-    if (formData.value.title !== props.typeData.title) {
-      updates.title = formData.value.title.trim();
-      hasUpdates = true;
-    }
-
-    if (formData.value.image !== props.typeData.image) {
-      updates.image = formData.value.image.trim();
-      hasUpdates = true;
-    }
-
-    if (hasUpdates) {
-      await subserviceStore.updateSubserviceType(props.typeData.id || '', updates);
+      await subserviceStore.updateSubserviceType(props.typeData.id!, formDataToSend, formData.value.title.trim());
       emit('updated');
       emit('close');
-    } else {
-      notification.showError('Нет изменений для сохранения');
-    }
   } catch (error) {
     console.error('Ошибка при редактировании типа:', error);
     notification.showError(error instanceof Error ? error.message : 'Произошла ошибка при сохранении');

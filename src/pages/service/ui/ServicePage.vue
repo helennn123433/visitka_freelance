@@ -50,6 +50,7 @@
             :subservice-id="getSubserviceIdForType(type.id)"
             @edit="openEditDialog"
             @click="goToTypeExamples(type)"
+            @delete="openDeleteSubserviceTypeDialog(type.id)"
           />
         </div>
         <div v-else>
@@ -88,6 +89,14 @@
       @cancel="closeDeleteSubserviceDialog"
     />
 
+    <DeleteConfirmationDialog
+      v-if="showDeleteSubserviceTypeDialog"
+      type="subservice"
+      :item-id="currentTypeId || ''"
+      :subservice-id="currentSubservice?.subserviceId || ''"
+      @confirm="handleDeleteSubserviceTypeConfirm"
+      @cancel="closeDeleteSubserviceTypeDialog"
+    />
     <NotificationComp
       :visible="notification.state.visible"
       :message="notification.state.message"
@@ -125,6 +134,7 @@ const serviceTitle = ref<string>(route.query.title as string || '');
 
 const editingType = ref<SubserviceType | null>(null);
 const showDeleteSubserviceDialog = ref(false);
+const showDeleteSubserviceTypeDialog = ref(false);
 
 const types = computed(() => {
   return subserviceStore.getTypesByServiceId(serviceId.value);
@@ -158,6 +168,7 @@ const currentSubservice = computed(() => {
   const subservices = subserviceStore.getSubservicesByServiceId(serviceId.value);
   return subservices.length > 0 ? subservices[0] : null;
 });
+let currentTypeId = null;
 
 const openDeleteSubserviceDialog = () => {
   if (!currentSubservice.value) {
@@ -168,8 +179,21 @@ const openDeleteSubserviceDialog = () => {
   showDeleteSubserviceDialog.value = true;
 };
 
+const openDeleteSubserviceTypeDialog = (type_id: string) => {
+  if (!currentSubservice.value) {
+    notification.showError('Подуслуга не найдена');
+    return;
+  }
+  currentTypeId = type_id;
+  showDeleteSubserviceTypeDialog.value = true;
+};
+
 const closeDeleteSubserviceDialog = () => {
   showDeleteSubserviceDialog.value = false;
+};
+
+const closeDeleteSubserviceTypeDialog = () => {
+  showDeleteSubserviceTypeDialog.value = false;
 };
 
 const handleDeleteSubserviceConfirm = async (data: { itemId: string }) => {
@@ -189,6 +213,26 @@ const handleDeleteSubserviceConfirm = async (data: { itemId: string }) => {
     notification.showError(error instanceof Error ? error.message : 'Ошибка удаления подуслуги');
   } finally {
     closeDeleteSubserviceDialog();
+  }
+};
+
+const handleDeleteSubserviceTypeConfirm = async (data: { itemId: string, subserviceId: string}) => {
+  try {
+    const { itemId, subserviceId } = data;
+
+    if (!itemId) {
+      throw new Error('ID подуслуги не указан');
+    }
+
+    await subserviceStore.deleteSubserviceType(subserviceId, itemId);
+    notification.showSuccess('Подуслуга успешно удалена');
+
+    await subserviceStore.fetchSubservices();
+  } catch (error) {
+    console.error('Ошибка удаления подуслуги:', error);
+    notification.showError(error instanceof Error ? error.message : 'Ошибка удаления подуслуги');
+  } finally {
+    closeDeleteSubserviceTypeDialog();
   }
 };
 

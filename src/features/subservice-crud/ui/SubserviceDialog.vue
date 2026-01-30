@@ -11,12 +11,9 @@
         class="form-section"
       >
         <div class="form-group">
-          <label>Создание новой подуслуги для сервиса:</label>
-          <input
-            :value="props.serviceId"
-            :disabled="true"
-            class="disabled-input"
-          >
+          <label>Создание новой подуслуги для сервиса:
+            <strong>{{ serviceId }}</strong>
+          </label>
         </div>
         <div class="info-text">
           <p>Подуслуга будет создана с указанными ниже типами</p>
@@ -58,27 +55,13 @@
               </span>
             </div>
             <div class="form-group">
-              <label>URL изображения {{ index + 1 }}:</label>
-              <input
-                v-model="type.image"
-                required
-                placeholder="Введите URL изображения"
-                :class="{ 'error': !type.image && showValidation }"
-              >
+              <FileInput v-model="type.image"/>
               <span
                 v-if="!type.image && showValidation"
                 class="error-message"
               >
                 Обязательное поле
               </span>
-            </div>
-            <div class="form-group">
-              <label>ID сервиса:</label>
-              <input
-                v-model="type.serviceId"
-                :disabled="true"
-                class="disabled-input"
-              >
             </div>
           </div>
 
@@ -120,11 +103,12 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { useSubserviceStore, type Subservice } from '@entities/subservice';
+import { FileInput } from '@shared/ui/dialog';
 import { MyButton } from '@shared/ui/button';
 
 interface TypeFormData {
   title: string;
-  image: string;
+  image: File | null;
   serviceId: string;
 }
 
@@ -146,7 +130,7 @@ const subserviceStore = useSubserviceStore();
 const typesData = ref<TypeFormData[]>([
   {
     title: '',
-    image: '',
+    image: null,
     serviceId: props.serviceId
   }
 ]);
@@ -176,7 +160,7 @@ const submitButtonText = computed(() => {
 const addTypeField = () => {
   typesData.value.push({
     title: '',
-    image: '',
+    image: null,
     serviceId: props.serviceId
   });
 };
@@ -196,7 +180,6 @@ const validateForm = (): boolean => {
 
   const isValid = typesData.value.every(type =>
     type.title.trim() !== '' &&
-    type.image.trim() !== '' &&
     type.serviceId.trim() !== ''
   );
 
@@ -210,7 +193,7 @@ const handleSubmit = async () => {
     }
 
     isLoading.value = true;
-
+    
     if (props.mode === 'create-subservice') {
       const subservice = await createSubserviceWithTypes();
       emit('created', subservice);
@@ -254,7 +237,6 @@ const addTypesToSubservice = async () => {
   }
 
   for (const type of typesData.value) {
-    console.log('Добавление типа:', type);
     try {
       await subserviceStore.addSubserviceType(props.subserviceId, {
         title: type.title,
@@ -280,6 +262,7 @@ watch(typesData, () => {
     showValidation.value = false;
   }
 }, { deep: true });
+
 </script>
 
 <style scoped>

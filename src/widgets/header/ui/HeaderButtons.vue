@@ -32,23 +32,55 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, computed } from 'vue';
 import { useAuthStore } from '@features/auth';
 import { Icons } from '@shared/ui/icons';
 import { MyButton } from '@shared/ui/button';
+import { API_CONFIG } from '@shared/config';
+import { apiClient } from '@shared/api';
+
+const { endpoints } = API_CONFIG;
 
 const authStore = useAuthStore();
+const contacts = ref([]);
+
+
+const phone = computed(() => getContactByIcon('PhoneBlue')?.title);
+const telegram = computed(() => getContactByIcon('TelegramBlue')?.title);
+const email = computed(() => getContactByIcon('EmailBlue')?.title);
+
+
+const loadContacts = async () => {
+  try {
+    const response = await apiClient.get(endpoints.contacts);
+    contacts.value = response.data.contacts;
+  } catch (error) {
+    console.error('Error loading contacts:', error);
+  }
+};
+
+const getContactByIcon = (icon: string) =>
+  contacts.value.find(c => c.icon === icon);
+
 
 const handlePhoneClick = () => {
-  window.location.href = 'tel:+79650778987';
+  if (!phone.value) return;
+  window.location.href = `tel:${phone.value.replace(/\D/g, '')}`;
 };
 
 const handleTelegramClick = () => {
-  window.open('https://t.me/frtarget', '_blank');
+  if (!telegram.value) return;
+  window.open(`https://t.me/${telegram.value.replace('@', '')}`, '_blank');
 };
 
 const handleEmailClick = () => {
-  window.location.href = 'mailto:alexpysenkov@gmail.com';
+  if (!email.value) return;
+  window.location.href = `mailto:${email.value}`;
 };
+
+onMounted(() => {
+  loadContacts();
+})
 </script>
 
 <style lang="scss" scoped>

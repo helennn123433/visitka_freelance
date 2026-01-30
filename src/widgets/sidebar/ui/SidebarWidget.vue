@@ -4,11 +4,13 @@
       <div>
         <div class="sidebar__logo">
           <div class="logo__main">
-            <img 
-              class="img_n31" 
-              :src="Icons.H31" 
-              alt="Logo_H31"
-            >
+            <a href="/">
+              <img 
+                class="img_n31" 
+                :src="Icons.H31" 
+                alt="Logo_H31"
+              >
+            </a>
           </div>
           <button 
             class="close-btn" 
@@ -209,7 +211,6 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: space-between;
   width: 256px;
-  padding: 0 20px;
   height: 93vh;
   max-width: 30vh;
   min-width: 8vh;

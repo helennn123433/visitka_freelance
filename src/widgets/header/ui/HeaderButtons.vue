@@ -87,7 +87,7 @@ onMounted(() => {
 .header-buttons {
   display: flex;
   gap: 32px;
-
+  padding: 10px;
   img {
     width: 28px;
     cursor: pointer;
@@ -110,9 +110,15 @@ onMounted(() => {
     }
   }
 }
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .header-buttons {
+    gap: 4vw;
+  }
+}
 @media (max-width: 768px) {
   .header-buttons {
-    gap: 10vw;
+    gap: 6vw;
 
     img {
       width: 25px;

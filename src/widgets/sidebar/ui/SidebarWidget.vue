@@ -87,10 +87,10 @@ import { Icons } from "@shared/ui/icons";
 const router = useRouter();
 
 const showMobileButtons = ref(true);
-const isMobile = ref(window.innerWidth < 769);
+const isMobile = ref(window.innerWidth < 1025);
 
 const handleResize = () => {
-  isMobile.value = window.innerWidth < 769;
+  isMobile.value = window.innerWidth < 1025;
   showMobileButtons.value = !!isMobile.value;
 };
 
@@ -177,7 +177,7 @@ onUnmounted(() => {
   z-index: 1001;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
   .close-btn {
     display: none;
   }
@@ -210,10 +210,9 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 256px;
+  width: 260px;
+  overflow: hidden;
   height: 93vh;
-  max-width: 30vh;
-  min-width: 8vh;
   background-color: white;
   border-radius: 32px;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
@@ -276,9 +275,9 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: 0.5vh;
-  gap: 1vh;
-  margin: 1vh 1.3vh;
+  gap: 10px;
+  padding: 0 20px 20px 20px;
+  box-sizing: border-box;
 }
 
 .img_discount {
@@ -330,6 +329,18 @@ onUnmounted(() => {
   .btn {
     font-size: 15px;
     padding: 0.9vh;
+  }
+}
+@media (max-width: 1024px) {
+  
+  .sidebar__main {
+    width: 100% !important; 
+    max-width: 100% !important;
+    height: 100vh;
+  }
+  .btn_bottom {
+    padding: 24px 16px;
+    margin: 0;
   }
 }
 

@@ -45,7 +45,9 @@
             >
           </div>
         </header>
-        <HeaderWidget v-show="shouldShowCommonComponents" />
+        <HeaderWidget 
+          v-show="shouldShowCommonComponents"
+        />
         <router-view v-slot="{ Component }">
           <component
             :is="Component"
@@ -64,6 +66,9 @@ import { useRoute } from 'vue-router';
 import { SidebarWidget } from '@widgets/sidebar';
 import { HeaderWidget } from '@widgets/header';
 import { useBreakpoints } from '@shared/lib';
+import { useSearchStore } from '@features/search/model/searchStore';
+
+const searchStore = useSearchStore();
 
 const homePage = ref();
 const route = useRoute();
@@ -98,7 +103,11 @@ watch(isMobile, (newIsMobile) => {
     isOpen.value = false;
   }
 });
-
+watch(() => searchStore.searchInput, (newValue) => {
+  if (newValue.trim().length > 0) {
+    homePage.value?.scrollToSection('list'); 
+  }
+});
 defineExpose({
   isOpen,
   toggleSidebar,
@@ -154,7 +163,7 @@ defineExpose({
   padding: 1rem;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
   .mobile-header {
     display: none;
   }
@@ -173,7 +182,7 @@ defineExpose({
   margin: 0 auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .sidebar {
     position: fixed;
     top: 0;
@@ -181,8 +190,8 @@ defineExpose({
     height: 100%;
     z-index: 1000;
     transform: translateX(-130%);
-    width: 70vw !important;
-    max-width: 70vw !important;
+    width: 320px !important; 
+    max-width: 80vw !important;
   }
 
   .sidebar__main {
@@ -207,9 +216,4 @@ defineExpose({
   z-index: 999;
 }
 
-@media screen and (max-width: 1024px) and (min-width: 769px) {
-  .sidebar {
-    padding: 1.5vw;
-  }
-}
 </style>

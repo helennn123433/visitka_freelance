@@ -167,7 +167,7 @@ const goToService = (service: Service) => {
     params: { serviceId: service.id },
   });
 };
-
+ 
 onMounted(async () => {
   try {
     await serviceStore.fetchServices();

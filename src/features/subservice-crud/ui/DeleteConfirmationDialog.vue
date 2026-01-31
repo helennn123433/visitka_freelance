@@ -7,10 +7,10 @@
 
       <div class="modal-body">
         <p v-if="type === 'subservice'">
-          Вы уверены, что хотите удалить подуслугу? Это действие нельзя отменить.
+          Вы уверены, что хотите удалить все подуслуги? Это действие нельзя отменить.
         </p>
         <p v-else-if="type === 'type'">
-          Вы уверены, что хотите удалить тип "<strong>{{ itemTitle }}</strong>"?
+          Вы уверены, что хотите удалить тип?
           Это действие нельзя отменить.
         </p>
         <p v-else>
@@ -85,10 +85,7 @@ const cancel = (e: MouseEvent) => {
 <style scoped>
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -100,11 +97,14 @@ const cancel = (e: MouseEvent) => {
   background: white;
   padding: 24px;
   border-radius: 8px;
-  min-width: 400px;
-  max-width: 500px;
+  width: 25vw;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-
+@media (max-width: 768px) {
+  .modal {
+    width: 80vw;
+  }
+}
 .modal-header {
   margin-bottom: 16px;
 }

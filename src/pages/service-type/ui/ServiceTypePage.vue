@@ -28,8 +28,6 @@
             :key="example.id"
             style="cursor: pointer"
             class="card"
-            @mouseenter="hoveredExample = example.id"
-            @mouseleave="hoveredExample = null"
             @click="openDetailsModal(example)"
           >
             <img
@@ -39,7 +37,7 @@
               loading="lazy"
             >
             <div
-              v-if="authStore.isAuthenticated && hoveredExample === example.id"
+              v-if="authStore.isAuthenticated"
               class="admin-controls"
             >
               <div class="icon-container">
@@ -164,7 +162,6 @@ const examples = ref<Example[]>([]);
 const showAddDialog = ref(false);
 const showEditDialog = ref(false);
 const showDeleteDialog = ref(false);
-const hoveredExample = ref<string | null>(null);
   const showDetailsDialog = ref(false);
 
 const selectedExampleId = ref<string>("");
@@ -310,17 +307,16 @@ $blue: #0652ff;
 }
 
 .cards-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1.5vw;
-  justify-content: center;
   width: 100%;
-  padding: 10px;
 }
 
 .card {
-  width: 240px;
-  height: 240px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
   overflow: hidden;
   position: relative;
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
@@ -343,8 +339,8 @@ $blue: #0652ff;
 }
 
 .icon-background {
-  width: 1.5vw;
-  height: 1.5vw;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.7);
   display: flex;
@@ -356,8 +352,8 @@ $blue: #0652ff;
 }
 
 .delete-icon {
-  width: 1vw;
-  height: 1vw;
+  width: 18px;
+  height: 18px;
   filter: brightness(0) invert(1);
   transition: transform 0.3s ease;
 }
@@ -403,22 +399,15 @@ $blue: #0652ff;
 .btn {
   margin: 0 10px 20px 0;
 }
-@media (min-width: 1921px) {
-  .card {
-    width: 10vw;
-    height: 10vw;
-  }
-  .about-us-header span {
-    font-size: clamp(40px, 5vw, 100px);
-  }
-}
-@media (max-width: 768px) {
-  .serviceTypePage {
-    padding: 1rem;
+@media (max-width: 820px) {
+  .icon-background {
+    width: 44px;
+    height: 44px;
   }
 
-  .card {
-    width: 90%;
+  .delete-icon, .settings-icon {
+    width: 22px;
+    height: 22px;
   }
 }
 </style>

@@ -81,19 +81,19 @@
 
       <div class="dialog-actions">
         <MyButton
+          type="button"
+          class="go_back_btn"
+          @click="handleClose"
+        >
+          Отмена
+        </MyButton>
+        <MyButton
           type="submit"
           :disabled="isLoading"
           class="conf_btn"
           @click="handleSubmit"
         >
           {{ submitButtonText }}
-        </MyButton>
-        <MyButton
-          type="button"
-          class="go_back_btn"
-          @click="handleClose"
-        >
-          Отмена
         </MyButton>
       </div>
     </div>
@@ -268,10 +268,7 @@ watch(typesData, () => {
 <style scoped>
 .dialog-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -283,13 +280,24 @@ watch(typesData, () => {
   background: white;
   padding: 24px;
   border-radius: 8px;
-  min-width: 500px;
-  max-width: 700px;
-  max-height: 80vh;
+  width: 80%;
+  max-width: 650px;
+  max-height: 90vh;
   overflow: auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+@media (min-width: 768px) {
+  .dialog {
+    width: 70vw;
+    padding: 32px;
+  }
+}
 
+@media (min-width: 1200px) {
+  .dialog {
+    width: 500px;
+  }
+}
 .form-section {
   margin-bottom: 24px;
   padding-bottom: 16px;
@@ -429,7 +437,7 @@ watch(typesData, () => {
 
 .dialog-actions {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   gap: 12px;
   margin-top: 24px;
   padding-top: 16px;

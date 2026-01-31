@@ -11,19 +11,17 @@
         <h3>Авторизация</h3>
       </div>
       <div class="auth-model__card__inputs">
-        <input
+        <FormInput
           v-model="login"
           placeholder="логин"
           type="text"
-          class="input"
-        >
+        />
         <div class="password-wrapper">
-          <input
+          <FormInput
             v-model="password"
             :type="passwordFieldType"
             placeholder="пароль"
-            class="input password"
-          >
+          />
           <span
             class="switch-visibility"
             @click="switchVisibility"
@@ -70,6 +68,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@features/auth';
 import { MyButton } from '@shared/ui/button';
+import { FormInput } from '@/shared/ui/dialog';
 import { NotificationComp } from '@shared/ui/notification';
 import { Icons } from '@shared/ui/icons';
 import { apiClient } from '@shared/api';
@@ -171,21 +170,26 @@ const switchVisibility = () => {
 
 <style lang="scss" scoped>
 .auth-model {
-  width: 94vw;
-  height: 100%;
+  width: 100%;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: center;
 
+  .auth-model__card__inputs > :deep(.form-input), 
+  .password-wrapper {
+    width: 100%; 
+  }
   &__card {
     display: flex;
     flex-direction: column;
-    width: 20%;
+    width: 100%;
+    max-width: 400px;
+    min-width: 200px;
     background-color: white;
     border-radius: 32px;
     box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
-    padding: 10px;
-    margin-top: 50px;
+    padding: 24px;
 
     &__title {
       display: flex;
@@ -200,8 +204,7 @@ const switchVisibility = () => {
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      width: 100%;
-      height: 100%;
+      gap: 15px;
     }
 
     &__btns {
@@ -219,36 +222,8 @@ const switchVisibility = () => {
   height: 20px;
 }
 
-.input {
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 32px;
-  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
-  box-sizing: border-box;
-}
-
-.auth-model__card__inputs>input,
-.password-wrapper {
-  width: 70%;
-  margin: 5px;
-}
-
 .password-wrapper {
   position: relative;
-  width: 70%;
-}
-
-.input.password {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 32px;
-  box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
 .switch-visibility {
@@ -267,19 +242,13 @@ const switchVisibility = () => {
   width: 40%;
   padding: 5px;
 }
-
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 480px) {
   .auth-model {
+    padding: 10px;
+    
     &__card {
-      width: 40%;
-    }
-  }
-}
-
-@media screen and (max-width: 425px) {
-  .auth-model {
-    &__card {
-      width: 50%;
+      width: 70%;
+      padding: 10px;
     }
   }
 }

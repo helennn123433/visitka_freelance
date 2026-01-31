@@ -105,6 +105,12 @@ defineExpose({ close });
     max-height: 26vw;
   }
 
+  @media (max-width: 820px) {
+    &--medium {
+      max-width: 90vw;
+      max-height: 80vh;
+    }
+  }
   &--large {
     width: 90%;
     max-width: 640px;
@@ -140,7 +146,6 @@ defineExpose({ close });
   gap: 12px;
 }
 
-// Transitions
 .dialog-enter-active,
 .dialog-leave-active {
   transition: opacity 0.2s ease;

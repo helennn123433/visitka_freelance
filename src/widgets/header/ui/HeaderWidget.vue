@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <SearchInput />
-    <HeaderButtons v-if="showButtons" />
+    <HeaderButtons 
+      v-if="showButtons" 
+    />
   </div>
 </template>
 

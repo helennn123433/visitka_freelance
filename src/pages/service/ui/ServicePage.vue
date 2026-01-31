@@ -28,39 +28,36 @@
         </MyButton>
       </div>
     </div>
-
     <div class="content">
-      <div class="cards-field">
-        <div
-          v-if="types.length > 0"
-          class="cards-grid"
-        >
-          <ServiceCard
-            v-for="type in filteredTypes"
-            :key="type.id"
-            :service="{
-              id: type.id,
-              title: type.title,
-              image: type.image,
-              price: undefined
-            }"
-            :show-admin-controls="authStore.isAuthenticated"
-            :show-price="false"
-            :is-subservice-type="true"
-            :subservice-id="getSubserviceIdForType(type.id)"
-            @edit="openEditDialog"
-            @click="goToTypeExamples(type)"
-            @delete="openDeleteSubserviceTypeDialog(type.id)"
-          />
-        </div>
-        <div v-else>
-          <p v-if="searchStore.isLoading">
-            Загрузка...
-          </p>
-          <p v-else>
-            Услуги не найдены
-          </p>
-        </div>
+      <div
+        v-if="types.length > 0"
+        class="cards-grid"
+      >
+        <ServiceCard
+          v-for="type in filteredTypes"
+          :key="type.id"
+          :service="{
+            id: type.id,
+            title: type.title,
+            image: type.image,
+            price: undefined
+          }"
+          :show-admin-controls="authStore.isAuthenticated"
+          :show-price="false"
+          :is-subservice-type="true"
+          :subservice-id="getSubserviceIdForType(type.id)"
+          @edit="openEditDialog"
+          @click="goToTypeExamples(type)"
+          @delete="openDeleteSubserviceTypeDialog(type.id)"
+        />
+      </div>
+      <div v-else>
+        <p v-if="searchStore.isLoading">
+          Загрузка...
+        </p>
+        <p v-else>
+          Услуги не найдены
+        </p>
       </div>
     </div>
 
@@ -91,7 +88,7 @@
 
     <DeleteConfirmationDialog
       v-if="showDeleteSubserviceTypeDialog"
-      type="subservice"
+      type="type"
       :item-id="currentTypeId || ''"
       :subservice-id="currentSubservice?.subserviceId || ''"
       @confirm="handleDeleteSubserviceTypeConfirm"
@@ -365,12 +362,6 @@ watch(() => route.params.serviceId, (newId) => {
 $white: #FFFFFF;
 $blue: #0652FF;
 
-.card {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
 .image {
   width: 100%;
   height: 100%;
@@ -393,25 +384,21 @@ $blue: #0652FF;
   width: 100%;
 }
 
-.cards-field {
-  flex-grow: 1;
-  min-height: 0;
-  overflow: hidden;
-  width: 100%;
-}
-
 .cards-grid {
-  flex-grow: 1;
-  min-height: 0;
   overflow: hidden;
   overflow-y: auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5vw;
-  justify-content: space-between;
-  align-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 3vw, 32px);
+  row-gap: clamp(16px, 1.5vw, 48px);
+  justify-items: center;
 }
-
+@media (max-width: 767px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 0px;
+  }
+}
 .btn {
   margin: 0 10px 20px 0;
 
@@ -430,12 +417,6 @@ $blue: #0652FF;
 }
 
 @media (max-width: 768px) {
-  .cards-grid {
-    gap: 0;
-    flex-direction: column;
-    align-items: center;
-  }
-
   .servicePage {
     padding: 1rem;
   }

@@ -71,8 +71,8 @@ defineEmits(['close']);
 
 .close-btn {
   position: absolute;
-  top: 10px;
-  right: 15px;
+  top: 3px;
+  right: 3px;
   background: none;
   border: none;
   font-size: 24px;

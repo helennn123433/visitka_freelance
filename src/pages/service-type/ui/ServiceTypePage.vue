@@ -74,7 +74,7 @@
             Загрузка...
           </p>
           <p v-else>
-            Примеры работ не найдены
+            Не существует примеров работы
           </p>
         </div>
       </div>
@@ -304,6 +304,17 @@ $blue: #0652ff;
   min-height: 0;
   overflow: hidden;
   width: 100%;
+
+  p {
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.5;
+    
+    @media (max-width: 768px) {
+      font-size: 1.2rem;
+    }
+  }
 }
 
 .cards-grid {

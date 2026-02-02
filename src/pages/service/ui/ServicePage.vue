@@ -24,7 +24,7 @@
           class="btn__delete"
           @click="openDeleteSubserviceDialog"
         >
-          Удалить подуслугу
+          Удалить все подуслуги
         </MyButton>
       </div>
     </div>
@@ -382,6 +382,17 @@ $blue: #0652FF;
 
 .content {
   width: 100%;
+
+  p {
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.5;
+    
+    @media (max-width: 768px) {
+      font-size: 1.2rem;
+    }
+  }
 }
 
 .cards-grid {

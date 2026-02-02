@@ -10,16 +10,36 @@ export const servicesApi = {
     return response.data;
   },
 
-  async createService(serviceData: Omit<Service, 'id'> & { id?: string }): Promise<Service> {
-    const response = await adminClient.post<Service>(endpoints.admin.services, serviceData);
+  async createService(
+    formData: FormData,
+    params: { title: string; price: number }
+  ): Promise<Service> {
+    const response = await adminClient.post<Service>(
+      endpoints.admin.services,
+      formData,
+      {
+        params,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
     return response.data;
   },
 
-  async updateService(id: string, updatedService: Service): Promise<Service> {
-    const response = await adminClient.put<Service>(
-      `${endpoints.admin.services}/${id}`,
-      updatedService
+  async updateService(id: string, params: { title: string; price: number },
+    formData: FormData
+  ): Promise<Service> {
+    const response = await adminClient.put<Service>(`${endpoints.admin.services}/${id}`, formData,
+      {
+        params,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
     );
+
     return response.data;
   },
 

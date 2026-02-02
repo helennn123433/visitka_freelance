@@ -192,8 +192,8 @@ $white: #FFFFFF;
 }
 
 .icon {
-  width: 30px;
-  height: 30px;
+  width: 1.5vw;
+  height: 1.5vw;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
@@ -202,7 +202,12 @@ $white: #FFFFFF;
   transform: scale(1.2);
   filter: invert(25%) sepia(98%) saturate(2158%) hue-rotate(220deg) brightness(103%) contrast(104%);
 }
-
+@media (max-width: 820px) {
+  .icon {
+    width: 32px;
+    height: 32px;
+  }
+}
 .contacts {
   margin: 0;
   background-color: $white;

@@ -20,25 +20,40 @@ export const useServiceStore = defineStore('serviceStore', () => {
     return services.value.find(service => service.id === id);
   };
 
-  const addService = async (serviceData: Omit<Service, 'id'> & { id?: string }) => {
+  const addService = async ({
+  formData,
+  params,
+  }: {
+    formData: FormData;
+    params: { title: string; price: number };
+  }) => {
     return execute(async () => {
-      const newService = await servicesApi.createService(serviceData);
+      const newService = await servicesApi.createService(formData, params);
       services.value.push(newService);
       return newService;
     }, 'Ошибка при добавлении услуги');
   };
 
-  const updateService = async (id: string, updates: Partial<Service>) => {
+  const updateService = async ({id, params, formData }: {
+    id: string;
+    params: { title: string; price: number };
+    formData: FormData;
+  }) => {
     return execute(async () => {
       const index = services.value.findIndex(s => s.id === id);
+
       if (index === -1) {
         throw new Error(`Услуга с ID ${id} не найдена`);
       }
 
-      const currentService = services.value[index];
-      const updatedService = { ...currentService, ...updates, id };
+      const updatedService = await servicesApi.updateService(
+        id,
+        params,
+        formData
+      );
 
-      services.value[index] = await servicesApi.updateService(id, updatedService);
+      services.value[index] = updatedService;
+      return updatedService;
     }, 'Ошибка при обновлении услуги');
   };
 

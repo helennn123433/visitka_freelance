@@ -1,6 +1,6 @@
 import { apiClient, adminClient } from '@shared/api';
 import { API_CONFIG } from '@shared/config';
-import type { Example, ServiceTypeProject, AddExampleRequest } from '../model/types';
+import type { Example, ServiceTypeProject, AddExampleRequest, UpdateExampleRequest } from '../model/types';
 
 const { endpoints } = API_CONFIG;
 
@@ -25,7 +25,7 @@ export const examplesApi = {
         const matchingExamples = project.examples.filter(example => example.typeId === typeId);
         allExamples.push(...matchingExamples);
       });
-
+      console.log('Полученные примеры:', allExamples);
       return allExamples;
     } catch (error) {
       console.error(`Ошибка при получении примеров для типа ${typeId}:`, error);
@@ -35,33 +35,50 @@ export const examplesApi = {
 
   async addExample(exampleData: AddExampleRequest): Promise<Example> {
     try {
-      const response = await adminClient.post<Example>(
-        endpoints.admin.typeProjects,
-        {
+    const formData = new FormData();
+    formData.append('image', exampleData.image);
+
+    const response = await adminClient.post<Example>(
+      endpoints.admin.typeProjects,
+      formData,
+      {
+        params: {
           typeId: exampleData.typeId,
-          image: exampleData.image
+          title: exampleData.title,
+          description: exampleData.description,
+          price: exampleData.price
+        },
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      );
-      return response.data;
-    } catch (error) {
+      }
+    );
+    return response.data;
+  } catch (error) {
       console.error('Ошибка при добавлении примера:', error);
       throw new Error('Не удалось добавить пример работы');
     }
   },
 
-  async updateExample(exampleId: string, updateData: { typeId: string; image: string }): Promise<void> {
-    try {
-      await adminClient.put(
-        `${endpoints.admin.typeProjects}/${exampleId}`,
-        {
+  async updateExample(exampleId: string, updateData: UpdateExampleRequest): Promise<void> {
+  const formData = new FormData();
+  if (updateData.image) {
+    formData.append('image', updateData.image);
+  }
+
+  await adminClient.put(`${endpoints.admin.typeProjects}/${exampleId}`,formData,
+      {
+        params: {
           typeId: updateData.typeId,
-          image: updateData.image
+          title: updateData.title,
+          description: updateData.description,
+          price: updateData.price
+        },
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      );
-    } catch (error) {
-      console.error('Ошибка при обновлении примера:', error);
-      throw new Error('Не удалось обновить пример работы');
-    }
+      }
+    );
   },
 
   async deleteExample(exampleId: string): Promise<void> {

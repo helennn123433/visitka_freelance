@@ -24,11 +24,10 @@
       required
       :error="errors.price"
     />
-    <FormInput
-      v-model="form.image"
-      label="Изображение"
-      placeholder="URL изображения"
-      :error="errors.image"
+    <FileInput
+      v-model="image"
+      required
+      placeholder="Нажмите, чтобы загрузить фото"
     />
   </FormDialog>
 </template>
@@ -36,24 +35,23 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { useServiceStore } from '@entities/service';
-import { FormDialog, FormInput } from '@shared/ui/dialog';
-import { required, positiveNumber, isUrl, validateForm as validateFormUtil } from '@shared/lib';
+import { FormDialog, FileInput, FormInput } from '@shared/ui/dialog';
+import { required, positiveNumber, validateForm as validateFormUtil } from '@shared/lib';
 
 const serviceStore = useServiceStore();
 
 const isOpen = ref(true);
 const isLoading = ref(false);
+const image = ref<File | null>(null);
 
 const form = reactive({
   title: '',
   price: 0,
-  image: ''
 });
 
 const errors = reactive({
   title: '',
   price: '',
-  image: ''
 });
 
 const emit = defineEmits<{
@@ -65,33 +63,39 @@ const emit = defineEmits<{
 
 const validateForm = (): boolean => {
   const { isValid, errors: validationErrors } = validateFormUtil(
-    { title: form.title, price: form.price, image: form.image },
+    { title: form.title, price: form.price },
     {
       title: [required('Название услуги обязательно')],
-      price: [positiveNumber('Цена должна быть положительным числом')],
-      image: [isUrl('Некорректный URL изображения')]
+      price: [positiveNumber('Цена должна быть положительным числом')]
     }
   );
 
   errors.title = validationErrors.title || '';
   errors.price = validationErrors.price || '';
-  errors.image = validationErrors.image || '';
+
+  if (!image.value) {
+    return false;
+  }
 
   return isValid;
 };
 
 const handleSubmit = async () => {
-  if (!validateForm()) return;
+    if (!validateForm()) return;
 
   isLoading.value = true;
 
   try {
-    await serviceStore.addService({
-      title: form.title,
-      price: Number(form.price),
-      image: form.image
-    });
+    const formData = new FormData();
+    formData.append('image', image.value as File);
 
+    await serviceStore.addService({
+      formData,
+      params: {
+        title: form.title,
+        price: form.price,
+      },
+    });
     emit('service-added');
     emit('success');
     handleClose();
@@ -107,10 +111,9 @@ const handleSubmit = async () => {
 const handleClose = () => {
   form.title = '';
   form.price = 0;
-  form.image = '';
+  image.value = null;
   errors.title = '';
   errors.price = '';
-  errors.image = '';
   emit('toggle-dialog');
 };
 </script>

@@ -19,24 +19,25 @@
 
     <div class="content">
       <div class="cards-field">
-        <div
-          v-if="examples.length > 0"
+        <div 
+          v-if="examples.length > 0" 
           class="cards-grid"
         >
           <div
             v-for="example in examples"
             :key="example.id"
+            style="cursor: pointer"
             class="card"
-            @mouseenter="hoveredExample = example.id"
-            @mouseleave="hoveredExample = null"
+            @click="openDetailsModal(example)"
           >
             <img
-              :src="example.image"
+              :src="getImageUrl(example.image)"
               :alt="'Example ' + example.id"
               class="image"
+              loading="lazy"
             >
             <div
-              v-if="authStore.isAuthenticated && hoveredExample === example.id"
+              v-if="authStore.isAuthenticated"
               class="admin-controls"
             >
               <div class="icon-container">
@@ -73,7 +74,7 @@
             Загрузка...
           </p>
           <p v-else>
-            Примеры работ не найдены
+            Не существует примеров работы
           </p>
         </div>
       </div>
@@ -97,7 +98,7 @@
     <DeleteExampleDialog
       v-if="showDeleteDialog"
       :item-id="selectedExampleId"
-      :item-image="selectedExampleImage"
+      :item-image="getImageUrl(selectedExampleImage)"
       :type-id="selectedTypeId"
       @confirm="handleDeleteExample"
       @cancel="closeDeleteDialog"
@@ -108,6 +109,12 @@
       :message="notification.state.message"
       :type="notification.state.type"
       @close="notification.hide"
+    />
+    
+    <ExampleDetailsDialog
+      v-if="showDetailsDialog && selectedExample"
+      :example="selectedExample"
+      @close="showDetailsDialog = false"
     />
   </div>
 </template>
@@ -120,13 +127,19 @@ import { MyButton } from '@shared/ui/button';
 import { Icons } from '@shared/ui/icons';
 import { NotificationComp } from '@shared/ui/notification';
 import { Breadcrumbs, type BreadcrumbItem } from '@shared/ui/breadcrumbs';
+import { getImageUrl } from '@shared/lib/getImageUrl';
 import { useNotification } from '@shared/lib';
 import { useServiceStore } from '@entities/service';
 import { useSubserviceStore } from '@entities/subservice';
-import { useExampleStore } from '@entities/example';
+import { useExampleStore } from "@entities/example";
 import type { Example } from '@entities/example';
 import { useAuthStore } from '@features/auth';
-import { AddExampleDialog, EditExampleDialog, DeleteExampleDialog } from '@features/example-crud';
+import {
+  AddExampleDialog,
+  EditExampleDialog,
+  DeleteExampleDialog,
+  ExampleDetailsDialog
+} from "@features/example-crud";
 
 const route = useRoute();
 const router = useRouter();
@@ -137,21 +150,23 @@ const authStore = useAuthStore();
 const notification = useNotification();
 
 const serviceId = ref<string>(route.params.serviceId as string);
-const typeId = ref<string>((route.params.typeId as string));
+const typeId = ref<string>(route.params.typeId as string);
 const subserviceId = ref<string>(route.params.subserviceId as string);
-const serviceTitle = ref<string>((route.query.serviceTitle as string) || '');
-const subserviceTitle = ref<string>((route.query.subserviceTitle as string) || '');
+const serviceTitle = ref<string>((route.query.serviceTitle as string) || "");
+const subserviceTitle = ref<string>(
+  (route.query.subserviceTitle as string) || "",
+);
 
 const isLoading = ref(true);
 const examples = ref<Example[]>([]);
 const showAddDialog = ref(false);
 const showEditDialog = ref(false);
 const showDeleteDialog = ref(false);
-const hoveredExample = ref<string | null>(null);
+  const showDetailsDialog = ref(false);
 
-const selectedExampleId = ref<string>('');
-const selectedExampleImage = ref<string>('');
-const selectedTypeId = ref<string>('');
+const selectedExampleId = ref<string>("");
+const selectedExampleImage = ref<string>("");
+const selectedTypeId = ref<string>("");
 
 const selectedExample = ref<Example | null>(null);
 
@@ -160,21 +175,21 @@ const subservice = computed(() => {
 });
 
 const breadcrumbItems = computed<BreadcrumbItem[]>(() => [
-  { label: 'Услуги', to: '/' },
+  { label: "Услуги", to: "/" },
   { label: serviceTitle.value, onClick: () => router.back() },
-  { label: subserviceTitle.value }
+  { label: subserviceTitle.value },
 ]);
 
 const loadExamples = async () => {
   try {
     examples.value = await exampleStore.fetchExamplesByTypeId(typeId.value);
   } catch (error) {
-    console.error('Ошибка загрузки примеров:', error);
+    console.error("Ошибка загрузки примеров:", error);
   }
 };
 
 const handleExampleCreated = async () => {
-  notification.showSuccess('Пример успешно добавлен');
+  notification.showSuccess("Пример успешно добавлен");
   await loadExamples();
 };
 
@@ -185,22 +200,30 @@ const openDeleteModal = (example: Example) => {
   showDeleteDialog.value = true;
 };
 
-const closeDeleteDialog = () => {
-  showDeleteDialog.value = false;
-  selectedExampleId.value = '';
-  selectedExampleImage.value = '';
-  selectedTypeId.value = '';
+const openDetailsModal = (example: Example) => {
+  selectedExample.value = example;
+  showDetailsDialog.value = true;
 };
 
-const handleDeleteExample = async (data: { itemId: string; typeId: string }) => {
+const closeDeleteDialog = () => {
+  showDeleteDialog.value = false;
+  selectedExampleId.value = "";
+  selectedExampleImage.value = "";
+  selectedTypeId.value = "";
+};
+
+const handleDeleteExample = async (data: {
+  itemId: string;
+  typeId: string;
+}) => {
   try {
     await exampleStore.deleteExample(data.typeId, data.itemId);
-    notification.showSuccess('Пример успешно удален');
+    notification.showSuccess("Пример успешно удален");
     await loadExamples();
     closeDeleteDialog();
   } catch (error) {
-    console.error('Ошибка при удалении примера:', error);
-    notification.showError('Не удалось удалить пример');
+    console.error("Ошибка при удалении примера:", error);
+    notification.showError("Не удалось удалить пример");
   }
 };
 
@@ -215,14 +238,14 @@ const closeEditDialog = () => {
 };
 
 const handleExampleUpdated = async () => {
-  notification.showSuccess('Пример успешно обновлен');
+  notification.showSuccess("Пример успешно обновлен");
   await loadExamples();
   closeEditDialog();
 };
 
 onMounted(async () => {
   if (!subserviceId.value || !serviceId.value) {
-    await router.push('/services');
+    await router.push("/services");
     return;
   }
 
@@ -231,7 +254,7 @@ onMounted(async () => {
       await subserviceStore.fetchSubservices();
     }
 
-    if (subservice.value?.types && subservice.value.types.length > 0) {
+    if (!typeId.value && subservice.value?.types &&subservice.value.types.length > 0) {
       typeId.value = subservice.value.types[0].id;
     }
 
@@ -250,9 +273,8 @@ onMounted(async () => {
     if (typeId.value) {
       await loadExamples();
     }
-
   } catch (error) {
-    console.error('Ошибка при инициализации страницы:', error);
+    console.error("Ошибка при инициализации страницы:", error);
   } finally {
     isLoading.value = false;
   }
@@ -260,8 +282,8 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-$white: #FFFFFF;
-$blue: #0652FF;
+$white: #ffffff;
+$blue: #0652ff;
 
 .serviceTypePage {
   display: flex;
@@ -282,20 +304,30 @@ $blue: #0652FF;
   min-height: 0;
   overflow: hidden;
   width: 100%;
+
+  p {
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.5;
+    
+    @media (max-width: 768px) {
+      font-size: 1.2rem;
+    }
+  }
 }
 
 .cards-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1.5vw;
-  justify-content: center;
   width: 100%;
-  padding: 10px;
 }
 
 .card {
-  width: 240px;
-  height: 240px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  height: auto;
   overflow: hidden;
   position: relative;
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
@@ -318,8 +350,8 @@ $blue: #0652FF;
 }
 
 .icon-background {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background-color: rgba(0, 0, 0, 0.7);
   display: flex;
@@ -342,8 +374,8 @@ $blue: #0652FF;
 }
 
 .settings-icon {
-  width: 18px;
-  height: 18px;
+  width: 1vw;
+  height: 1vw;
   filter: brightness(0) invert(1);
   transition: transform 0.3s ease;
   transform-origin: center;
@@ -376,19 +408,17 @@ $blue: #0652FF;
 }
 
 .btn {
-  width: 200px;
-  height: 40px;
-  margin: 0 10px 10px 0;
+  margin: 0 10px 20px 0;
 }
-
-@media (max-width: 768px) {
-  .serviceTypePage {
-    padding: 1rem;
+@media (max-width: 820px) {
+  .icon-background {
+    width: 44px;
+    height: 44px;
   }
 
-  .card {
-    width: 90%;
+  .delete-icon, .settings-icon {
+    width: 22px;
+    height: 22px;
   }
 }
-
 </style>

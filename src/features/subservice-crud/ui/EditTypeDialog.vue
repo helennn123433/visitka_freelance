@@ -25,14 +25,9 @@
 
         <div class="form-group">
           <label>URL изображения:</label>
-          <input
-            v-model="formData.image"
-            required
-            placeholder="Введите URL изображения"
-            :class="{ 'error': !formData.image && showValidation }"
-          >
+          <FileInput v-model="imageFile" />
           <span
-            v-if="!formData.image && showValidation"
+            v-if="!imageFile && showValidation"
             class="error-message"
           >
             Обязательное поле
@@ -41,18 +36,18 @@
 
         <div class="dialog-actions">
           <MyButton
-            type="submit"
-            :disabled="isLoading"
-            class="btn"
-          >
-            {{ isLoading ? 'Сохранение...' : 'Сохранить' }}
-          </MyButton>
-          <MyButton
             type="button"
             class="btn"
             @click="$emit('close')"
           >
             Отмена
+          </MyButton>
+          <MyButton
+            type="submit"
+            :disabled="isLoading"
+            class="btn"
+          >
+            {{ isLoading ? 'Сохранение...' : 'Сохранить' }}
           </MyButton>
         </div>
       </form>
@@ -70,6 +65,7 @@
 import { ref, computed } from 'vue';
 import { useSubserviceStore, type SubserviceType } from '@entities/subservice';
 import { MyButton } from '@shared/ui/button';
+import { FileInput } from '@shared/ui/dialog';
 import { NotificationComp } from '@shared/ui/notification';
 import { useNotification } from '@shared/lib';
 
@@ -90,9 +86,10 @@ const showValidation = ref(false);
 
 const formData = ref({
   title: props.typeData.title,
-  image: props.typeData.image,
   serviceId: props.typeData.serviceId
 });
+
+const imageFile = ref<File | null>(null);
 
 const subserviceId = computed(() => {
   return subserviceStore.getSubserviceIdByTypeId(props.typeData.id || '') || '';
@@ -100,7 +97,11 @@ const subserviceId = computed(() => {
 
 const validateForm = (): boolean => {
   showValidation.value = true;
-  return !!(formData.value.title.trim() && formData.value.image.trim());
+  if (!formData.value.title.trim() || !imageFile.value) {
+    notification.showError('Заполните все обязательные поля');
+    return false;
+  }
+  return true;
 };
 
 const handleSubmit = async () => {
@@ -108,34 +109,24 @@ const handleSubmit = async () => {
     notification.showError('Заполните все обязательные поля');
     return;
   }
-
+  const typeId = props.typeData.id;
+    if (!typeId) {
+      notification.showError('ID типа отсутствует');
+      return;
+  }
+    
   isLoading.value = true;
 
   try {
     if (!subserviceId.value) {
       throw new Error('Не удалось определить родительскую подуслугу');
     }
+    const formDataToSend = new FormData();
+    formDataToSend.append('image', imageFile.value as File);
 
-    const updates: Partial<SubserviceType> = {};
-    let hasUpdates = false;
-
-    if (formData.value.title !== props.typeData.title) {
-      updates.title = formData.value.title.trim();
-      hasUpdates = true;
-    }
-
-    if (formData.value.image !== props.typeData.image) {
-      updates.image = formData.value.image.trim();
-      hasUpdates = true;
-    }
-
-    if (hasUpdates) {
-      await subserviceStore.updateSubserviceType(props.typeData.id || '', updates);
-      emit('updated');
-      emit('close');
-    } else {
-      notification.showError('Нет изменений для сохранения');
-    }
+    await subserviceStore.updateSubserviceType(typeId, formDataToSend, formData.value.title.trim());
+    emit('updated');
+    emit('close');
   } catch (error) {
     console.error('Ошибка при редактировании типа:', error);
     notification.showError(error instanceof Error ? error.message : 'Произошла ошибка при сохранении');
@@ -148,10 +139,7 @@ const handleSubmit = async () => {
 <style scoped>
 .dialog-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -163,11 +151,14 @@ const handleSubmit = async () => {
   background: white;
   padding: 24px;
   border-radius: 8px;
-  min-width: 500px;
-  max-width: 600px;
+  width: 25vw;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-
+@media (max-width: 768px) {
+  .dialog {
+    width: 80vw;
+  }
+}
 .form-group {
   margin-bottom: 16px;
 }
@@ -204,8 +195,8 @@ const handleSubmit = async () => {
 
 .dialog-actions {
   display: flex;
-  justify-content: space-evenly;
   gap: 12px;
+  justify-content: center;
   margin-top: 24px;
 }
 

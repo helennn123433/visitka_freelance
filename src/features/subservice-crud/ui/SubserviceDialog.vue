@@ -11,12 +11,9 @@
         class="form-section"
       >
         <div class="form-group">
-          <label>Создание новой подуслуги для сервиса:</label>
-          <input
-            :value="props.serviceId"
-            :disabled="true"
-            class="disabled-input"
-          >
+          <label>Создание новой подуслуги для сервиса:
+            <strong>{{ serviceId }}</strong>
+          </label>
         </div>
         <div class="info-text">
           <p>Подуслуга будет создана с указанными ниже типами</p>
@@ -58,27 +55,13 @@
               </span>
             </div>
             <div class="form-group">
-              <label>URL изображения {{ index + 1 }}:</label>
-              <input
-                v-model="type.image"
-                required
-                placeholder="Введите URL изображения"
-                :class="{ 'error': !type.image && showValidation }"
-              >
+              <FileInput v-model="type.image" />
               <span
                 v-if="!type.image && showValidation"
                 class="error-message"
               >
                 Обязательное поле
               </span>
-            </div>
-            <div class="form-group">
-              <label>ID сервиса:</label>
-              <input
-                v-model="type.serviceId"
-                :disabled="true"
-                class="disabled-input"
-              >
             </div>
           </div>
 
@@ -98,19 +81,19 @@
 
       <div class="dialog-actions">
         <MyButton
+          type="button"
+          class="go_back_btn"
+          @click="handleClose"
+        >
+          Отмена
+        </MyButton>
+        <MyButton
           type="submit"
           :disabled="isLoading"
           class="conf_btn"
           @click="handleSubmit"
         >
           {{ submitButtonText }}
-        </MyButton>
-        <MyButton
-          type="button"
-          class="go_back_btn"
-          @click="handleClose"
-        >
-          Отмена
         </MyButton>
       </div>
     </div>
@@ -120,11 +103,12 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import { useSubserviceStore, type Subservice } from '@entities/subservice';
+import { FileInput } from '@shared/ui/dialog';
 import { MyButton } from '@shared/ui/button';
 
 interface TypeFormData {
   title: string;
-  image: string;
+  image: File | null;
   serviceId: string;
 }
 
@@ -146,7 +130,7 @@ const subserviceStore = useSubserviceStore();
 const typesData = ref<TypeFormData[]>([
   {
     title: '',
-    image: '',
+    image: null,
     serviceId: props.serviceId
   }
 ]);
@@ -176,7 +160,7 @@ const submitButtonText = computed(() => {
 const addTypeField = () => {
   typesData.value.push({
     title: '',
-    image: '',
+    image: null,
     serviceId: props.serviceId
   });
 };
@@ -196,7 +180,6 @@ const validateForm = (): boolean => {
 
   const isValid = typesData.value.every(type =>
     type.title.trim() !== '' &&
-    type.image.trim() !== '' &&
     type.serviceId.trim() !== ''
   );
 
@@ -210,7 +193,7 @@ const handleSubmit = async () => {
     }
 
     isLoading.value = true;
-
+    
     if (props.mode === 'create-subservice') {
       const subservice = await createSubserviceWithTypes();
       emit('created', subservice);
@@ -254,7 +237,6 @@ const addTypesToSubservice = async () => {
   }
 
   for (const type of typesData.value) {
-    console.log('Добавление типа:', type);
     try {
       await subserviceStore.addSubserviceType(props.subserviceId, {
         title: type.title,
@@ -280,15 +262,13 @@ watch(typesData, () => {
     showValidation.value = false;
   }
 }, { deep: true });
+
 </script>
 
 <style scoped>
 .dialog-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -300,13 +280,24 @@ watch(typesData, () => {
   background: white;
   padding: 24px;
   border-radius: 8px;
-  min-width: 500px;
-  max-width: 700px;
-  max-height: 80vh;
+  width: 80%;
+  max-width: 650px;
+  max-height: 90vh;
   overflow: auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+@media (min-width: 768px) {
+  .dialog {
+    width: 70vw;
+    padding: 32px;
+  }
+}
 
+@media (min-width: 1200px) {
+  .dialog {
+    width: 500px;
+  }
+}
 .form-section {
   margin-bottom: 24px;
   padding-bottom: 16px;
@@ -331,7 +322,6 @@ watch(typesData, () => {
 }
 
 .info-text {
-  background-color: #f0f7ff;
   padding: 12px;
   border-radius: 6px;
   margin-top: 12px;
@@ -351,7 +341,6 @@ watch(typesData, () => {
   padding: 16px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  background-color: #f9f9f9;
 }
 
 .type-fields {
@@ -367,8 +356,8 @@ watch(typesData, () => {
 }
 
 .remove-btn {
-  width: 30px;
-  height: 30px;
+  width: 1.5vw;
+  height: 1.5vw;
   border: none;
   background: #ff6b6b;
   color: white;
@@ -448,7 +437,7 @@ watch(typesData, () => {
 
 .dialog-actions {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   gap: 12px;
   margin-top: 24px;
   padding-top: 16px;

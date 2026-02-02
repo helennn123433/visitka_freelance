@@ -24,41 +24,40 @@
           class="btn__delete"
           @click="openDeleteSubserviceDialog"
         >
-          Удалить подуслугу
+          Удалить все подуслуги
         </MyButton>
       </div>
     </div>
-
     <div class="content">
-      <div class="cards-field">
-        <div
-          v-if="types.length > 0"
-          class="cards-grid"
-        >
-          <ServiceCard
-            v-for="type in filteredTypes"
-            :key="type.id"
-            :service="{
-              id: type.id,
-              title: type.title,
-              image: type.image,
-              price: undefined
-            }"
-            :show-price="false"
-            :is-subservice-type="true"
-            :subservice-id="getSubserviceIdForType(type.id)"
-            @edit="openEditDialog"
-            @click="goToTypeExamples(type)"
-          />
-        </div>
-        <div v-else>
-          <p v-if="searchStore.isLoading">
-            Загрузка...
-          </p>
-          <p v-else>
-            Услуги не найдены
-          </p>
-        </div>
+      <div
+        v-if="types.length > 0"
+        class="cards-grid"
+      >
+        <ServiceCard
+          v-for="type in filteredTypes"
+          :key="type.id"
+          :service="{
+            id: type.id,
+            title: type.title,
+            image: type.image,
+            price: undefined
+          }"
+          :show-admin-controls="authStore.isAuthenticated"
+          :show-price="false"
+          :is-subservice-type="true"
+          :subservice-id="getSubserviceIdForType(type.id)"
+          @edit="openEditDialog"
+          @click="goToTypeExamples(type)"
+          @delete="openDeleteSubserviceTypeDialog(type.id)"
+        />
+      </div>
+      <div v-else>
+        <p v-if="searchStore.isLoading">
+          Загрузка...
+        </p>
+        <p v-else>
+          Услуги не найдены
+        </p>
       </div>
     </div>
 
@@ -87,6 +86,14 @@
       @cancel="closeDeleteSubserviceDialog"
     />
 
+    <DeleteConfirmationDialog
+      v-if="showDeleteSubserviceTypeDialog"
+      type="type"
+      :item-id="currentTypeId || ''"
+      :subservice-id="currentSubservice?.subserviceId || ''"
+      @confirm="handleDeleteSubserviceTypeConfirm"
+      @cancel="closeDeleteSubserviceTypeDialog"
+    />
     <NotificationComp
       :visible="notification.state.visible"
       :message="notification.state.message"
@@ -124,6 +131,7 @@ const serviceTitle = ref<string>(route.query.title as string || '');
 
 const editingType = ref<SubserviceType | null>(null);
 const showDeleteSubserviceDialog = ref(false);
+const showDeleteSubserviceTypeDialog = ref(false);
 
 const types = computed(() => {
   return subserviceStore.getTypesByServiceId(serviceId.value);
@@ -157,6 +165,7 @@ const currentSubservice = computed(() => {
   const subservices = subserviceStore.getSubservicesByServiceId(serviceId.value);
   return subservices.length > 0 ? subservices[0] : null;
 });
+let currentTypeId = null;
 
 const openDeleteSubserviceDialog = () => {
   if (!currentSubservice.value) {
@@ -167,8 +176,21 @@ const openDeleteSubserviceDialog = () => {
   showDeleteSubserviceDialog.value = true;
 };
 
+const openDeleteSubserviceTypeDialog = (type_id: string) => {
+  if (!currentSubservice.value) {
+    notification.showError('Подуслуга не найдена');
+    return;
+  }
+  currentTypeId = type_id;
+  showDeleteSubserviceTypeDialog.value = true;
+};
+
 const closeDeleteSubserviceDialog = () => {
   showDeleteSubserviceDialog.value = false;
+};
+
+const closeDeleteSubserviceTypeDialog = () => {
+  showDeleteSubserviceTypeDialog.value = false;
 };
 
 const handleDeleteSubserviceConfirm = async (data: { itemId: string }) => {
@@ -188,6 +210,26 @@ const handleDeleteSubserviceConfirm = async (data: { itemId: string }) => {
     notification.showError(error instanceof Error ? error.message : 'Ошибка удаления подуслуги');
   } finally {
     closeDeleteSubserviceDialog();
+  }
+};
+
+const handleDeleteSubserviceTypeConfirm = async (data: { itemId: string, subserviceId: string}) => {
+  try {
+    const { itemId, subserviceId } = data;
+
+    if (!itemId) {
+      throw new Error('ID подуслуги не указан');
+    }
+
+    await subserviceStore.deleteSubserviceType(subserviceId, itemId);
+    notification.showSuccess('Подуслуга успешно удалена');
+
+    await subserviceStore.fetchSubservices();
+  } catch (error) {
+    console.error('Ошибка удаления подуслуги:', error);
+    notification.showError(error instanceof Error ? error.message : 'Ошибка удаления подуслуги');
+  } finally {
+    closeDeleteSubserviceTypeDialog();
   }
 };
 
@@ -320,12 +362,6 @@ watch(() => route.params.serviceId, (newId) => {
 $white: #FFFFFF;
 $blue: #0652FF;
 
-.card {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-}
-
 .image {
   width: 100%;
   height: 100%;
@@ -346,40 +382,44 @@ $blue: #0652FF;
 
 .content {
   width: 100%;
-}
 
-.cards-field {
-  flex-grow: 1;
-  min-height: 0;
-  overflow: hidden;
-  width: 100%;
+  p {
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.5;
+    
+    @media (max-width: 768px) {
+      font-size: 1.2rem;
+    }
+  }
 }
 
 .cards-grid {
-  flex-grow: 1;
-  min-height: 0;
   overflow: hidden;
   overflow-y: auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5vw;
-  justify-content: space-between;
-  align-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 3vw, 32px);
+  row-gap: clamp(16px, 1.5vw, 48px);
+  justify-items: center;
 }
-
-.btn {
-  width: 150px;
-  height: 40px;
-  margin: 0 10px 10px 0;
-
-  &__delete {
-    width: 200px;
-    height: 40px;
+@media (max-width: 767px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 0px;
   }
+}
+.btn {
+  margin: 0 10px 20px 0;
 
   &__delete:hover {
     background-color: #082f8b;
   }
+}
+
+.btn__delete {
+  margin: 0 10px 20px 10px;
 }
 
 .admin-actions {
@@ -388,12 +428,6 @@ $blue: #0652FF;
 }
 
 @media (max-width: 768px) {
-  .cards-grid {
-    gap: 0;
-    flex-direction: column;
-    align-items: center;
-  }
-
   .servicePage {
     padding: 1rem;
   }
@@ -405,5 +439,12 @@ $blue: #0652FF;
     gap: 3vw;
     margin-bottom: 3vw;
   }
+}
+
+@media (min-width: 1921px) {
+  .about-us-header
+    span {
+      font-size: clamp(40px, 5vw, 100px);
+    }
 }
 </style>

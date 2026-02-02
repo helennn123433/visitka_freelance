@@ -9,7 +9,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25vh;
   font-family: 'Inter_normal', sans-serif;
   border-radius: 32px;
   background-color: #0652ff;
@@ -17,11 +16,18 @@
   color: #ffffff;
   font-size: 16px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  padding: 16px 24px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .btn:hover {
   background-color: #082f8b;
+}
+
+@media (min-width: 1921px) {
+  .about__us__btn {
+    padding: 24px 60px;
+  }
 }
 </style>

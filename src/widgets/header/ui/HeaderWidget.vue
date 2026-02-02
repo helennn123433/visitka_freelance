@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <SearchInput />
-    <HeaderButtons v-if="showButtons" />
+    <HeaderButtons 
+      v-if="showButtons" 
+    />
   </div>
 </template>
 
@@ -18,33 +20,11 @@ const showButtons = computed(() => !isMobile.value);
 
 <style lang="scss" scoped>
 .header {
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1vw;
-}
-
-.header-buttons {
-  display: flex;
-  gap: 2vw;
-
-  img {
-    width: 2vw;
-    cursor: pointer;
-
-    &:hover {
-      filter: brightness(0.1) invert(0.3);
-    }
-
-    &.phone-icon {
-      width: 1.7vw;
-    }
-
-    &.account-icon {
-      width: 2.5vw;
-    }
-  }
+  padding-right: 1vw;
 }
 
 @media(max-width: 768px) {

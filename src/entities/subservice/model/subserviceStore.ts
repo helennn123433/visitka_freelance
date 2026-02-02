@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Subservice, SubserviceType } from './types';
+import type { CreateSubserviceDTO, Subservice, SubserviceType } from './types';
 import { subservicesApi } from '../api/subservicesApi';
 import { useAsyncState } from '@shared/lib';
 
@@ -40,13 +40,26 @@ export const useSubserviceStore = defineStore('subserviceStore', () => {
     return subservices.value.find(s => s.subserviceId === subserviceId);
   };
 
-  const addSubservice = async (subserviceData: Omit<Subservice, 'subserviceId'> & { subserviceId?: string }): Promise<Subservice> => {
-    return execute(async () => {
-      const newSubservice = await subservicesApi.createSubservice(subserviceData);
-      subservices.value.push(newSubservice);
-      return newSubservice;
-    }, 'Не удалось создать подуслугу');
-  };
+  const addSubservice = async (subserviceData: CreateSubserviceDTO): Promise<Subservice> => {
+  return execute(async () => {
+    const cleanData = {
+      ...subserviceData,
+      types: []
+    };
+
+    const newSubservice = await subservicesApi.createSubservice(cleanData);
+    
+    subservices.value.push(newSubservice);
+
+    if (subserviceData.types && subserviceData.types.length > 0) {
+      for (const type of subserviceData.types) {
+        await addSubserviceType(newSubservice.subserviceId, type);
+      }
+    }
+
+    return newSubservice;
+  }, 'Не удалось создать подуслугу');
+};
 
   const deleteSubservice = async (subserviceId: string): Promise<void> => {
     return execute(async () => {
@@ -83,7 +96,7 @@ export const useSubserviceStore = defineStore('subserviceStore', () => {
     }, 'Не удалось создать тип подуслуги');
   };
 
-  const updateSubserviceType = async (typeId: string, updates: Partial<SubserviceType>): Promise<SubserviceType> => {
+  const updateSubserviceType = async (typeId: string, formData: FormData, title: string): Promise<SubserviceType> => {
     return execute(async () => {
       const subserviceId = getSubserviceIdByTypeId(typeId);
       if (!subserviceId) {
@@ -100,14 +113,14 @@ export const useSubserviceStore = defineStore('subserviceStore', () => {
         throw new Error('Тип не найден');
       }
 
-      const updatedType: SubserviceType = {
-        id: typeId,
-        title: updates.title || currentType.title,
-        image: updates.image || currentType.image,
-        serviceId: updates.serviceId || currentType.serviceId
-      };
+      const updatedParams = new URLSearchParams(
+        [
+          ['title', title],
+          ['serviceId', currentType.serviceId]
+        ]
+      ).toString();
 
-      const serverResponse = await subservicesApi.updateType(subserviceId, typeId, updatedType);
+      const serverResponse = await subservicesApi.updateType(subserviceId, typeId, formData, updatedParams);
 
       const subserviceIndex = subservices.value.findIndex(s => s.subserviceId === subserviceId);
       const types = subservices.value[subserviceIndex]?.types;

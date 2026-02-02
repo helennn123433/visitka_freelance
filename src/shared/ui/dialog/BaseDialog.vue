@@ -10,8 +10,8 @@
           class="dialog-content"
           :class="[sizeClass, { 'dialog-content--centered': centered }]"
         >
-          <div
-            v-if="$slots.header || title"
+          <div 
+            v-if="$slots.header || title" 
             class="dialog-header"
           >
             <slot name="header">
@@ -25,8 +25,8 @@
             <slot />
           </div>
 
-          <div
-            v-if="$slots.footer"
+          <div 
+            v-if="$slots.footer" 
             class="dialog-footer"
           >
             <slot name="footer" />
@@ -38,18 +38,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import type { DialogProps } from '@shared/types';
+import { computed } from "vue";
+import type { DialogProps } from "@shared/types";
 
 const props = withDefaults(defineProps<DialogProps>(), {
-  title: '',
-  size: 'medium',
+  title: "",
+  size: "medium",
   closeOnOverlay: true,
-  centered: true
+  centered: true,
 });
 
 const emit = defineEmits<{
-  'update:modelValue': [value: boolean];
+  "update:modelValue": [value: boolean];
   close: [];
 }>();
 
@@ -57,14 +57,14 @@ const sizeClass = computed(() => `dialog-content--${props.size}`);
 
 const handleOverlayClick = () => {
   if (props.closeOnOverlay) {
-    emit('update:modelValue', false);
-    emit('close');
+    emit("update:modelValue", false);
+    emit("close");
   }
 };
 
 const close = () => {
-  emit('update:modelValue', false);
-  emit('close');
+  emit("update:modelValue", false);
+  emit("close");
 };
 
 defineExpose({ close });
@@ -95,14 +95,22 @@ defineExpose({ close });
 
   &--small {
     width: 90%;
-    max-width: 320px;
+    max-width: 20vw;
+    max-height: 15vw;
   }
 
   &--medium {
     width: 90%;
-    max-width: 480px;
+    max-width: 25vw;
+    max-height: 26vw;
   }
 
+  @media (max-width: 820px) {
+    &--medium {
+      max-width: 90vw;
+      max-height: 80vh;
+    }
+  }
   &--large {
     width: 90%;
     max-width: 640px;
@@ -138,7 +146,6 @@ defineExpose({ close });
   gap: 12px;
 }
 
-// Transitions
 .dialog-enter-active,
 .dialog-leave-active {
   transition: opacity 0.2s ease;

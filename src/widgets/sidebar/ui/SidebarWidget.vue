@@ -4,14 +4,16 @@
       <div>
         <div class="sidebar__logo">
           <div class="logo__main">
-            <img
-              class="img_n31"
-              :src="Icons.H31"
-              alt="Logo_H31"
-            >
+            <a href="/">
+              <img 
+                class="img_n31" 
+                :src="Icons.H31" 
+                alt="Logo_H31"
+              >
+            </a>
           </div>
-          <button
-            class="close-btn"
+          <button 
+            class="close-btn" 
             @click="$emit('close')"
           >
             ×
@@ -59,13 +61,13 @@
       </div>
       <div class="btn_bottom">
         <HeaderButtons v-if="showMobileButtons" />
-        <MyButton
-          class="btn_discount"
+        <MyButton 
+          class="btn_discount" 
           @click="handleDiscountClick"
         >
-          <img
-            class="img_discount"
-            :src="Icons.Light"
+          <img 
+            class="img_discount" 
+            :src="Icons.Light" 
             alt="light"
           >
           <span>Получить скидку <b>25%</b></span>
@@ -76,68 +78,68 @@
 </template>
 
 <script setup lang="ts">
-import { toRef, ref, onMounted, onUnmounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { MyButton } from '@shared/ui/button';
-import { HeaderButtons } from '@widgets/header';
-import { Icons } from '@shared/ui/icons';
+import { toRef, ref, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
+import { MyButton } from "@shared/ui/button";
+import { HeaderButtons } from "@widgets/header";
+import { Icons } from "@shared/ui/icons";
 
 const router = useRouter();
 
 const showMobileButtons = ref(true);
-const isMobile = ref(window.innerWidth < 769);
+const isMobile = ref(window.innerWidth < 1025);
 
 const handleResize = () => {
-  isMobile.value = window.innerWidth < 769;
+  isMobile.value = window.innerWidth < 1025;
   showMobileButtons.value = !!isMobile.value;
 };
 
 const props = defineProps<{ activeIcon: string }>();
 
-const activeIcon = toRef(props, 'activeIcon');
+const activeIcon = toRef(props, "activeIcon");
 
 const emit = defineEmits<{
-  'icon-click': [section: string];
+  "icon-click": [section: string];
   close: [];
 }>();
 
 const toggle = async (section: string) => {
-  if (router.currentRoute.value.name === 'home') {
-    emit('icon-click', section);
-    emit('close');
+  if (router.currentRoute.value.name === "home") {
+    emit("icon-click", section);
+    emit("close");
     return;
   }
 
-  await router.push({ name: 'home' });
+  await router.push({ name: "home" });
 
   setTimeout(() => {
-    emit('icon-click', section);
-    emit('close');
+    emit("icon-click", section);
+    emit("close");
   }, 100);
 };
 
 const handleDiscountClick = async () => {
-  if (router.currentRoute.value.name === 'home') {
-    emit('icon-click', 'email');
-    emit('close');
+  if (router.currentRoute.value.name === "home") {
+    emit("icon-click", "email");
+    emit("close");
     return;
   }
 
-  await router.push({ name: 'home' });
+  await router.push({ name: "home" });
 
   setTimeout(() => {
-    emit('icon-click', 'email');
-    emit('close');
+    emit("icon-click", "email");
+    emit("close");
   }, 100);
 };
 
 onMounted(() => {
   showMobileButtons.value = !!isMobile.value;
-  window.addEventListener('resize', handleResize);
+  window.addEventListener("resize", handleResize);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
+  window.removeEventListener("resize", handleResize);
 });
 </script>
 
@@ -145,7 +147,7 @@ onUnmounted(() => {
 .main {
   display: flex;
   margin: 22px 22px 0 22px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .logo__main {
@@ -153,8 +155,8 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2vh 2vh 2vh 2vh;
-  margin-top: 1vh;
+  padding: 24px;
+  margin: 1vh 0;
 }
 
 .sidebar__logo {
@@ -162,7 +164,6 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 1vh 2vw;
 }
 
 .close-btn {
@@ -176,7 +177,7 @@ onUnmounted(() => {
   z-index: 1001;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
   .close-btn {
     display: none;
   }
@@ -187,6 +188,12 @@ onUnmounted(() => {
   height: auto;
 }
 
+@media (min-width: 1921px) {
+  .img_n31 {
+    width: 300px;
+  }
+}
+
 .img_plz {
   width: 20px;
   height: 20px;
@@ -195,27 +202,27 @@ onUnmounted(() => {
 }
 
 .img_plz.active {
-  filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%) hue-rotate(214deg) brightness(100%) contrast(105%);
+  filter: brightness(0) saturate(100%) invert(25%) sepia(99%) saturate(2476%)
+    hue-rotate(214deg) brightness(100%) contrast(105%);
 }
 
 .sidebar__main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 256px;
+  width: 260px;
+  overflow: hidden;
   height: 93vh;
-  max-width: 30vh;
-  min-width: 8vh;
   background-color: white;
   border-radius: 32px;
   box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.25);
+  margin-top: 1vh;
 }
 
 .btn {
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 1vh;
   background-color: white;
   border: 0 solid white;
   color: #898989;
@@ -231,7 +238,7 @@ onUnmounted(() => {
 }
 
 .btn-text {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 18px;
 }
 
@@ -244,8 +251,7 @@ onUnmounted(() => {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 48px;
-  padding: 1.7vh 0.5vw;
+  padding: 10px 20px;
   background-color: #0652ff;
   border: 0 solid white;
   color: #ffffff;
@@ -254,6 +260,10 @@ onUnmounted(() => {
   cursor: pointer;
   white-space: nowrap;
   font-size: 16px;
+
+  span {
+    text-wrap: auto;
+  }
 }
 
 .btn_discount:hover {
@@ -265,22 +275,44 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-bottom: 0.5vh;
-  gap: 1vh;
-  margin: 1vh 1.3vh;
+  gap: 10px;
+  padding: 0 20px 20px 20px;
+  box-sizing: border-box;
 }
 
 .img_discount {
-  width: 16px;
-  height: 20px;
+  width: 1.5vw;
+  height: 1.5vw;
   margin-right: 6px;
 }
 
 .btn {
   font-size: 21px;
-  padding: 1.5vh;
+  padding: 24px;
 }
 
+@media (min-width: 1921px) {
+  .btn {
+    font-size: 21px;
+    padding: 32px 24px;
+  }
+  .btn-text {
+    font-size: clamp(20px, 1vmax, 40px);
+  }
+  .img_plz {
+    width: 28px;
+    height: 28px;
+  }
+
+  .sidebar__main {
+    width: 384px;
+  }
+}
+@media (max-width: 1921px) {
+  .btn-text {
+    font-size: 20px;
+  }
+}
 @media (max-width: 1470px) {
   .btn_discount {
     font-size: 16px;
@@ -297,6 +329,18 @@ onUnmounted(() => {
   .btn {
     font-size: 15px;
     padding: 0.9vh;
+  }
+}
+@media (max-width: 1024px) {
+  
+  .sidebar__main {
+    width: 100% !important; 
+    max-width: 100% !important;
+    height: 100vh;
+  }
+  .btn_bottom {
+    padding: 24px 16px;
+    margin: 0;
   }
 }
 

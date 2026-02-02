@@ -38,32 +38,43 @@ export const subservicesApi = {
   },
 
   async createType(subserviceId: string, typeData: Omit<SubserviceType, 'id'>): Promise<Subservice> {
-    try {
-      const response = await adminClient.post<Subservice>(
-        `${endpoints.admin.subservices}/${subserviceId}/types`,
-        {
-          title: typeData.title,
-          image: typeData.image,
-          serviceId: typeData.serviceId
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error(`Ошибка при создании типа в подуслуге ${subserviceId}:`, error);
-      throw new Error('Не удалось создать тип');
+  try {
+    const formData = new FormData();
+    
+    if (typeData.image) {
+      formData.append('image', typeData.image);
     }
+
+    const response = await adminClient.post<Subservice>(
+      `${endpoints.admin.subservices}/${subserviceId}/types`,
+      formData,
+      {
+        params: {
+          title: typeData.title,
+          serviceId: typeData.serviceId
+        },
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`Ошибка при создании типа в подуслуге ${subserviceId}:`, error);
+    throw new Error('Не удалось создать тип');
+  }
   },
 
-  async updateType(subserviceId: string, typeId: string, typeData: SubserviceType): Promise<SubserviceType> {
+  async updateType(subserviceId: string, typeId: string, formData: FormData, params: string): Promise<SubserviceType> {
     try {
       const response = await adminClient.put<SubserviceType>(
-        `${endpoints.admin.subservices}/${subserviceId}/types/${typeId}`,
+        `${endpoints.admin.subservices}/${subserviceId}/types/${typeId}?${params}`,
+        formData,
         {
-          id: typeId,
-          title: typeData.title,
-          image: typeData.image,
-          serviceId: typeData.serviceId
-        }
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
       );
       return response.data;
     } catch (error) {

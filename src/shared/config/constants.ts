@@ -4,8 +4,8 @@
 
 // Разграничения экранов
 export const BREAKPOINTS = {
-  MOBILE: 768,
-  TABLET: 1024,
+  MOBILE: 1024,
+  TABLET: 1280,
   DESKTOP: 1440,
 } as const;
 

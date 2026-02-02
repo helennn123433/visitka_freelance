@@ -128,13 +128,24 @@ const handleDeleteService = async () => {
   }
 };
 
-const handleSaveService = async (updatedData: Service) => {
+const handleSaveService = async (
+  updatedData: Service & { imageFile?: File | null }
+) => {
   try {
-    await serviceStore.updateService(updatedData.id, {
+    const formData = new FormData();
+
+    if (updatedData.imageFile) {
+      formData.append('image', updatedData.imageFile);
+    }
+
+    await serviceStore.updateService({
+    id: updatedData.id,
+    params: {
       title: updatedData.title,
-      price: updatedData.price,
-      image: updatedData.image,
-    });
+      price: updatedData.price
+    },
+    formData
+  });
 
     notification.showSuccess('Услуга успешно обновлена');
     closeEditModal();
@@ -156,7 +167,7 @@ const goToService = (service: Service) => {
     params: { serviceId: service.id },
   });
 };
-
+ 
 onMounted(async () => {
   try {
     await serviceStore.fetchServices();
@@ -184,9 +195,7 @@ $blue: #0652FF;
   }
 
   &__btn {
-    width: 150px;
-    height: 40px;
-    margin: 0 10px 10px 0;
+    margin: 0 10px 20px 0;
   }
 
   &__btn:hover {
@@ -195,17 +204,21 @@ $blue: #0652FF;
 }
 
 .cards-field {
-  flex-grow: 1;
-  min-height: 0;
   overflow: hidden;
   overflow-y: auto;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5vw;
-  justify-content: space-between;
-  align-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 3vw, 32px);
+  row-gap: clamp(16px, 1.5vw, 48px);
+  justify-items: center;
 }
 
+@media (max-width: 767px) {
+  .cards-field {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
 .header {
   display: flex;
   justify-content: space-between;
@@ -215,7 +228,10 @@ $blue: #0652FF;
   color: $blue;
   font-size: clamp(1.5rem, 5vw, 2.5rem);
   font-weight: 800;
-  padding-bottom: 16px;
+  padding-bottom: 24px;
+  div {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+  }
 }
 
 @media (max-width: 767px) {

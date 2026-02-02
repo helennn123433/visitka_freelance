@@ -1,24 +1,24 @@
 <template>
-  <div
-    class="dialog-overlay"
+  <div 
+    class="dialog-overlay" 
     @click.self="handleClose"
   >
     <div class="dialog">
       <h3>{{ dialogTitle }}</h3>
 
       <form @submit.prevent="handleSubmit">
-        <div
-          v-if="availableTypes.length > 0"
+        <div 
+          v-if="availableTypes.length > 0" 
           class="form-group"
         >
           <label>Тип:</label>
           <select
             v-model="formData.typeId"
             required
-            :class="{ 'error': !formData.typeId && showValidation }"
+            :class="{ error: !formData.typeId && showValidation }"
           >
-            <option
-              value=""
+            <option 
+              value="" 
               disabled
             >
               Выберите тип
@@ -27,73 +27,64 @@
               v-for="type in availableTypes"
               :key="type.id"
               :value="type.id"
-              :selected="type.id === formData.typeId"
             >
               {{ type.title }}
             </option>
           </select>
-          <span
-            v-if="!formData.typeId && showValidation"
+          <span 
+            v-if="!formData.typeId && showValidation" 
             class="error-message"
           >
             Обязательное поле
           </span>
         </div>
+
+        <FormInput 
+          v-model="formData.title" 
+          label="Заголовок" 
+          required 
+          placeholder="Например: Современный интерьер" 
+        />
+
+        <FormInput 
+          v-model="formData.description" 
+          label="Описание" 
+          required 
+          placeholder="Краткое описание проекта" 
+        />
+
+        <FormInput 
+          v-model.number="formData.price" 
+          label="Цена" 
+          type="number" 
+          required 
+        />
 
         <div class="form-group">
-          <label>URL изображения:</label>
-          <input
-            v-model="formData.image"
-            required
-            placeholder="Введите URL изображения"
-            :class="{ 'error': !formData.image && showValidation }"
+          <label class="label">Изображение</label>
+          <FileInput v-model="formData.imageFile" />
+          <small 
+            v-if="!formData.imageFile" 
+            class="hint"
           >
-          <span
-            v-if="!formData.image && showValidation"
-            class="error-message"
-          >
-            Обязательное поле
-          </span>
-        </div>
-
-        <div class="preview-section">
-          <label>Предпросмотр:</label>
-          <div class="preview-image">
-            <img
-              v-show="!imageError"
-              :src="formData.image || props.exampleData.image"
-              alt="Предпросмотр"
-              @error="imageError = true"
-            >
-            <div
-              v-if="imageError"
-              class="preview-error"
-            >
-              Не удалось загрузить изображение
-            </div>
-          </div>
-          <div
-            v-if="props.exampleData.image && formData.image !== props.exampleData.image"
-            class="preview-info"
-          >
-            <small>Текущее изображение будет заменено</small>
-          </div>
+            Оставьте пустым, чтобы не менять текущее фото
+          </small>
         </div>
 
         <div class="dialog-actions">
+          <MyButton 
+            type="button" 
+            class="btn" 
+            @click="handleClose"
+          >
+            Отмена
+          </MyButton>
           <MyButton
             type="submit"
             :disabled="isLoading || !hasChanges"
             class="btn"
           >
-            {{ isLoading ? 'Сохранение...' : 'Сохранить изменения' }}
-          </MyButton>
-          <MyButton
-            type="button"
-            class="btn"
-            @click="handleClose"
-          >
-            Отмена
+            {{ isLoading ? "Сохранение..." : "Сохранить изменения" }}
           </MyButton>
         </div>
       </form>
@@ -102,10 +93,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { useExampleStore, type Example } from '@entities/example';
-import { useSubserviceStore, type SubserviceType } from '@entities/subservice';
-import { MyButton } from '@shared/ui/button';
+import { ref, computed, watch } from "vue";
+import { useExampleStore, type Example } from "@entities/example";
+import { useSubserviceStore } from "@entities/subservice";
+import { MyButton } from "@shared/ui/button";
+import { FormInput, FileInput } from "@/shared/ui/dialog";
 
 interface Props {
   exampleData: Example;
@@ -126,80 +118,66 @@ const imageError = ref(false);
 
 const formData = ref({
   typeId: props.exampleData.typeId,
-  image: props.exampleData.image
+  title: props.exampleData.title || "",
+  description: props.exampleData.description || "",
+  price: props.exampleData.price || 0,
+  imageFile: null as File | null,
 });
 
-const dialogTitle = computed(() => 'Редактировать пример работы');
+const dialogTitle = computed(() => "Редактировать пример работы");
 
 const hasChanges = computed(() => {
   return (
     formData.value.typeId !== props.exampleData.typeId ||
-    formData.value.image !== props.exampleData.image
+    formData.value.title !== (props.exampleData.title || "") ||
+    formData.value.description !== (props.exampleData.description || "") ||
+    formData.value.price !== (props.exampleData.price || 0) ||
+    formData.value.imageFile !== null
   );
 });
 
-const availableTypes = computed<SubserviceType[]>(() => {
-  const subservice = subserviceStore.getSubserviceById(props.subserviceId);
-  return subservice?.types || [];
+const availableTypes = computed(() => {
+  return subserviceStore.getSubserviceById(props.subserviceId)?.types || [];
 });
-
-watch(() => formData.value.image, () => {
-  imageError.value = false;
-});
-
-const validateForm = (): boolean => {
-  showValidation.value = true;
-  return !!(formData.value.typeId.trim() && formData.value.image.trim());
-};
 
 const handleClose = () => {
-  emit('close');
+  emit("close");
 };
 
 const handleSubmit = async () => {
-  if (!validateForm()) {
-    alert('Заполните все обязательные поля');
-    return;
-  }
-
-  if (!hasChanges.value) {
-    alert('Нет изменений для сохранения');
-    return;
-  }
-
   isLoading.value = true;
-
   try {
-    const updateData = {
-      id: props.exampleData.id,
-      typeId: formData.value.typeId,
-      image: formData.value.image
-    };
+    await exampleStore.updateExample(props.exampleData.id, {
+        id: props.exampleData.id,
+        typeId: formData.value.typeId,
+        title: formData.value.title,
+        description: formData.value.description,
+        price: formData.value.price,
+        image: formData.value.imageFile
+      },
+    props.exampleData.typeId);
 
-    const updatedExample = await exampleStore.updateExample(
-      props.exampleData.typeId,
-      props.exampleData.id,
-      updateData
-    );
-
-    emit('updated', updatedExample);
-    emit('close');
+    emit("updated");
+    emit("close");
   } catch (error) {
-    console.error('Ошибка при обновлении примера:', error);
-    alert(error instanceof Error ? error.message : 'Произошла ошибка при обновлении');
+    alert("Ошибка при сохранении");
   } finally {
     isLoading.value = false;
   }
 };
+
+watch(
+  () => formData.value.image,
+  () => {
+    imageError.value = false;
+  },
+);
 </script>
 
 <style scoped>
 .dialog-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -211,13 +189,16 @@ const handleSubmit = async () => {
   background: white;
   padding: 24px;
   border-radius: 8px;
-  min-width: 500px;
-  max-width: 600px;
+  width: 25vw;
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-
+@media (max-width: 768px) {
+  .dialog {
+    width: 80vw;
+  }
+}
 .form-group {
   margin-bottom: 20px;
 }
@@ -292,7 +273,7 @@ const handleSubmit = async () => {
 
 .dialog-actions {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   gap: 12px;
   margin-top: 24px;
 }

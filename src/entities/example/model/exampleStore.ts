@@ -46,48 +46,50 @@ export const useExampleStore = defineStore('exampleStore', () => {
   };
 
   const updateExample = async (
-    oldTypeId: string,
     exampleId: string,
-    updates: UpdateExampleRequest
-  ): Promise<Example> => {
+    updates: UpdateExampleRequest,
+    oldTypeId: string
+  ): Promise<void> => {
     return execute(async () => {
-      const updateData = {
-        typeId: updates.typeId,
-        image: updates.image
-      };
+      await examplesApi.updateExample(exampleId, updates);
 
-      await examplesApi.updateExample(exampleId, updateData);
-
-      if (updates.typeId !== oldTypeId) {
-        const oldProjectIndex = serviceTypeProjects.value.findIndex(p => p.id === oldTypeId);
-        if (oldProjectIndex !== -1) {
-          serviceTypeProjects.value[oldProjectIndex].examples =
-            serviceTypeProjects.value[oldProjectIndex].examples.filter(e => e.id !== exampleId);
-        }
+      if (updates.typeId && updates.typeId !== oldTypeId) {
+        removeFromType(oldTypeId, exampleId);
+      }
+      
+      let imagePath: string | undefined;
+      
+      if (updates.image instanceof Blob) {
+        imagePath = URL.createObjectURL(updates.image);
+      } else if (typeof updates.image === 'string') {
+        imagePath = updates.image;
       }
 
-      const newProjectIndex = serviceTypeProjects.value.findIndex(p => p.id === updates.typeId);
-      if (newProjectIndex !== -1) {
-        const exampleIndex = serviceTypeProjects.value[newProjectIndex].examples
-          .findIndex(e => e.id === exampleId);
+      upsertToType(updates.typeId || oldTypeId, {
+        ...updates,
+        id: exampleId,
+        image: imagePath
+      } as Partial<Example> & { id: string });
 
-        if (exampleIndex !== -1) {
-          serviceTypeProjects.value[newProjectIndex].examples[exampleIndex] = {
-            ...serviceTypeProjects.value[newProjectIndex].examples[exampleIndex],
-            ...updates
-          };
-        } else {
-          serviceTypeProjects.value[newProjectIndex].examples.push({
-            id: exampleId,
-            typeId: updates.typeId,
-            image: updates.image
-          });
-        }
-      }
-
-      return { id: exampleId, typeId: updates.typeId, image: updates.image };
-    }, 'Не удалось обновить пример');
+    }, 'Не удалось обновить проект');
   };
+
+  function removeFromType(typeId: string, id: string) {
+    const project = serviceTypeProjects.value.find(p => p.id === typeId);
+    if (project) project.examples = project.examples.filter(e => e.id !== id);
+  }
+
+  function upsertToType(typeId: string, data: Partial<Example> & { id: string }) {
+    const project = serviceTypeProjects.value.find(p => p.id === typeId);
+    if (!project) return;
+    
+    const idx = project.examples.findIndex(e => e.id === data.id);
+    if (idx !== -1) {
+      project.examples[idx] = { ...project.examples[idx], ...data };
+    } else {
+      project.examples.push(data as Example);
+    }
+  }
 
   const deleteExample = async (typeId: string, exampleId: string): Promise<void> => {
     return execute(async () => {
